@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R.A.L.F. – Music Showcase</title>
+  <meta name="description" content="R.A.L.F. – Musik mit Kategorien, Cover-Galerie und integriertem Player." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <meta property="og:title" content="R.A.L.F. – Music Showcase" />
+  <meta property="og:description" content="Stream deine Songs direkt auf deiner Seite, ohne Suno-Login." />
+  <meta property="og:image" content="assets/logo-512.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    img, audio, video { -webkit-user-drag: none; user-select: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-neutral-950 text-neutral-100">
+  <!-- Header -->
+  <header class="sticky top-0 backdrop-blur bg-neutral-950/80 z-20 border-b border-neutral-800">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
+      <img src="assets/logo.png" alt="R.A.L.F." class="h-10 w-auto" />
+      <div class="flex-1">
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">R.A.L.F. – Music Showcase</h1>
+        <p class="text-sm text-neutral-400">Kategorien, Cover, integrierter Player, rudimentärer Downloadschutz.</p>
+      </div>
+      <div class="relative w-72 hidden md:block">
+        <input id="search" placeholder="Suche Songs oder Künstler"
+               class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-orange-600" />
+        <span class="absolute right-3 top-2.5 text-neutral-500">⌘K</span>
+      </div>
+    </div>
+    <nav id="catBar" class="max-w-6xl mx-auto px-4 pb-3 flex flex-wrap gap-2"></nav>
+  </header>
+
+  <!-- Kategorien-Galerie -->
+  <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
+    <h2 class="text-lg font-bold mb-4">Kategorien</h2>
+    <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
+  </section>
+
+  <!-- Songs -->
+  <main class="max-w-6xl mx-auto px-4 pb-24">
+    <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+    <p id="emptyState" class="text-neutral-400 hidden">Keine Treffer. Suchbegriff anpassen.</p>
+  </main>
+
+  <!-- Player Dock -->
+  <div id="playerDock" class="fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" />
+      <div class="flex-1 min-w-0">
+        <div id="playerTitle" class="text-sm font-semibold truncate"></div>
+        <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
+        <div class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden">
+          <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
+        </div>
+      </div>
+      <audio id="audio" controls class="w-64" preload="none"></audio>
+      <button id="closeBtn" class="px-3 py-1.5 text-sm rounded-lg border border-neutral-700 hover:border-neutral-500">Schließen</button>
+    </div>
+  </div>
+
+  <footer class="border-t border-neutral-800">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500">
+      © R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.
+    </div>
+  </footer>
+
+  <script>
+    const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
+    async function loadData() {
+      const [s, c] = await Promise.all([fetch('songs.json'), fetch('categories.json')]);
+      state.songs = await s.json();
+      state.categories = await c.json();
+      renderCatBar();
+      applyQueryFromURL();
+      render();
+    }
+    function applyQueryFromURL() {
+      const p = new URLSearchParams(location.search);
+      state.cat = p.get('cat') || 'all';
+      state.query = p.get('q') || '';
+      const search = document.getElementById('search');
+      if (search) search.value = state.query;
+    }
+    function setCat(cat) {
+      state.cat = cat;
+      const p = new URLSearchParams(location.search);
+      p.set('cat', cat);
+      history.replaceState(null, '', '?' + p.toString());
+      render();
+    }
+    function setQuery(q) {
+      state.query = q.toLowerCase();
+      const p = new URLSearchParams(location.search);
+      if (q) p.set('q', q); else p.delete('q');
+      history.replaceState(null, '', '?' + p.toString());
+      render();
+    }
+    function renderCatBar() {
+      const bar = document.getElementById('catBar');
+      bar.innerHTML = '';
+      state.categories.forEach(c => {
+        const b = document.createElement('button');
+        b.textContent = c.label;
+        b.className = 'px-3 py-1.5 rounded-full border text-sm transition ' + (state.cat === c.key ? 'bg-orange-600 border-orange-500 text-white' : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-neutral-500');
+        b.onclick = () => setCat(c.key);
+        bar.appendChild(b);
+      });
+    }
+    function renderCategoryGallery() {
+      const showGallery = state.cat === 'all' && !state.query;
+      const section = document.getElementById('catGallery');
+      section.classList.toggle('hidden', !showGallery);
+      if (!showGallery) return;
+      const grid = document.getElementById('catGrid');
+      grid.innerHTML = '';
+      state.categories.filter(c => c.key !== 'all').forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600';
+        card.onclick = () => setCat(c.key);
+        card.innerHTML = `
+          <img src="${c.cover}" alt="${c.label}" class="w-full h-32 object-cover group-hover:scale-105 transition" />
+          <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <span class="font-semibold text-white text-sm sm:text-base">${c.label}</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+    function renderSongs() {
+      const q = state.query;
+      const filtered = state.songs.filter(s => (state.cat === 'all' || s.category === state.cat) && (!q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)));
+      const grid = document.getElementById('songsGrid');
+      const empty = document.getElementById('emptyState');
+      grid.innerHTML = '';
+      if (filtered.length === 0) { empty.classList.remove('hidden'); return; } else empty.classList.add('hidden');
+      filtered.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition';
+        card.innerHTML = `
+          <div class="aspect-square overflow-hidden relative">
+            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            <button class="play absolute bottom-3 right-3 bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow">▶ Abspielen</button>
+          </div>
+          <div class="p-4">
+            <div class="text-xs text-neutral-400 mb-1">${s.category}</div>
+            <h3 class="font-semibold leading-tight">${s.title}</h3>
+            <div class="text-sm text-neutral-400">${s.artist}</div>
+          </div>`;
+        card.querySelector('.play').onclick = () => playSong(s);
+        grid.appendChild(card);
+      });
+    }
+    function playSong(s) {
+      state.active = s.id;
+      document.getElementById('playerDock').classList.remove('hidden');
+      document.getElementById('playerCover').src = s.cover;
+      document.getElementById('playerTitle').textContent = s.title;
+      document.getElementById('playerArtist').textContent = s.artist;
+      const audio = document.getElementById('audio');
+      audio.src = s.src;
+      audio.play().catch(() => { /* autoplay blocked */ });
+      audio.ontimeupdate = () => {
+        const pct = Math.min(100, Math.round((audio.currentTime / (s.duration || 1)) * 100));
+        document.getElementById('playerProgress').style.width = pct + '%';
+      };
+    }
+    function render() {
+      renderCatBar();
+      renderCategoryGallery();
+      renderSongs();
+    }
+    document.getElementById('closeBtn').onclick = () => {
+      document.getElementById('playerDock').classList.add('hidden');
+      const audio = document.getElementById('audio');
+      audio.pause();
+    };
+    document.getElementById('search').addEventListener('input', (e) => setQuery(e.target.value));
+    window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('search').focus(); } });
+    loadData();
+  </script>
+</body>
+</html>
