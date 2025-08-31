@@ -1,42 +1,24 @@
-[
-  {
-    "key": "all",
-    "label": "Alle",
-    "cover": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Deutsch Rap",
-    "label": "Deutsch Rap",
-    "cover": "https://images.unsplash.com/photo-1608667508764-33cf0726a3a7?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Ballermann/Schlager",
-    "label": "Ballermann/Schlager",
-    "cover": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Trance",
-    "label": "Trance",
-    "cover": "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Classic Rock",
-    "label": "Classic Rock",
-    "cover": "https://images.unsplash.com/photo-1497032205916-ac775f0649ae?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Rammstein",
-    "label": "Rammstein",
-    "cover": "https://images.unsplash.com/photo-1533230408708-8f9f91d6c2c1?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Eurodance",
-    "label": "Eurodance",
-    "cover": "https://images.unsplash.com/photo-1544785349-c4a5301826fd?q=80&w=1200&auto=format&fit=crop"
-  },
-  {
-    "key": "Other",
-    "label": "Sonstiges",
-    "cover": "https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?q=80&w=1200&auto=format&fit=crop"
-  }
-]
+{
+  "categories": [
+    {
+      "key": "all",
+      "label": "Alle",
+      "cover": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "key": "Deutsch Rap",
+      "label": "Deutsch Rap",
+      "cover": "https://images.unsplash.com/photo-1608667508764-33cf0726a3a7?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "key": "Ballermann/Schlager",
+      "label": "Ballermann/Schlager",
+      "cover": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "key": "Trance",
+      "label": "Trance",
+      "cover": "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?q=80&w=1200&auto=format&fit=crop"
+    }
+  ]
+}

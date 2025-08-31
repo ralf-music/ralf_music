@@ -15,7 +15,6 @@
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <!-- Header -->
   <header class="sticky top-0 backdrop-blur bg-neutral-950/80 z-20 border-b border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
       <img src="assets/logo.png" alt="R.A.L.F." class="h-10 w-auto" />
@@ -32,19 +31,16 @@
     <nav id="catBar" class="max-w-6xl mx-auto px-4 pb-3 flex flex-wrap gap-2"></nav>
   </header>
 
-  <!-- Kategorien-Galerie -->
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
   </section>
 
-  <!-- Songs -->
   <main class="max-w-6xl mx-auto px-4 pb-24">
     <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
     <p id="emptyState" class="text-neutral-400 hidden">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
-  <!-- Player Dock -->
   <div id="playerDock" class="fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
       <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" />
@@ -69,9 +65,10 @@
   <script>
     const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
     async function loadData() {
-      const [s, c] = await Promise.all([fetch('songs.json'), fetch('categories.json')]);
-      state.songs = await s.json();
-      state.categories = await c.json();
+      const s = await fetch('songs.json').then(r=>r.json());
+      const c = await fetch('categories.json').then(r=>r.json());
+      state.songs = Array.isArray(s) ? s : (s.songs || []);
+      state.categories = Array.isArray(c) ? c : (c.categories || []);
       renderCatBar();
       applyQueryFromURL();
       render();
@@ -159,7 +156,7 @@
       document.getElementById('playerArtist').textContent = s.artist;
       const audio = document.getElementById('audio');
       audio.src = s.src;
-      audio.play().catch(() => { /* autoplay blocked */ });
+      audio.play().catch(() => {});
       audio.ontimeupdate = () => {
         const pct = Math.min(100, Math.round((audio.currentTime / (s.duration || 1)) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
