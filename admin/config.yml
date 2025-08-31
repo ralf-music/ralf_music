@@ -11,42 +11,48 @@ public_folder: "/assets/uploads"
 collections:
   - label: "Songs"
     name: "songs"
-    file: "songs.json"
-    format: json
-    fields:
-      - label: "Songs"
-        name: "songs"
-        widget: "list"
-        summary: "{{fields.title}} ({{fields.category}})"
+    files:
+      - label: "Songs verwalten"
+        name: "songs_file"
+        file: "songs.json"
+        format: json
         fields:
-          - { label: "ID (unique, ohne Leerzeichen)", name: "id", widget: "string" }
-          - { label: "Titel", name: "title", widget: "string" }
-          - { label: "Künstler", name: "artist", widget: "string", default: "R.A.L.F." }
-          - label: "Kategorie"
-            name: "category"
-            widget: "select"
-            options:
-              - "Deutsch Rap"
-              - "Ballermann/Schlager"
-              - "Trance"
-              - "Classic Rock"
-              - "Rammstein"
-              - "Eurodance"
-              - "Other"
-          - { label: "Cover-URL", name: "cover", widget: "string" }
-          - { label: "Audio-URL (Stream/MP3/HLS)", name: "src", widget: "string" }
-          - { label: "Dauer (Sek.)", name: "duration", widget: "number", min: 1 }
+          - label: "Songs"
+            name: "songs"
+            widget: "list"
+            summary: "{{fields.title}} ({{fields.category}})"
+            fields:
+              - { label: "ID (unique, ohne Leerzeichen)", name: "id", widget: "string" }
+              - { label: "Titel", name: "title", widget: "string" }
+              - { label: "Künstler", name: "artist", widget: "string", default: "R.A.L.F." }
+              - label: "Kategorie"
+                name: "category"
+                widget: "select"
+                options:
+                  - "Deutsch Rap"
+                  - "Ballermann/Schlager"
+                  - "Trance"
+                  - "Classic Rock"
+                  - "Rammstein"
+                  - "Eurodance"
+                  - "Other"
+              - { label: "Cover-URL", name: "cover", widget: "string" }
+              - { label: "Audio-URL (Stream/MP3/HLS)", name: "src", widget: "string" }
+              - { label: "Dauer (Sek.)", name: "duration", widget: "number", min: 1 }
 
   - label: "Kategorien"
     name: "categories"
-    file: "categories.json"
-    format: json
-    fields:
-      - label: "Kategorien"
-        name: "categories"
-        widget: "list"
-        summary: "{{fields.label}}"
+    files:
+      - label: "Kategorien verwalten"
+        name: "categories_file"
+        file: "categories.json"
+        format: json
         fields:
-          - { label: "Key (muss zur Song-Kategorie passen)", name: "key", widget: "string" }
-          - { label: "Label", name: "label", widget: "string" }
-          - { label: "Kachel-Cover-URL", name: "cover", widget: "string" }
+          - label: "Kategorien"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Key (muss zur Song-Kategorie passen)", name: "key", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Kachel-Cover-URL", name: "cover", widget: "string" }
