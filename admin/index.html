@@ -1,22 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>R.A.L.F. – Admin</title>
-    <!-- Decap CMS laden -->
-    <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
-    <script>
-      // Manueller Start: nur wenn Token da ist
-      window.CMS_MANUAL_INIT = true;
-      const token = localStorage.getItem("decap-cms-user");
-      if (token) {
-        CMS.init({ config: "/admin/config.yml" });
-      }
-    </script>
   </head>
-  <body style="margin:0;background:#0a0a0a;color:#e5e5e5;font-family:sans-serif;">
-    <h1 style="padding:16px;">R.A.L.F. – Admin</h1>
-    <!-- Container, den Decap benutzt -->
+  <body style="margin:0;background:#0a0a0a;color:#e5e5e5;font-family:system-ui,sans-serif">
+    <h1 style="margin:0;padding:16px">R.A.L.F. – Admin</h1>
     <div id="nc-root"></div>
+
+    <!-- 1) Token aus der URL in localStorage schreiben + Autostart von Decap unterbinden -->
+    <script>
+      (function () {
+        // Token aus Hash oder Query abgreifen
+        function getToken() {
+          const h = location.hash || "";
+          const q = location.search || "";
+          let m = h.match(/access_token=([^&]+)/);
+          if (m) return decodeURIComponent(m[1]);
+          m = q.match(/access_token=([^&]+)/);
+          return m ? decodeURIComponent(m[1]) : null;
+        }
+        const tok = getToken();
+        if (tok) {
+          const payload = JSON.stringify({ token: tok, provider: "github" });
+          try { localStorage.setItem("decap-cms-user", payload); } catch (e) {}
+          try { localStorage.setItem("netlify-cms-user", payload); } catch (e) {}
+          history.replaceState(null, "", location.origin + location.pathname);
+        }
+        // Decap NICHT automatisch starten lassen
+        window.CMS_MANUAL_INIT = true;
+      })();
+    </script>
+
+    <!-- 2) Decap laden (defer, damit es NACH dem HTML kommt) -->
+    <script defer src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
+
+    <!-- 3) Decap erst starten, wenn DOM + CMS sicher da sind -->
+    <script>
+      (function () {
+        function onReady(fn) {
+          if (document.readyState !== "loading") fn();
+          else document.addEventListener("DOMContentLoaded", fn);
+        }
+        function whenCMS(fn) {
+          if (window.CMS) fn();
+          else setTimeout(() => whenCMS(fn), 50);
+        }
+        onReady(function () {
+          // falls irgendwas den Container gekillt hat: neu anlegen
+          if (!document.getElementById("nc-root")) {
+            const d = document.createElement("div");
+            d.id = "nc-root";
+            document.body.appendChild(d);
+          }
+          whenCMS(function () {
+            CMS.init({ config: "/admin/config.yml" });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
