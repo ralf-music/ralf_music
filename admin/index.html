@@ -1,48 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>R.A.L.F. – Admin</title>
-</head>
-<body style="margin:0;background:#0a0a0a;color:#e5e5e5;font-family:system-ui">
-  <h1 style="margin:0;padding:16px">R.A.L.F. – Admin</h1>
-
-  <!-- 1) Token aus URL in localStorage schreiben -->
-  <script>
-    (function () {
-      function getToken() {
-        const h = location.hash || "";
-        const q = location.search || "";
-        let m = h.match(/access_token=([^&]+)/);
-        if (m) return decodeURIComponent(m[1]);
-        m = q.match(/access_token=([^&]+)/);
-        return m ? decodeURIComponent(m[1]) : null;
-      }
-      const tok = getToken();
-      if (tok) {
-        const payload = JSON.stringify({ token: tok, provider: "github" });
-        try { localStorage.setItem("decap-cms-user", payload); } catch(e){}
-        try { localStorage.setItem("netlify-cms-user", payload); } catch(e){}
-        // URL säubern
-        history.replaceState(null, "", location.origin + location.pathname);
-      }
-      // Damit Decap NICHT automatisch losrennt
+  <head>
+    <meta charset="UTF-8" />
+    <title>R.A.L.F. – Admin</title>
+    <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
+    <script>
       window.CMS_MANUAL_INIT = true;
-    })();
-  </script>
-
-  <!-- 2) Decap laden -->
-  <script src="https://unpkg.com/decap-cms@^3.0.7/dist/decap-cms.js"></script>
-
-  <!-- 3) Decap NACH dem Token-Setzen manuell starten -->
-  <script>
-    (function startCMS() {
-      // Warten bis Decap im Fenster hängt
-      if (!window.CMS) { return setTimeout(startCMS, 50); }
-      // Explizit mit unserer Config starten
-      CMS.init({ config: '/admin/config.yml' });
-    })();
-  </script>
-</body>
+      const token = localStorage.getItem("decap-cms-user");
+      if (token) {
+        CMS.init({ config: "/admin/config.yml" });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>R.A.L.F. – Admin</h1>
+    <div id="nc-root"></div>
+  </body>
 </html>
