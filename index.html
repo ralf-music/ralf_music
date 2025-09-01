@@ -148,7 +148,7 @@
         card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600';
         card.onclick = () => setCat(c.key);
         card.innerHTML = `
-          <img src="${c.cover}" alt="${c.label}" class="w-full h-32 object-cover group-hover:scale-105 transition" />
+          <img src="${c.cover}" alt="${c.label}" class="w-full h-32 object-object-contain bg-black" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span class="font-semibold text-white text-sm sm:text-base">${c.label}</span>
           </div>`;
