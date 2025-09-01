@@ -15,33 +15,28 @@
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
- <header class="relative w-full h-32 sm:h-40 bg-black">
-  <!-- Hintergrundbild -->
+ <!-- Banner mit Logo -->
+<header class="relative w-full h-32 sm:h-40 bg-black">
   <img src="/assets/logo.png" alt="R.A.L.F. Logo"
        class="absolute inset-0 w-full h-full object-contain object-center opacity-95" />
-
-  <!-- Verdunkelung -->
   <div class="absolute inset-0 bg-black/60"></div>
-
-  <!-- Inhalt -->
-  <div class="relative z-10 max-w-7xl mx-auto h-full flex flex-col justify-center px-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">R.A.L.F. – Music Showcase</h1>
-        <p class="text-neutral-200 text-sm">Musik von mir, für Euch.</p>
-      </div>
-      <div class="shrink-0 w-64 sm:w-80">
-        <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
-               class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white/30">
-      </div>
-    </div>
-  </div>
 </header>
 
+<!-- Text unter dem Banner -->
+<div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
+    <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
+  </div>
+  <!-- Suchfeld -->
+  <div class="shrink-0 w-64 sm:w-80">
+    <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
+           class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white/30">
+  </div>
+</div>
 
-<!-- Kategorie-Buttons -->
+<!-- Kategorien-Leiste -->
 <div id="catBar" class="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap gap-2"></div>
-
 
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
