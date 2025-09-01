@@ -15,21 +15,29 @@
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <header class="sticky top-0 backdrop-blur bg-neutral-950/80 z-20 border-b border-neutral-800">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-      <img src="assets/logo.png" alt="R.A.L.F." class="h-10 w-auto" />
-      <div class="flex-1">
-        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">R.A.L.F. – Music Showcase</h1>
-        <p class="text-sm text-neutral-400">Musik von mir, für Euch.</p>
+  <header class="sticky top-0 z-40 bg-neutral-950/95 backdrop-blur border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <!-- REIHE 1: Logo groß + Titel + Untertitel + Suche rechts -->
+    <div class="flex items-center gap-4">
+      <!-- LOGO: Größe hier einstellen (h-20/w-20 = normal; h-24/w-24 = größer; h-28/w-28 = sehr groß) -->
+      <img src="/assets/logo.png" alt="R.A.L.F. Logo"
+           class="h-24 w-24 sm:h-28 sm:w-28 object-contain bg-black rounded-2xl ring-1 ring-white/10 shadow" />
+
+      <div class="flex-1 min-w-0">
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
+        <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
       </div>
-      <div class="relative w-72 hidden md:block">
-        <input id="search" placeholder="Suche Songs oder Künstler"
-               class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-orange-600" />
-        <span class="absolute right-3 top-2.5 text-neutral-500">⌘K</span>
-      </div>
+
+      <!-- DEIN SUCHFELD HIER LASSEN ODER DIESES NUTZEN -->
+      <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
+             class="w-64 sm:w-80 rounded-2xl bg-neutral-800/60 ring-1 ring-white/10 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-white/20">
     </div>
-    <nav id="catBar" class="max-w-6xl mx-auto px-4 pb-3 flex flex-wrap gap-2"></nav>
-  </header>
+
+    <!-- REIHE 2: Kategorien kommen HIER drunter -->
+    <div id="catbar" class="mt-4 flex flex-wrap gap-2"></div>
+  </div>
+</header>
+
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
