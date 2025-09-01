@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>R.A.L.F. – Admin</title>
+    <!-- Decap CMS laden -->
     <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
     <script>
+      // Manueller Start: nur wenn Token da ist
       window.CMS_MANUAL_INIT = true;
       const token = localStorage.getItem("decap-cms-user");
       if (token) {
@@ -12,8 +14,9 @@
       }
     </script>
   </head>
-  <body>
-    <h1>R.A.L.F. – Admin</h1>
+  <body style="margin:0;background:#0a0a0a;color:#e5e5e5;font-family:sans-serif;">
+    <h1 style="padding:16px;">R.A.L.F. – Admin</h1>
+    <!-- Container, den Decap benutzt -->
     <div id="nc-root"></div>
   </body>
 </html>
