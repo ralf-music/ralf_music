@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: DEIN_GITHUB_NAME/ralf-music
+  repo: ralf-music/ralf-music
   branch: main
   base_url: /.netlify/functions
   auth_endpoint: auth
