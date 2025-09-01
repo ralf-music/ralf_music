@@ -15,28 +15,34 @@
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <header class="sticky top-0 z-40 bg-neutral-950/95 backdrop-blur border-b border-white/10">
-  <div class="max-w-7xl mx-auto px-4 py-4">
-    <!-- REIHE 1: Logo groß + Titel + Untertitel + Suche rechts -->
-    <div class="flex items-center gap-4">
-      <!-- LOGO: Größe hier einstellen (h-20/w-20 = normal; h-24/w-24 = größer; h-28/w-28 = sehr groß) -->
-      <img src="/assets/logo.png" alt="R.A.L.F. Logo"
-           class="h-24 w-24 sm:h-28 sm:w-28 object-contain bg-black rounded-2xl ring-1 ring-white/10 shadow" />
+ <header class="relative w-full h-48 sm:h-64 bg-black">
+  <!-- Hintergrundbild -->
+  <img src="/assets/logo.png" alt="R.A.L.F. Logo"
+       class="absolute inset-0 w-full h-full object-cover object-center opacity-90" />
 
-      <div class="flex-1 min-w-0">
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
-        <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
+  <!-- Verdunkelung für bessere Lesbarkeit -->
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- Inhalt auf dem Banner -->
+  <div class="relative z-10 max-w-7xl mx-auto h-full flex flex-col justify-center px-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">R.A.L.F. – Music Showcase</h1>
+        <p class="text-neutral-200 text-sm">Musik von mir, für Euch.</p>
       </div>
-
-      <!-- DEIN SUCHFELD HIER LASSEN ODER DIESES NUTZEN -->
-      <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
-             class="w-64 sm:w-80 rounded-2xl bg-neutral-800/60 ring-1 ring-white/10 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-white/20">
+      <div class="shrink-0 w-64 sm:w-80">
+        <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
+               class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white/30">
+      </div>
     </div>
-
-    <!-- REIHE 2: Kategorien kommen HIER drunter -->
-    <div id="catbar" class="mt-4 flex flex-wrap gap-2"></div>
   </div>
+
+  <!-- Kategorien-Leiste direkt unter dem Banner -->
 </header>
+
+<!-- Kategorie-Buttons -->
+<div id="catBar" class="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap gap-2"></div>
+
 
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
