@@ -47,11 +47,11 @@
       <div class="flex-1 min-w-0">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
-        <div class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden">
-          <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
-        </div>
+        <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
+  <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
+</div>
       </div>
-      <audio id="audio" controls class="w-64" preload="none"></audio>
+      <audio id="audio" controls class="w-64" preload="metadata"></audio>
       <button id="closeBtn" class="px-3 py-1.5 text-sm rounded-lg border border-neutral-700 hover:border-neutral-500">Schließen</button>
     </div>
   </div>
