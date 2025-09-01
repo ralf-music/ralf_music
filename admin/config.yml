@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: DEIN_GITHUB_NAME/ralf-music
   branch: main
+  base_url: /.netlify/functions
+  auth_endpoint: auth
 
 locale: de
 publish_mode: editorial_workflow
