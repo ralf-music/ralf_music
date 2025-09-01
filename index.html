@@ -90,6 +90,11 @@
       renderCatBar();
       applyQueryFromURL();
       render();
+       // >>> NEU hinzugefügt <<<
+  const pid = new URLSearchParams(location.search).get('id');
+  if (pid) {
+    const s = state.songs.find(x => x.id === pid);
+    if (s) setTimeout(() => playSong(s), 100);
     }
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
