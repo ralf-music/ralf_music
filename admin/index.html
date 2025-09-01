@@ -12,6 +12,29 @@
 </head>
 <body>
   <div class="wrap"><h1>R.A.L.F. – Admin</h1></div>
+
+  <!-- Token-Polyfill: liest access_token aus URL und speichert ihn fürs CMS -->
+  <script>
+    (function () {
+      function findToken() {
+        const h = location.hash || "";
+        let m = h.match(/access_token=([^&]+)/);
+        if (m) return decodeURIComponent(m[1]);
+        const q = location.search || "";
+        m = q.match(/access_token=([^&]+)/);
+        return m ? decodeURIComponent(m[1]) : null;
+      }
+      const tok = findToken();
+      if (tok) {
+        const payload = JSON.stringify({ token: tok, provider: "github" });
+        try { localStorage.setItem("decap-cms-user", payload); } catch (e) {}
+        try { localStorage.setItem("netlify-cms-user", payload); } catch (e) {}
+        // URL aufräumen, damit das CMS nicht wieder stolpert
+        history.replaceState(null, "", location.origin + location.pathname);
+      }
+    })();
+  </script>
+
   <!-- Decap CMS (Nachfolger von Netlify CMS) -->
   <script src="https://unpkg.com/decap-cms@^3.0.7/dist/decap-cms.js"></script>
 </body>
