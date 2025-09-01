@@ -201,6 +201,23 @@
     loadData();
   </script>
 
+    <!-- Extra Script für Spulen -->
+  <script>
+    const audio = document.getElementById('audio');
+    const bar   = document.getElementById('playerBar');
+
+    audio.addEventListener('loadedmetadata', () => {
+      const s = (window.state?.songs || []).find(x => x.id === window.state?.active);
+      if (s) s.duration = Math.floor(audio.duration || 0);
+    });
+
+    bar?.addEventListener('click', (e) => {
+      const rect = bar.getBoundingClientRect();
+      const ratio = (e.clientX - rect.left) / rect.width;
+      if (audio.duration > 0) audio.currentTime = ratio * audio.duration;
+    });
+  </script>
+
   <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
   <script>
     if (new URLSearchParams(location.search).get("edit") === "1") {
