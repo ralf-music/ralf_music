@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: ralf-music/ralf-music
+  repo: ralf-music/ralf_music
   branch: main
-  base_url: /.netlify/functions
+  base_url: https://ralf-music.netlify.app/.netlify/functions
   auth_endpoint: auth
 
 locale: de
