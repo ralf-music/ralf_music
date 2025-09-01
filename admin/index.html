@@ -8,6 +8,7 @@
   <style>
     body { background:#0a0a0a; color:#e5e5e5; font-family:system-ui,sans-serif; }
     .wrap { max-width:900px; margin:24px auto; padding:0 16px; }
+    .note { font-size:12px; color:#9ca3af; margin: 8px 0 0 20px; }
   </style>
 </head>
 <body>
@@ -16,26 +17,42 @@
   <!-- Token-Polyfill: liest access_token aus URL und speichert ihn fürs CMS -->
   <script>
     (function () {
-      function findToken() {
-        const h = location.hash || "";
-        let m = h.match(/access_token=([^&]+)/);
-        if (m) return decodeURIComponent(m[1]);
-        const q = location.search || "";
-        m = q.match(/access_token=([^&]+)/);
-        return m ? decodeURIComponent(m[1]) : null;
+      function getTokenFromUrl() {
+        const hash = location.hash || "";
+        const search = location.search || "";
+        const m1 = hash.match(/access_token=([^&]+)/);
+        if (m1) return decodeURIComponent(m1[1]);
+        const m2 = search.match(/access_token=([^&]+)/);
+        if (m2) return decodeURIComponent(m2[1]);
+        return null;
       }
-      const tok = findToken();
-      if (tok) {
+      function storeToken(tok) {
         const payload = JSON.stringify({ token: tok, provider: "github" });
-        try { localStorage.setItem("decap-cms-user", payload); } catch (e) {}
-        try { localStorage.setItem("netlify-cms-user", payload); } catch (e) {}
-        // URL aufräumen, damit das CMS nicht wieder stolpert
-        history.replaceState(null, "", location.origin + location.pathname);
+        try { localStorage.setItem("decap-cms-user", payload); } catch(e){}
+        try { localStorage.setItem("netlify-cms-user", payload); } catch(e){}
+        console.log("Token gespeichert");
       }
+      (function bootstrap() {
+        const tok = getTokenFromUrl();
+        if (tok) {
+          storeToken(tok);
+          history.replaceState(null, "", location.origin + location.pathname);
+        }
+        setTimeout(() => {
+          const hasUser = localStorage.getItem("decap-cms-user") || localStorage.getItem("netlify-cms-user");
+          const hasLoginBtn = !!document.querySelector('button, a[href*="github"]');
+          if (hasUser && hasLoginBtn) {
+            console.log("Token gefunden, Seite wird neu geladen…");
+            location.replace(location.origin + location.pathname);
+          }
+        }, 1200);
+      })();
     })();
   </script>
 
   <!-- Decap CMS (Nachfolger von Netlify CMS) -->
   <script src="https://unpkg.com/decap-cms@^3.0.7/dist/decap-cms.js"></script>
+
+  <div class="note">Falls der Login-Button nicht verschwindet: einmal im Inkognito-Fenster öffnen.</div>
 </body>
 </html>
