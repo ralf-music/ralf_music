@@ -168,12 +168,12 @@
         card.innerHTML = `
           <div class="aspect-square overflow-hidden relative">
             <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-            <button class="play absolute bottom-3 right-3 bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow">▶ Abspielen</button>
           </div>
           <div class="p-4">
             <div class="text-xs text-neutral-400 mb-1">${s.category}</div>
             <h3 class="font-semibold leading-tight">${s.title}</h3>
             <div class="text-sm text-neutral-400">${s.artist}</div>
+            <button class="play absolute bottom-3 right-3 bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow">▶ Abspielen</button>
           </div>`;
         card.querySelector('.play').onclick = () => playSong(s);
         grid.appendChild(card);
