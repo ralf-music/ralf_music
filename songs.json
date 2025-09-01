@@ -1,12 +1,12 @@
 {
   "songs": [
     {
-      "id": "freedom-is-life",
-      "title": "Freedom is Life",
+      "id": "glasherz",
+      "title": "Glasherz",
       "artist": "R.A.L.F.",
-      "category": "Trance",
-      "cover": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop",
-      "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "category": "Deutsch Rap",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/cover/glasherz.jpeg",
+      "src": "https://github.com/ralf-music/ralf_music/blob/main/assets/songs/Glasherz.mp3",
       "duration": 242
     }
   ]
