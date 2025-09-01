@@ -64,11 +64,29 @@
 
   <script>
     const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
+
+    // Editor kann diese Funktion nutzen, um live neu zu rendern
+    window.renderSite = function(songs, categories){
+      if (songs) state.songs = Array.isArray(songs) ? songs : (songs.songs || []);
+      if (categories) state.categories = Array.isArray(categories) ? categories : (categories.categories || []);
+      render();
+    };
+
     async function loadData() {
-      const s = await fetch('songs.json').then(r=>r.json());
-      const c = await fetch('categories.json').then(r=>r.json());
-      state.songs = Array.isArray(s) ? s : (s.songs || []);
-      state.categories = Array.isArray(c) ? c : (c.categories || []);
+      // zuerst lokale Overrides aus dem Editor testen
+      const localSongs = localStorage.getItem('ralf_songs_json');
+      const localCats  = localStorage.getItem('ralf_categories_json');
+      if (localSongs && localCats) {
+        try { state.songs = JSON.parse(localSongs).songs || JSON.parse(localSongs); } catch(e){}
+        try { state.categories = JSON.parse(localCats).categories || JSON.parse(localCats); } catch(e){}
+      }
+      // wenn nichts lokal: von Server laden
+      if (!state.songs.length || !state.categories.length) {
+        const s = await fetch('songs.json').then(r=>r.json());
+        const c = await fetch('categories.json').then(r=>r.json());
+        state.songs = Array.isArray(s) ? s : (s.songs || []);
+        state.categories = Array.isArray(c) ? c : (c.categories || []);
+      }
       renderCatBar();
       applyQueryFromURL();
       render();
@@ -76,7 +94,7 @@
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
       state.cat = p.get('cat') || 'all';
-      state.query = p.get('q') || '';
+      state.query = (p.get('q') || '').toLowerCase();
       const search = document.getElementById('search');
       if (search) search.value = state.query;
     }
@@ -97,6 +115,13 @@
     function renderCatBar() {
       const bar = document.getElementById('catBar');
       bar.innerHTML = '';
+      // „Alle“-Button hinzufügen
+      const allBtn = document.createElement('button');
+      allBtn.textContent = 'Alle';
+      allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition ' + (state.cat === 'all' ? 'bg-orange-600 border-orange-500 text-white' : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-neutral-500');
+      allBtn.onclick = () => setCat('all');
+      bar.appendChild(allBtn);
+
       state.categories.forEach(c => {
         const b = document.createElement('button');
         b.textContent = c.label;
@@ -112,7 +137,7 @@
       if (!showGallery) return;
       const grid = document.getElementById('catGrid');
       grid.innerHTML = '';
-      state.categories.filter(c => c.key !== 'all').forEach(c => {
+      state.categories.forEach(c => {
         const card = document.createElement('div');
         card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600';
         card.onclick = () => setCat(c.key);
@@ -126,7 +151,7 @@
     }
     function renderSongs() {
       const q = state.query;
-      const filtered = state.songs.filter(s => (state.cat === 'all' || s.category === state.cat) && (!q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)));
+      const filtered = state.songs.filter(s => (state.cat === 'all' || s.category === state.cat) && (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q)));
       const grid = document.getElementById('songsGrid');
       const empty = document.getElementById('emptyState');
       grid.innerHTML = '';
@@ -169,12 +194,20 @@
     }
     document.getElementById('closeBtn').onclick = () => {
       document.getElementById('playerDock').classList.add('hidden');
-      const audio = document.getElementById('audio');
-      audio.pause();
+      document.getElementById('audio').pause();
     };
     document.getElementById('search').addEventListener('input', (e) => setQuery(e.target.value));
     window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('search').focus(); } });
     loadData();
+  </script>
+
+  <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
+  <script>
+    if (new URLSearchParams(location.search).get("edit") === "1") {
+      var s = document.createElement("script");
+      s.src = "/editor.js"; 
+      document.body.appendChild(s);
+    }
   </script>
 </body>
 </html>
