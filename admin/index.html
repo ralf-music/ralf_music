@@ -4,15 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>R.A.L.F. – Admin</title>
-  <link rel="icon" href="/assets/favicon.png">
-  <style>
-    body { background:#0a0a0a; color:#e5e5e5; font-family:system-ui,sans-serif; }
-    .wrap { max-width:900px; margin:24px auto; padding:0 16px; }
-  </style>
 </head>
-<body>
-  <div class="wrap"><h1>R.A.L.F. – Admin</h1></div>
+<body style="margin:0;background:#0a0a0a;color:#e5e5e5;font-family:system-ui">
+  <h1 style="margin:0;padding:16px">R.A.L.F. – Admin</h1>
 
+  <!-- 1) Token aus URL in localStorage schreiben -->
   <script>
     (function () {
       function getToken() {
@@ -28,12 +24,25 @@
         const payload = JSON.stringify({ token: tok, provider: "github" });
         try { localStorage.setItem("decap-cms-user", payload); } catch(e){}
         try { localStorage.setItem("netlify-cms-user", payload); } catch(e){}
+        // URL säubern
         history.replaceState(null, "", location.origin + location.pathname);
       }
+      // Damit Decap NICHT automatisch losrennt
+      window.CMS_MANUAL_INIT = true;
     })();
   </script>
 
-  <!-- Decap CMS laden -->
+  <!-- 2) Decap laden -->
   <script src="https://unpkg.com/decap-cms@^3.0.7/dist/decap-cms.js"></script>
+
+  <!-- 3) Decap NACH dem Token-Setzen manuell starten -->
+  <script>
+    (function startCMS() {
+      // Warten bis Decap im Fenster hängt
+      if (!window.CMS) { return setTimeout(startCMS, 50); }
+      // Explizit mit unserer Config starten
+      CMS.init({ config: '/admin/config.yml' });
+    })();
+  </script>
 </body>
 </html>
