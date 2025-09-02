@@ -1,4 +1,4 @@
-/* RALF Editor v3.2 — MP3-Helfer + Kategorien-Manager (auto-sync)
+/* RALF Editor v3.3 — MP3-Helfer + Kategorien-Manager (fix, immer state)
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
    Speichert Entwürfe in localStorage:
@@ -39,25 +39,6 @@
 
   let DEFAULT_ARTIST = localStorage.getItem(SKEY_ARTIST) || 'R.A.L.F.';
 
-  // ===== PRIME: hol Daten, wenn leer =====
-  (async function primeIfEmpty(){
-    // Wenn weder Entwurf noch state gefüllt: vom Server ziehen
-    if (!getCats().length) {
-      try {
-        const c = await fetch('/categories.json').then(r=>r.json());
-        const cats = ensureArray(c, 'categories');
-        if (cats.length) setCats(cats);
-      } catch(e) { /* still no cats, fine */ }
-    }
-    if (!getSongs().length) {
-      try {
-        const s = await fetch('/songs.json').then(r=>r.json());
-        const songs = ensureArray(s, 'songs');
-        if (songs.length) setSongs(songs);
-      } catch(e) { /* shrug */ }
-    }
-  })();
-
   // ===== Admin Bar =====
   const bar = el('div', 'fixed top-3 right-3 z-50 flex flex-wrap gap-2');
   bar.innerHTML = `
@@ -74,7 +55,7 @@
     </div>`;
   document.body.appendChild(bar);
 
-  // ===== Modal (ohne Inline-Skripte) =====
+  // ===== Modal =====
   const modalWrap = el('div', 'fixed inset-0 z-50 hidden');
   modalWrap.innerHTML = `
     <div class="absolute inset-0 bg-black/60"></div>
@@ -107,7 +88,7 @@
     return `
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="text-xs text-neutral-400">ID (slug, eindeutig)</label>
+          <label class="text-xs text-neutral-400">ID (slug)</label>
           <input id="f_id" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.id||''}">
         </div>
         <div>
@@ -115,9 +96,9 @@
           <select id="f_category_sel" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10">
             <option value="">— auswählen —</option>
             ${catOpts}
-            <option value="__new__">+ Neue Kategorie anlegen…</option>
+            <option value="__new__">+ Neue Kategorie…</option>
           </select>
-          <input id="f_category_new" class="hidden mt-2 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" placeholder="neuer category-key (z. B. trance)">
+          <input id="f_category_new" class="hidden mt-2 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" placeholder="neuer category-key">
         </div>
         <div>
           <label class="text-xs text-neutral-400">Titel</label>
@@ -129,7 +110,6 @@
             <input id="f_artist" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.artist||''}">
             <button type="button" id="f_artist_fill" class="mt-1 px-2 rounded-lg bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-xs">↪ ${DEFAULT_ARTIST}</button>
           </div>
-          <div class="mt-1 text-[11px] text-neutral-500">Klick setzt den Artist auf deinen Standard.</div>
         </div>
         <div class="sm:col-span-2">
           <label class="text-xs text-neutral-400">Cover-URL</label>
@@ -137,14 +117,11 @@
         </div>
         <div class="sm:col-span-2">
           <label class="text-xs text-neutral-400">MP3-URL (RAW GitHub)</label>
-          <input id="f_src" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" placeholder="https://raw.githubusercontent.com/..." value="${pref.src||''}">
+          <input id="f_src" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.src||''}">
         </div>
         <div>
           <label class="text-xs text-neutral-400">Dauer</label>
-          <div class="flex gap-2 items-center">
-            <input id="f_dur" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" placeholder="mm:ss oder Sekunden" value="${pref.duration ? fromSeconds(pref.duration) : ''}">
-            <span class="text-xs text-neutral-500">mm:ss oder 212</span>
-          </div>
+          <input id="f_dur" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.duration ? fromSeconds(pref.duration) : ''}">
         </div>
       </div>
     `;
@@ -161,154 +138,108 @@
       </tr>
     `).join('');
     return `
-      <div class="space-y-3">
-        <div class="text-sm text-neutral-400">Änderungen an <b>Key</b> betreffen Songs, die diesen Key nutzen.</div>
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="text-left text-neutral-400">
-              <th class="p-2 w-32">Key</th>
-              <th class="p-2 w-48">Label</th>
-              <th class="p-2">Cover</th>
-              <th class="p-2 w-24"></th>
-            </tr>
-          </thead>
-          <tbody id="catRows">${rows || ''}</tbody>
-        </table>
-        <button id="catAddRow" class="mt-2 px-3 py-1.5 rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-sm">+ Neue Kategorie</button>
-      </div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-neutral-400">
+            <th class="p-2 w-32">Key</th>
+            <th class="p-2 w-48">Label</th>
+            <th class="p-2">Cover</th>
+            <th class="p-2 w-24"></th>
+          </tr>
+        </thead>
+        <tbody id="catRows">${rows}</tbody>
+      </table>
+      <button id="catAddRow" class="mt-3 px-3 py-1.5 rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-sm">+ Neue Kategorie</button>
     `;
   };
 
-  // ===== Modal-Events =====
-  modalWrap.addEventListener('change', (e) => {
-    const t = e.target;
-    if (t && t.id === 'f_category_sel') {
-      const neu = $('#f_category_new', modalWrap);
-      if (t.value === '__new__') neu?.classList.remove('hidden');
-      else neu?.classList.add('hidden');
-    }
-  });
-
+  // ===== Modal Events =====
   modalWrap.addEventListener('click', (e) => {
     const t = e.target;
-    if (t && t.id === 'f_artist_fill') {
+    if (t.id === 'f_artist_fill') {
       const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
     }
-    if (t && t.id === 'catAddRow') {
+    if (t.id === 'catAddRow') {
       const tbody = $('#catRows', modalWrap);
       const tr = document.createElement('tr');
       tr.className = 'border-b border-neutral-800';
       tr.innerHTML = `
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key"  placeholder="key"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label" placeholder="Label"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover" placeholder="https://..."></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover"></td>
         <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
       `;
-      tbody?.appendChild(tr);
+      tbody.appendChild(tr);
     }
-    if (t && t.dataset && t.dataset.action === 'del') {
-      t.closest('tr')?.remove();
+    if (t.dataset?.action === 'del') {
+      t.closest('tr').remove();
     }
   });
 
-  // ===== Modal-Ausleser =====
-  const readSongFromModal = () => {
-    const id = $('#f_id', modalWrap)?.value.trim();
-    let category = $('#f_category_sel', modalWrap)?.value || '';
-    if (category === '__new__') category = $('#f_category_new', modalWrap)?.value.trim() || '';
-    const title  = $('#f_title',  modalWrap)?.value.trim();
-    const artist = $('#f_artist', modalWrap)?.value.trim();
-    const cover  = $('#f_cover',  modalWrap)?.value.trim();
-    const src    = $('#f_src',    modalWrap)?.value.trim();
-    const durRaw = $('#f_dur',    modalWrap)?.value.trim();
-    const duration = /^\d+:\d{1,2}$/.test(durRaw) ? toSeconds(durRaw) : (isFinite(Number(durRaw)) ? Number(durRaw) : 0);
-
-    const missing = [];
-    if (!id) missing.push('ID');
-    if (!category) missing.push('Kategorie');
-    if (!title) missing.push('Titel');
-    if (!artist) missing.push('Artist');
-    if (!cover) missing.push('Cover');
-    if (!src) missing.push('MP3-URL');
-    if (missing.length) { alert('Bitte ausfüllen: ' + missing.join(', ')); return null; }
-
-    return { id, title, artist, category, cover, src, duration };
-  };
-
+  // ===== Read Helpers =====
   const readCatsFromModal = () => {
     const rows = $$('#catRows tr', modalWrap);
-    const list = rows.map(tr => {
+    return rows.map(tr => {
       const obj = {};
-      $$('[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
+      $$('input[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
       return obj;
-    }).filter(x => x.key && x.label && x.cover);
-    const keys = list.map(x=>x.key);
-    if (new Set(keys).size !== keys.length) { alert('Kategorie-Keys müssen eindeutig sein.'); return null; }
-    return list;
+    }).filter(x => x.key && x.label);
   };
 
   // ===== Aktionen =====
   $('#btnSongNew', bar).onclick = () => {
     showModal('Song hinzufügen', songFormHTML(), () => {
-      const s = readSongFromModal(); if (!s) return false;
-      if (!getCats().some(c => c.key === s.category)) {
-        const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
-        if (!label) return false;
-        setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
-      }
-      const rest = getSongs().filter(x => x.id !== s.id);
+      const id = $('#f_id', modalWrap)?.value.trim();
+      const title = $('#f_title', modalWrap)?.value.trim();
+      const artist = $('#f_artist', modalWrap)?.value.trim();
+      const catSel = $('#f_category_sel', modalWrap)?.value;
+      const category = catSel === '__new__' ? $('#f_category_new', modalWrap)?.value.trim() : catSel;
+      const cover = $('#f_cover', modalWrap)?.value.trim();
+      const src = $('#f_src', modalWrap)?.value.trim();
+      const duration = toSeconds($('#f_dur', modalWrap)?.value.trim());
+
+      if (!id || !title || !artist || !category || !cover || !src) { alert('Bitte alles ausfüllen'); return false; }
+      const s = { id, title, artist, category, cover, src, duration };
+      const rest = getSongs().filter(x => x.id !== id);
       setSongs([...rest, s]);
     });
   };
 
-  // MP3-Import-Helfer
   $('#btnMp3Helper', bar).onclick = () => {
     const fi = el('input'); fi.type = 'file'; fi.accept = 'audio/mpeg,.mp3';
-    fi.onchange = async () => {
+    fi.onchange = () => {
       const file = fi.files?.[0]; if (!file) return;
-
       const objURL = URL.createObjectURL(file);
       const a = new Audio(); a.src = objURL;
       a.addEventListener('loadedmetadata', () => {
         const seconds = Math.floor(a.duration || 0);
         URL.revokeObjectURL(objURL);
-
-        const fname   = file.name;
-        const id      = niceId(fname);
-        const title   = stripExt(fname);
-        const encoded = encodeURIComponent(fname);
-        const rawURL  = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encoded}`;
-
+        const fname = file.name;
+        const id = niceId(fname);
+        const title = stripExt(fname);
+        const rawURL = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encodeURIComponent(fname)}`;
         const pref = { id, title, artist: DEFAULT_ARTIST, category: '', cover: '', src: rawURL, duration: seconds };
         showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => {
-          const s = readSongFromModal(); if (!s) return false;
-          if (s.category && !getCats().some(c => c.key === s.category)) {
-            const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
-            if (!label) return false;
-            setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
-          }
-          const rest = getSongs().filter(x => x.id !== s.id);
+          const id = $('#f_id', modalWrap)?.value.trim();
+          const title = $('#f_title', modalWrap)?.value.trim();
+          const artist = $('#f_artist', modalWrap)?.value.trim();
+          const catSel = $('#f_category_sel', modalWrap)?.value;
+          const category = catSel === '__new__' ? $('#f_category_new', modalWrap)?.value.trim() : catSel;
+          const cover = $('#f_cover', modalWrap)?.value.trim();
+          const src = $('#f_src', modalWrap)?.value.trim();
+          const duration = toSeconds($('#f_dur', modalWrap)?.value.trim());
+          if (!id || !title || !artist || !category || !cover || !src) { alert('Bitte alles ausfüllen'); return false; }
+          const s = { id, title, artist, category, cover, src, duration };
+          const rest = getSongs().filter(x => x.id !== id);
           setSongs([...rest, s]);
         });
-      }, { once: true });
-
-      a.addEventListener('error', () => {
-        URL.revokeObjectURL(objURL);
-        alert('Konnte die MP3-Dauer nicht lesen.');
-      }, { once: true });
+      });
     };
     fi.click();
   };
 
-  $('#btnCatManage', bar).onclick = async () => {
-    // Sicherstellen, dass Kategorien da sind
-    if (!getCats().length) {
-      try {
-        const c = await fetch('/categories.json').then(r=>r.json());
-        const cats = ensureArray(c, 'categories');
-        if (cats.length) setCats(cats);
-      } catch(e) { /* ignore */ }
-    }
+  $('#btnCatManage', bar).onclick = () => {
+    console.log("Aktuelle Kategorien:", getCats());
     showModal('Kategorien verwalten', catsManagerHTML(), () => {
       const list = readCatsFromModal(); if (!list) return false;
       setCats(list);
@@ -328,19 +259,6 @@
   };
 
   $('#btnDiscard', bar).onclick = () => {
-    if (!confirm('Lokale Entwürfe verwerfen? (songs/categories)')) return;
+    if (!confirm('Entwürfe verwerfen?')) return;
     localStorage.removeItem(SKEY_SONGS);
-    localStorage.removeItem(SKEY_CATS);
-    location.reload();
-  };
-
-  $('#btnSetArtistStd', bar).onclick = () => {
-    const v = prompt('Standard-Artist setzen:', DEFAULT_ARTIST || 'R.A.L.F.');
-    if (!v) return;
-    DEFAULT_ARTIST = v.trim();
-    localStorage.setItem(SKEY_ARTIST, DEFAULT_ARTIST);
-    $('#artistStd', bar).textContent = DEFAULT_ARTIST;
-    alert('Standard-Artist aktualisiert.');
-  };
-
-})();
+    local
