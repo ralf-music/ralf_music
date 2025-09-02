@@ -235,42 +235,97 @@
       if (audio.duration > 0) audio.currentTime = ratio * audio.duration;
     });
   </script>
-/* === Suche aktivieren + Filter-Helfer === */
+/* === SUCHE AKTIVIEREN === */
 if (!window.state) window.state = {};
-state.search = "";   // aktueller Suchbegriff
+state.query = ""; // aktueller Suchbegriff
 
-// Input-Listener (tippen = live filtern, ESC = leeren)
-(function initSearch() {
-  const el = document.getElementById("search");
-  if (!el) return;
-  el.addEventListener("input", (e) => {
-    state.search = (e.target.value || "").toLowerCase();
-    render(); // deine bestehende Render-Funktion neu ausführen
+(function wireSearch() {
+  const input = document.getElementById("search");
+  if (!input) return;
+
+  const setQ = (v) => {
+    state.query = (v || "").trim().toLowerCase();
+    render(); // ruft alles neu auf
+  };
+
+  // Live-Suche beim Tippen
+  input.addEventListener("input", (e) => setQ(e.target.value));
+
+  // ESC löscht Suche
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { input.value = ""; setQ(""); }
   });
-  el.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { el.value = ""; state.search = ""; render(); }
+
+  // ⌘K / Ctrl+K = Fokus auf Suche
+  window.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
   });
 })();
 
-// Gibt die aktuell sichtbaren Songs zurück (Kategorie + Suche)
-function getVisibleSongs() {
-  let list = Array.isArray(state.songs) ? state.songs.slice() : [];
+/* === SONGS RENDERN MIT SUCHE + KATEGORIEN === */
+function renderSongs() {
+  const q = (state.query || "").toLowerCase();
+  const grid = document.getElementById('songsGrid');
+  const empty = document.getElementById('emptyState');
+  if (!grid) return;
 
-  // Kategorie
-  if (state.cat && state.cat !== "all") {
-    list = list.filter(s => s.category === state.cat);
+  grid.innerHTML = '';
+
+  // Songs vorbereiten
+  let filtered = Array.isArray(state.songs) ? state.songs.slice() : [];
+
+  // Kategorie filtern
+  if (state.cat && state.cat !== 'all') {
+    filtered = filtered.filter(s => s.category === state.cat);
   }
 
-  // Suche (in Titel oder Artist)
-  const q = (state.search || "").trim();
+  // Suche filtern (Titel oder Artist)
   if (q) {
-    const qq = q.toLowerCase();
-    list = list.filter(s =>
-      (s.title || "").toLowerCase().includes(qq) ||
-      (s.artist || "").toLowerCase().includes(qq)
+    filtered = filtered.filter(s =>
+      (s.title || '').toLowerCase().includes(q) ||
+      (s.artist || '').toLowerCase().includes(q)
     );
   }
-  return list;
+
+  // Empty-State ein/aus
+  if (filtered.length === 0) {
+    if (empty) empty.classList.remove('hidden');
+    return;
+  } else if (empty) {
+    empty.classList.add('hidden');
+  }
+
+  // Karten bauen
+  filtered.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600/60';
+
+    card.innerHTML = `
+<div class="aspect-square overflow-hidden relative">
+  <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+</div>
+<div class="p-4">
+  <div class="text-xs text-neutral-400 mb-1">${s.category}</div>
+  <h3 class="font-semibold leading-tight">${s.title}</h3>
+  <div class="text-sm text-neutral-400">${s.artist}</div>
+  <div class="mt-3 flex justify-end">
+    <button class="play bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-white">
+      ▶ Abspielen
+    </button>
+  </div>
+</div>
+    `;
+
+    // Play-Button verbinden
+    const btn = card.querySelector('.play');
+    if (btn) btn.onclick = () => playSong(s);
+
+    grid.appendChild(card);
+  });
 }
 
   <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
