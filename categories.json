@@ -8,17 +8,27 @@
     {
       "key": "Deutsch Rap",
       "label": "Deutsch Rap",
-      "cover": "https://cdn2.suno.ai/8fe339aa.jpeg?width=360"
+      "cover": ""
     },
     {
       "key": "Ballermann/Schlager",
       "label": "Ballermann/Schlager",
-      "cover": "https://cdn2.suno.ai/42b93334.jpeg?width=360"
+      "cover": ""
     },
     {
-      "key": "Trance",
+      "key": "Trance / Techno",
       "label": "Trance",
-      "cover": "https://cdn2.suno.ai/7043be0b.jpeg?width=360"
+      "cover": ""
+    },
+    {
+      "key": "Freestyle",
+      "label": "Neue Kategorie",
+      "cover": ""
+    },
+    {
+      "key": "Deutscher Hardrock",
+      "label": "Neue Kategorie",
+      "cover": ""
     }
   ]
 }
