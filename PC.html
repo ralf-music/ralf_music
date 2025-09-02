@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PC‑Build Cockpit – Teile & Schnelllinks</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --panel:#131a22; --muted:#8aa0b3; --text:#e8f1f8; --accent:#41b3ff; --accent2:#10d7a3; --warn:#ffaf45; --border:#203040;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,"Noto Sans",sans-serif}
+    .wrap{max-width:1200px;margin:24px auto;padding:16px}
+    h1{font-size:28px;margin:0 0 10px}
+    .sub{color:var(--muted);margin-bottom:16px}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    input[type="text"], select{background:#0f151d;color:var(--text);border:1px solid var(--border);padding:8px 10px;border-radius:10px;outline:none}
+    label{color:var(--muted)}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);font-size:12px}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    th,td{padding:10px 12px;vertical-align:middle}
+    thead th{position:sticky;top:0;background:linear-gradient(#15202c,#111821);text-align:left;border-bottom:1px solid var(--border);z-index:2}
+    tbody tr{border-bottom:1px solid var(--border)}
+    tbody tr:hover{background:#131a22}
+    .cat{font-weight:600;color:#b8d8ff}
+    .name{font-weight:600}
+    .notes{color:var(--muted)}
+    .btns{display:flex;flex-wrap:wrap;gap:6px}
+    .btn{appearance:none;border:1px solid var(--border);background:#0f151d;color:var(--text);padding:6px 9px;border-radius:9px;cursor:pointer;font-size:12px}
+    .btn:hover{border-color:#33536f}
+    .btn.accent{border-color:#274b6a;background:#0f1b25}
+    .btn.copy{border-color:#2c5234;background:#0e1a14}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:999px}
+    .hint{color:var(--muted);font-size:12px}
+    .grid{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+    .switch{display:inline-flex;align-items:center;gap:6px}
+    .switch input{accent-color:var(--accent)}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{padding:5px 8px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:12px}
+    .shop-legend{display:flex;gap:6px;flex-wrap:wrap}
+    .shop-legend .chip.price{border-color:#1d3f5e;color:#9ac9ff}
+    .shop-legend .chip.shop{border-color:#1f4e43;color:#86f1d1}
+    .openall{margin-left:auto}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PC‑Build Cockpit</h1>
+    <div class="sub">Einseitige, lokale Übersicht deiner fixierten Komponenten. Klick auf die Shop‑Badges öffnet die jeweilige Suche im neuen Tab. Du kannst die Liste selbst bearbeiten (unten im Code: <code>const PARTS</code>).</div>
+
+    <div class="panel controls">
+      <input id="filter" type="text" placeholder="Suchen (z. B. 'SSD' oder 'G.Skill')" />
+      <label class="switch"><input id="exact" type="checkbox"/> exakte Suche ("…")</label>
+      <label class="switch"><input id="onlyPrice" type="checkbox"/> nur Preisvergleiche</label>
+      <label class="switch"><input id="onlyShops" type="checkbox"/> nur Shops</label>
+      <span class="badge">Links öffnen in neuem Tab</span>
+      <div class="shop-legend">
+        <span class="chip price">Preisvergleich</span>
+        <span class="chip shop">Shops</span>
+      </div>
+      <button id="openAllVisible" class="btn openall">Alle sichtbaren in Geizhals öffnen</button>
+    </div>
+
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:130px;">Kategorie</th>
+            <th>Teil</th>
+            <th>Notizen</th>
+            <th>Links</th>
+            <th style="width:70px;">Query</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <div class="hint">Tipp: Rechtsklick → „Speichern unter…“ als <strong>index.html</strong>. Datei offline nutzbar. Du kannst oben filtern und zwischen Preisvergleichen und Shops umschalten.</div>
+  </div>
+
+  <script>
+    // ======= Daten: Deine fixierten Teile =======
+    const PARTS = [
+      {cat:'CPU', brand:'AMD', name:'Ryzen 7 9800X3D', query:'AMD Ryzen 7 9800X3D', notes:'AM5, 3D V‑Cache'},
+      {cat:'Mainboard', brand:'Gigabyte', name:'X670E AORUS MASTER', query:'Gigabyte X670E AORUS MASTER', notes:'X670E, viele USB, 4× M.2'},
+      {cat:'RAM', brand:'G.Skill', name:'Trident Z5 Neo RGB 64GB DDR5', query:'G.Skill Trident Z5 Neo RGB 64GB DDR5', notes:'RGB, 2×32 GB'},
+      {cat:'System‑SSD', brand:'WD_BLACK', name:'SN8100 2TB PCIe 5.0', query:'WD Black SN8100 2TB', notes:'System / Windows'},
+      {cat:'Spiele‑SSD', brand:'WD_BLACK', name:'SN7100 4TB PCIe 4.0', query:'WD Black SN7100 4TB', notes:'Games / Library'},
+      {cat:'Grafik (Start)', brand:'Gigabyte', name:'GeForce RTX 4060 WINDFORCE OC 8G', query:'Gigabyte GeForce RTX 4060 WINDFORCE OC 8G', notes:'vorhanden, Upgrade in ~6 Monaten'},
+      {cat:'Netzteil', brand:'be quiet!', name:'Dark Power 13 1000W', query:'be quiet! Dark Power 13 1000W', notes:'ATX 3.0/PCIe 5, Reserve'},
+      {cat:'CPU‑Kühlung', brand:'Arctic', name:'Liquid Freezer III Pro 360 A‑RGB', query:'Arctic Liquid Freezer III Pro 360 A-RGB', notes:'Radiator oben (Exhaust)'},
+      {cat:'Gehäuse', brand:'be quiet!', name:'Shadow Base 800 FX (schwarz)', query:'be quiet! Shadow Base 800 FX', notes:'ARGB‑Hub, viel Platz'},
+      {cat:'Zusatzlüfter', brand:'be quiet!', name:'Light Wings 140 PWM BL072', query:'be quiet! Light Wings 140 PWM BL072', notes:'unten als Intake'},
+      {cat:'Monitor', brand:'MSI', name:'MPG 491CQPX QD‑OLED 49" 240Hz', query:'MSI MPG 491CQPX QD-OLED', notes:'32:9, 5120×1440, 240 Hz'}
+    ];
+
+    // ======= Link‑Vorlagen =======
+    const TEMPLATES = {
+      // Preisvergleiche
+      geizhals: { label:'Geizhals', kind:'price', url:q=>`https://geizhals.de/?fs=${q}` },
+      idealo:   { label:'Idealo',   kind:'price', url:q=>`https://www.idealo.de/preisvergleich/MainSearchProductCategory.html?q=${q}` },
+      billiger: { label:'billiger.de', kind:'price', url:q=>`https://www.billiger.de/s/?q=${q}` },
+      // Shops (DE + Nachbarländer)
+      mindfactory:{ label:'Mindfactory', kind:'shop', url:q=>`https://www.mindfactory.de/search_result.php?query=${q}` },
+      alternate: { label:'Alternate',   kind:'shop', url:q=>`https://www.alternate.de/search?query=${q}` },
+      amazon:    { label:'Amazon DE',   kind:'shop', url:q=>`https://www.amazon.de/s?k=${q}` },
+      caseking:  { label:'Caseking',    kind:'shop', url:q=>`https://www.caseking.de/search?sSearch=${q}` },
+      alza:      { label:'Alza DE',     kind:'shop', url:q=>`https://www.alza.de/search.htm?exps=${q}` },
+      nbb:       { label:'NBB',         kind:'shop', url:q=>`https://www.notebooksbilliger.de/suchen/${q}` }
+    };
+
+    const PRICE_KEYS = Object.keys(TEMPLATES).filter(k=>TEMPLATES[k].kind==='price');
+    const SHOP_KEYS  = Object.keys(TEMPLATES).filter(k=>TEMPLATES[k].kind==='shop');
+
+    // ======= Render =======
+    const rowsEl = document.getElementById('rows');
+    const filterEl = document.getElementById('filter');
+    const exactEl = document.getElementById('exact');
+    const onlyPriceEl = document.getElementById('onlyPrice');
+    const onlyShopsEl = document.getElementById('onlyShops');
+    const openAllBtn = document.getElementById('openAllVisible');
+
+    function enc(s){ return encodeURIComponent(s); }
+
+    function makeQuery(p){
+      const base = p.query || `${p.brand} ${p.name}`;
+      return exactEl.checked ? enc('"'+base+'"') : enc(base);
+    }
+
+    function visibleLinks(){
+      const all = Object.entries(TEMPLATES);
+      if(onlyPriceEl.checked) return all.filter(([k,t])=>t.kind==='price');
+      if(onlyShopsEl.checked) return all.filter(([k,t])=>t.kind==='shop');
+      return all;
+    }
+
+    function render(){
+      const f = (filterEl.value||'').toLowerCase();
+      rowsEl.innerHTML = '';
+      PARTS.forEach((p,i)=>{
+        const hay = `${p.cat} ${p.brand} ${p.name} ${p.notes}`.toLowerCase();
+        if(f && !hay.includes(f)) return;
+        const q = makeQuery(p);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="cat">${p.cat}</td>
+          <td class="name">${p.brand} — ${p.name}</td>
+          <td class="notes">${p.notes||''}</td>
+          <td class="btns">${visibleLinks().map(([key,t])=>`<a class="btn ${t.kind==='price'?'accent':''}" href="${t.url(q)}" target="_blank" rel="noopener">${t.label}</a>`).join('')}</td>
+          <td><button class="btn copy" title="Suchbegriff kopieren" data-idx="${i}">Copy</button></td>
+        `;
+        rowsEl.appendChild(tr);
+      });
+    }
+
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('.btn.copy')){
+        const idx = +e.target.dataset.idx;
+        const p = PARTS[idx];
+        const text = p.query || `${p.brand} ${p.name}`;
+        navigator.clipboard.writeText(text).then(()=>{
+          e.target.textContent='Kopiert';
+          setTimeout(()=>e.target.textContent='Copy', 900);
+        });
+      }
+    });
+
+    filterEl.addEventListener('input', render);
+    exactEl.addEventListener('change', render);
+    onlyPriceEl.addEventListener('change', ()=>{ if(onlyPriceEl.checked) onlyShopsEl.checked=false; render(); });
+    onlyShopsEl.addEventListener('change', ()=>{ if(onlyShopsEl.checked) onlyPriceEl.checked=false; render(); });
+
+    openAllBtn.addEventListener('click', ()=>{
+      const f = (filterEl.value||'').toLowerCase();
+      PARTS.forEach(p=>{
+        const hay = `${p.cat} ${p.brand} ${p.name} ${p.notes}`.toLowerCase();
+        if(f && !hay.includes(f)) return;
+        const q = makeQuery(p);
+        window.open(TEMPLATES.geizhals.url(q), '_blank','noopener');
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
