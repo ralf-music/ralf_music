@@ -1,20 +1,16 @@
-/* RALF Editor v3.5 — MP3-Helfer + Kategorien-Manager + Default-Cover überall
+/* RALF Editor v3.7 — stabile Saves (Cats+Songs), MP3-Import, Default-Cover
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
-   Speichert Entwürfe in localStorage:
-     - ralf_songs_json
-     - ralf_categories_json
-     - ralf_default_artist
+   Lokale Entwürfe: ralf_songs_json, ralf_categories_json, ralf_default_artist
 */
 (function () {
   const SKEY_SONGS   = 'ralf_songs_json';
   const SKEY_CATS    = 'ralf_categories_json';
   const SKEY_ARTIST  = 'ralf_default_artist';
 
-  // Standard-Cover für neue Kategorien
   const DEFAULT_CAT_COVER = "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true";
 
-  // ===== Helpers =====
+  // ---------- kleine Helfer ----------
   const $  = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const el = (tag, cls = '', html = '') => { const n = document.createElement(tag); if (cls) n.className = cls; if (html) n.innerHTML = html; return n; };
@@ -34,18 +30,27 @@
   const stripExt = (name) => name.replace(/\.[^.]+$/, '');
   const niceId   = (name) => stripExt(name).trim().replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-_]/g,'').toLowerCase();
 
-  // ===== State bridges =====
+  // ---------- Bridge zum App-State ----------
   const getSongs = () => ensureArray(window.state?.songs, 'songs');
   const getCats  = () => ensureArray(window.state?.categories, 'categories');
-  const setSongs = (arr) => { window.state.songs = arr; localStorage.setItem(SKEY_SONGS, JSON.stringify({ songs: arr })); window.renderSite(window.state.songs, window.state.categories); };
-  const setCats  = (arr) => { window.state.categories = arr; localStorage.setItem(SKEY_CATS,  JSON.stringify({ categories: arr })); window.renderSite(window.state.songs, window.state.categories); };
+
+  const setSongs = (arr) => {
+    window.state.songs = arr;
+    localStorage.setItem(SKEY_SONGS, JSON.stringify({ songs: arr }));
+    if (typeof window.renderSite === 'function') window.renderSite(window.state.songs, window.state.categories);
+  };
+  const setCats = (arr) => {
+    window.state.categories = arr;
+    localStorage.setItem(SKEY_CATS, JSON.stringify({ categories: arr }));
+    if (typeof window.renderSite === 'function') window.renderSite(window.state.songs, window.state.categories);
+  };
 
   let DEFAULT_ARTIST = localStorage.getItem(SKEY_ARTIST) || 'R.A.L.F.';
 
-  // ===== Admin Bar =====
+  // ---------- Admin-Bar ----------
   const bar = el('div', 'fixed top-3 right-3 z-50 flex flex-wrap gap-2');
   bar.innerHTML = `
-    <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-neutral-900/90 ring-1 ring-white/10 shadow">
+    <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-neutral-900/90 ring-1 ring-white/10 shadow text-white">
       <span class="text-xs px-2 py-1 rounded-full bg-orange-600 text-white">EDIT</span>
       <button id="btnSongNew"   class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Song hinzufügen</button>
       <button id="btnMp3Helper" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">MP3 importieren</button>
@@ -53,47 +58,142 @@
       <button id="btnSaveSongs" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Songs speichern</button>
       <button id="btnSaveCats"  class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Kategorien speichern</button>
       <button id="btnDiscard"   class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Entwurf verwerfen</button>
-      <span class="hidden sm:inline text-xs text-neutral-400">Artist-Standard: <b id="artistStd" class="text-neutral-200">${DEFAULT_ARTIST}</b></span>
+      <span class="hidden sm:inline text-xs text-neutral-300">Artist-Standard: <b id="artistStd" class="text-neutral-100">${DEFAULT_ARTIST}</b></span>
       <button id="btnSetArtistStd" class="px-2 py-1 text-xs rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Standard ändern</button>
     </div>`;
   document.body.appendChild(bar);
 
-  // ===== Modal =====
-  const modalWrap = el('div', 'fixed inset-0 z-50 hidden');
-  modalWrap.innerHTML = `
+  // ---------- Modal ----------
+  const modal = el('div', 'fixed inset-0 z-50 hidden');
+  modal.innerHTML = `
     <div class="absolute inset-0 bg-black/60"></div>
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(720px,95vw)] rounded-2xl bg-neutral-900 ring-1 ring-white/10 shadow-xl">
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(720px,95vw)] rounded-2xl bg-neutral-900 ring-1 ring-white/10 shadow-xl text-white">
       <div class="flex items-center justify-between px-5 py-3 border-b border-neutral-800">
         <h3 id="modalTitle" class="font-semibold">Titel</h3>
-        <button id="modalClose" class="px-2 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700">✕</button>
+        <button id="modalClose" type="button" class="px-2 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700">✕</button>
       </div>
       <div id="modalBody" class="p-5"></div>
       <div class="p-5 border-t border-neutral-800 flex justify-end gap-2">
-        <button id="modalCancel" class="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700">Abbrechen</button>
-        <button id="modalOK" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white">Speichern</button>
+        <button id="modalCancel" type="button" class="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700">Abbrechen</button>
+        <button id="modalOK" type="button" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white">Speichern</button>
       </div>
     </div>`;
-  document.body.appendChild(modalWrap);
+  document.body.appendChild(modal);
 
-  const showModal = (title, bodyHTML, onOK) => {
-    $('#modalTitle', modalWrap).textContent = title;
-    $('#modalBody',  modalWrap).innerHTML   = bodyHTML;
-    modalWrap.classList.remove('hidden');
-    const close = () => modalWrap.classList.add('hidden');
-    $('#modalClose', modalWrap).onclick = close;
-    $('#modalCancel',modalWrap).onclick = close;
-    $('#modalOK',    modalWrap).onclick = () => { if (!onOK || onOK() !== false) close(); };
+  let modalOnOK = null;
+  const openModal = (title, bodyHTML, onOK) => {
+    $('#modalTitle', modal).textContent = title;
+    $('#modalBody', modal).innerHTML = bodyHTML;
+    modalOnOK = onOK || null;
+    modal.classList.remove('hidden');
+  };
+  const closeModal = () => { modal.classList.add('hidden'); modalOnOK = null; };
+
+  $('#modalClose', modal).onclick = closeModal;
+  $('#modalCancel', modal).onclick = closeModal;
+  $('#modalOK', modal).onclick = () => {
+    try {
+      if (!modalOnOK) { closeModal(); return; }
+      const res = modalOnOK();
+      // Nur wenn explizit false zurückkommt, offen lassen
+      if (res !== false) closeModal();
+    } catch (err) {
+      alert('Fehler beim Speichern: ' + (err?.message || err));
+      console.error(err);
+    }
   };
 
-  // ===== Song-Formular =====
+  // ---------- Kategorien-Manager ----------
+  const catsManagerHTML = () => {
+    const rows = getCats().map(c => `
+      <tr class="border-b border-neutral-800">
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}"   data-field="key"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.label}" data-field="label"></td>
+        <td class="p-2 flex gap-2">
+          <input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover || DEFAULT_CAT_COVER}" data-field="cover">
+          <button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button>
+        </td>
+      </tr>
+    `).join('');
+    return `
+      <div class="text-sm text-neutral-300 mb-3">Key ist der technische Name, Label ist die Anzeige. Cover kann leer bleiben, dann wird das Standardbild verwendet.</div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-neutral-400">
+            <th class="p-2 w-40">Key</th>
+            <th class="p-2 w-48">Label</th>
+            <th class="p-2">Cover</th>
+          </tr>
+        </thead>
+        <tbody id="catRows">${rows}</tbody>
+      </table>
+      <button id="catAddRow" type="button" class="mt-4 px-3 py-1.5 rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-sm">+ Neue Kategorie</button>
+    `;
+  };
+
+  modal.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t.id === 'catAddRow') {
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-neutral-800';
+      tr.innerHTML = `
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key" placeholder="z.B. deutsch-rap"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label" placeholder="Deutsch Rap"></td>
+        <td class="p-2 flex gap-2">
+          <input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover" value="${DEFAULT_CAT_COVER}">
+          <button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button>
+        </td>
+      `;
+      $('#catRows', modal).appendChild(tr);
+    }
+    if (t.dataset?.action === 'del') {
+      t.closest('tr')?.remove();
+    }
+  });
+
+  const readCatsFromModal = () => {
+    const rows = $$('#catRows tr', modal);
+    const out = [];
+    rows.forEach(tr => {
+      const obj = {};
+      $$('input[data-field]', tr).forEach(inp => obj[inp.dataset.field] = (inp.value||'').trim());
+      if (!obj.key || !obj.label) return;                 // unvollständige Zeilen ignorieren
+      if (!obj.cover) obj.cover = DEFAULT_CAT_COVER;
+      out.push(obj);
+    });
+    if (!out.length) throw new Error('Keine gültigen Kategorienzeilen.');
+    return out;
+  };
+
+  $('#btnCatManage', bar).onclick = () => {
+    openModal('Kategorien verwalten', catsManagerHTML(), () => {
+      const list = readCatsFromModal();
+      setCats(list);   // speichert lokal, re-rendert
+      alert('Kategorien übernommen. Denk daran: mit „Kategorien speichern“ exportierst du die JSON fürs Repo.');
+    });
+  };
+
+  // ---------- Songs speichern / Kategorien speichern ----------
+  $('#btnSaveSongs', bar).onclick = () => {
+    const data = { songs: getSongs() };
+    localStorage.setItem(SKEY_SONGS, JSON.stringify(data));
+    download(data, 'songs.json');
+  };
+  $('#btnSaveCats', bar).onclick = () => {
+    const data = { categories: getCats() };
+    localStorage.setItem(SKEY_CATS, JSON.stringify(data));
+    download(data, 'categories.json');
+  };
+
+  // ---------- Song-Form ----------
   const songFormHTML = (pref = {}) => {
     const cats = getCats();
     const catOpts = cats.map(c => `<option value="${c.key}" ${pref.category===c.key?'selected':''}>${c.label} (${c.key})</option>`).join('');
     return `
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <div>
           <label class="text-xs text-neutral-400">ID (slug)</label>
-          <input id="f_id" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.id||''}">
+          <input id="f_id" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.id||''}" placeholder="z.b. glasherz">
         </div>
         <div>
           <label class="text-xs text-neutral-400">Kategorie</label>
@@ -117,7 +217,7 @@
         </div>
         <div class="sm:col-span-2">
           <label class="text-xs text-neutral-400">Cover-URL</label>
-          <input id="f_cover" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.cover||''}">
+          <input id="f_cover" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.cover||''}" placeholder="leer = Kategorie-Cover / Standard">
         </div>
         <div class="sm:col-span-2">
           <label class="text-xs text-neutral-400">MP3-URL (RAW GitHub)</label>
@@ -125,130 +225,75 @@
         </div>
         <div>
           <label class="text-xs text-neutral-400">Dauer</label>
-          <input id="f_dur" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.duration ? fromSeconds(pref.duration) : ''}">
+          <input id="f_dur" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.duration ? fromSeconds(pref.duration) : ''}" placeholder="z.B. 3:32">
         </div>
-      </div>
-    `;
+      </div>`;
   };
 
-  // ===== Kategorien-Manager =====
-  const catsManagerHTML = () => {
-    const rows = getCats().map(c => `
-      <tr class="border-b border-neutral-800">
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}"   data-field="key"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.label}" data-field="label"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover || DEFAULT_CAT_COVER}" data-field="cover"></td>
-        <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
-      </tr>
-    `).join('');
-    return `
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="text-left text-neutral-400">
-            <th class="p-2 w-32">Key</th>
-            <th class="p-2 w-48">Label</th>
-            <th class="p-2">Cover</th>
-            <th class="p-2 w-24"></th>
-          </tr>
-        </thead>
-        <tbody id="catRows">${rows}</tbody>
-      </table>
-      <button id="catAddRow" class="mt-3 px-3 py-1.5 rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-sm">+ Neue Kategorie</button>
-    `;
-  };
-
-  // ===== Modal Events =====
-  modalWrap.addEventListener('change', (e) => {
-    const t = e.target;
-    if (t && t.id === 'f_category_sel') {
-      const neu = $('#f_category_new', modalWrap);
-      if (t.value === '__new__') neu?.classList.remove('hidden');
-      else neu?.classList.add('hidden');
+  // Feld-Interaktionen im Song-Modal
+  modal.addEventListener('change', (e) => {
+    if (e.target?.id === 'f_category_sel') {
+      const showNew = e.target.value === '__new__';
+      $('#f_category_new', modal)?.classList.toggle('hidden', !showNew);
+    }
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target?.id === 'f_artist_fill') {
+      const a = $('#f_artist', modal); if (a) a.value = DEFAULT_ARTIST;
     }
   });
 
-  modalWrap.addEventListener('click', (e) => {
-    const t = e.target;
-    // Artist schnell füllen
-    if (t.id === 'f_artist_fill') {
-      const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
-    }
-    // Kategorie-Zeile hinzufügen (mit Default-Cover)
-    if (t.id === 'catAddRow') {
-      const tbody = $('#catRows', modalWrap);
-      const tr = document.createElement('tr');
-      tr.className = 'border-b border-neutral-800';
-      tr.innerHTML = `
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover" value="${DEFAULT_CAT_COVER}"></td>
-        <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
-      `;
-      tbody.appendChild(tr);
-    }
-    // Kategorie-Zeile löschen
-    if (t.dataset?.action === 'del') {
-      t.closest('tr')?.remove();
-    }
-  });
-
-  // ===== Read Helpers =====
-  const readCatsFromModal = () => {
-    const rows = $$('#catRows tr', modalWrap);
-    return rows.map(tr => {
-      const obj = {};
-      $$('input[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
-      if (!obj.cover) obj.cover = DEFAULT_CAT_COVER; // falls leer → Standard setzen
-      return obj;
-    }).filter(x => x.key && x.label);
-  };
-
-  // ===== Aktionen =====
-  $('#btnCatManage', bar).onclick = () => {
-    showModal('Kategorien verwalten', catsManagerHTML(), () => {
-      const list = readCatsFromModal(); 
-      if (!list) return false;
-      setCats(list);
-    });
-  };
-
-  $('#btnSaveCats', bar).onclick = () => {
-    const data = { categories: getCats() };
-    localStorage.setItem(SKEY_CATS, JSON.stringify(data));
-    download(data, 'categories.json');
-  };
-
-  // Song neu
   const saveSongFromModal = () => {
-    const id = $('#f_id', modalWrap)?.value.trim();
-    const title = $('#f_title', modalWrap)?.value.trim();
-    const artist = $('#f_artist', modalWrap)?.value.trim();
-    const catSel = $('#f_category_sel', modalWrap)?.value;
-    const category = catSel === '__new__' ? $('#f_category_new', modalWrap)?.value.trim() : catSel;
-    const cover = $('#f_cover', modalWrap)?.value.trim();
-    const src = $('#f_src', modalWrap)?.value.trim();
-    const duration = toSeconds($('#f_dur', modalWrap)?.value.trim());
+    const id  = $('#f_id', modal)?.value.trim();
+    const ttl = $('#f_title', modal)?.value.trim();
+    const art = $('#f_artist', modal)?.value.trim();
+    const sel = $('#f_category_sel', modal)?.value;
+    const cat = sel === '__new__' ? ($('#f_category_new', modal)?.value.trim() || '') : (sel || '');
 
-    if (!id || !title || !artist || !category || !cover || !src) { alert('Bitte alles ausfüllen'); return false; }
+    let cov = $('#f_cover', modal)?.value.trim();
+    const src = $('#f_src', modal)?.value.trim();
+    const dur = toSeconds($('#f_dur', modal)?.value.trim());
 
-    // Wenn Kategorie neu ist, sofort in categories mit DEFAULT_CAT_COVER aufnehmen
-    if (!getCats().some(c => c.key === category)) {
-      const labelGuess = category.replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
-      const newCat = { key: category, label: labelGuess || category, cover: DEFAULT_CAT_COVER };
-      setCats([...getCats(), newCat]);
+    if (!id)  return alert('Bitte eine ID eingeben.'), false;
+    if (!ttl) return alert('Bitte Titel eingeben.'), false;
+    if (!art) return alert('Bitte Artist eingeben.'), false;
+
+    // Kategorie robust wählen/erzeugen
+    let cats = getCats();
+    let finalCat = cat;
+    if (!finalCat) {
+      // Wenn nix gewählt, nimm erste Kategorie oder lege „unsortiert“ an
+      if (cats.length === 0) {
+        cats = [{ key: 'unsortiert', label: 'Unsortiert', cover: DEFAULT_CAT_COVER }];
+        setCats(cats);
+      }
+      finalCat = cats[0].key;
+    }
+    // Neue Kategorie gleich anlegen
+    if (!cats.some(c => c.key === finalCat)) {
+      const labelGuess = finalCat.replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
+      cats = [...cats, { key: finalCat, label: labelGuess || finalCat, cover: DEFAULT_CAT_COVER }];
+      setCats(cats);
     }
 
-    const s = { id, title, artist, category, cover, src, duration };
+    // Cover: wenn leer, nimm Cover der Kategorie oder Default
+    if (!cov) {
+      const catObj = cats.find(c => c.key === finalCat);
+      cov = catObj?.cover || DEFAULT_CAT_COVER;
+    }
+
+    if (!src) return alert('Bitte MP3-URL (RAW) eintragen.'), false;
+
+    const s = { id, title: ttl, artist: art, category: finalCat, cover: cov, src, duration: dur };
     const rest = getSongs().filter(x => x.id !== id);
     setSongs([...rest, s]);
+    alert('Song gespeichert (lokal). Mit „Songs speichern“ exportierst du die JSON fürs Repo.');
     return true;
   };
 
-  $('#btnSongNew', bar).onclick = () => {
-    showModal('Song hinzufügen', songFormHTML(), () => saveSongFromModal());
-  };
+  // ---------- Buttons: Song neu / MP3-Import ----------
+  $('#btnSongNew', bar).onclick = () => openModal('Song hinzufügen', songFormHTML(), () => saveSongFromModal());
 
-  // MP3-Import-Helfer
   $('#btnMp3Helper', bar).onclick = () => {
     const fi = el('input'); fi.type = 'file'; fi.accept = 'audio/mpeg,.mp3';
     fi.onchange = () => {
@@ -263,7 +308,7 @@
         const title = stripExt(fname);
         const rawURL = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encodeURIComponent(fname)}`;
         const pref = { id, title, artist: DEFAULT_ARTIST, category: '', cover: '', src: rawURL, duration: seconds };
-        showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => saveSongFromModal());
+        openModal('Neuer Song (aus MP3)', songFormHTML(pref), () => saveSongFromModal());
       }, { once: true });
       a.addEventListener('error', () => {
         URL.revokeObjectURL(objURL);
@@ -273,14 +318,9 @@
     fi.click();
   };
 
-  $('#btnSaveSongs', bar).onclick = () => {
-    const data = { songs: getSongs() };
-    localStorage.setItem(SKEY_SONGS, JSON.stringify(data));
-    download(data, 'songs.json');
-  };
-
+  // ---------- Rest: Discard + Artist-Std ----------
   $('#btnDiscard', bar).onclick = () => {
-    if (!confirm('Entwürfe verwerfen?')) return;
+    if (!confirm('Entwürfe verwerfen? (lokale Änderungen werden gelöscht)')) return;
     localStorage.removeItem(SKEY_SONGS);
     localStorage.removeItem(SKEY_CATS);
     location.reload();
