@@ -235,6 +235,43 @@
       if (audio.duration > 0) audio.currentTime = ratio * audio.duration;
     });
   </script>
+/* === Suche aktivieren + Filter-Helfer === */
+if (!window.state) window.state = {};
+state.search = "";   // aktueller Suchbegriff
+
+// Input-Listener (tippen = live filtern, ESC = leeren)
+(function initSearch() {
+  const el = document.getElementById("search");
+  if (!el) return;
+  el.addEventListener("input", (e) => {
+    state.search = (e.target.value || "").toLowerCase();
+    render(); // deine bestehende Render-Funktion neu ausführen
+  });
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { el.value = ""; state.search = ""; render(); }
+  });
+})();
+
+// Gibt die aktuell sichtbaren Songs zurück (Kategorie + Suche)
+function getVisibleSongs() {
+  let list = Array.isArray(state.songs) ? state.songs.slice() : [];
+
+  // Kategorie
+  if (state.cat && state.cat !== "all") {
+    list = list.filter(s => s.category === state.cat);
+  }
+
+  // Suche (in Titel oder Artist)
+  const q = (state.search || "").trim();
+  if (q) {
+    const qq = q.toLowerCase();
+    list = list.filter(s =>
+      (s.title || "").toLowerCase().includes(qq) ||
+      (s.artist || "").toLowerCase().includes(qq)
+    );
+  }
+  return list;
+}
 
   <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
   <script>
