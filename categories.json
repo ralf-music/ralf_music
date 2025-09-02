@@ -3,27 +3,27 @@
     {
       "key": "deutsch-rap",
       "label": "Deutsch Rap",
-      "cover": ""
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png"
     },
     {
       "key": "ballermann-schlager",
       "label": "Ballermann/Schlager",
-      "cover": ""
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png"
     },
     {
       "key": "trance-techno",
       "label": "Trance / Techno",
-      "cover": ""
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png"
     },
     {
       "key": "freestyle",
       "label": "Freestyle",
-      "cover": ""
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png"
     },
     {
       "key": "deutscher-hardrock",
       "label": "Deutscher Hardrock",
-      "cover": ""
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png"
     }
   ]
 }
