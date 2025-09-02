@@ -1,8 +1,11 @@
-/* RALF Editor v3 — lädt nur bei ?edit=1
-   Voraussetzungen: window.state {songs,categories}, window.renderSite(songs,categories)
-   Entwurf-Storage: localStorage ralf_songs_json / ralf_categories_json / ralf_default_artist
+/* RALF Editor v3.1 — MP3-Helfer + Kategorien verwalten (fix)
+   Lädt nur bei ?edit=1
+   Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
+   Speichert Entwürfe in localStorage:
+     - ralf_songs_json
+     - ralf_categories_json
+     - ralf_default_artist
 */
-
 (function () {
   const SKEY_SONGS   = 'ralf_songs_json';
   const SKEY_CATS    = 'ralf_categories_json';
@@ -18,11 +21,7 @@
     if (/^\d+:\d{1,2}$/.test(v)) { const [m,s]=v.split(':').map(Number); return m*60+s; }
     const n = Number(v); return isFinite(n) ? Math.floor(n) : 0;
   };
-  const fromSeconds = (n) => {
-    n = Math.max(0, Math.floor(Number(n)||0));
-    const m = Math.floor(n/60), s = n%60;
-    return `${m}:${String(s).padStart(2,'0')}`;
-  };
+  const fromSeconds = (n) => { n = Math.max(0, Math.floor(Number(n)||0)); const m=Math.floor(n/60), s=n%60; return `${m}:${String(s).padStart(2,'0')}`; };
   const download = (obj, filename) => {
     const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json;charset=utf-8' });
     const a = el('a'); a.href = URL.createObjectURL(blob); a.download = filename;
@@ -30,7 +29,7 @@
     setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 0);
   };
   const stripExt = (name) => name.replace(/\.[^.]+$/, '');
-  const niceId = (name) => stripExt(name).trim().replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-_]/g,'').toLowerCase();
+  const niceId   = (name) => stripExt(name).trim().replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-_]/g,'').toLowerCase();
 
   // ===== State bridges =====
   const getSongs = () => ensureArray(window.state?.songs, 'songs');
@@ -56,7 +55,7 @@
     </div>`;
   document.body.appendChild(bar);
 
-  // ===== Modal Grundgerüst =====
+  // ===== Modal (ohne Inline-Skripte!) =====
   const modalWrap = el('div', 'fixed inset-0 z-50 hidden');
   modalWrap.innerHTML = `
     <div class="absolute inset-0 bg-black/60"></div>
@@ -83,7 +82,7 @@
     $('#modalOK',    modalWrap).onclick = () => { if (!onOK || onOK() !== false) close(); };
   };
 
-  // ===== Song-Formular (mit Kategorie-Dropdown + Artist-Schnellknopf) =====
+  // ===== Song-Formular (Dropdown + Artist-Knopf) =====
   const songFormHTML = (pref = {}) => {
     const cats = getCats();
     const catOpts = cats.map(c => `<option value="${c.key}" ${pref.category===c.key?'selected':''}>${c.label} (${c.key})</option>`).join('');
@@ -130,28 +129,14 @@
           </div>
         </div>
       </div>
-      <script>
-        (function(){
-          const sel = document.getElementById('f_category_sel');
-          const neu = document.getElementById('f_category_new');
-          if (sel) sel.addEventListener('change', () => {
-            if (sel.value === '__new__') { neu.classList.remove('hidden'); neu.focus(); }
-            else neu.classList.add('hidden');
-          });
-          const btn = document.getElementById('f_artist_fill');
-          if (btn) btn.addEventListener('click', () => {
-            const a = document.getElementById('f_artist'); if (a) a.value = ${JSON.stringify(DEFAULT_ARTIST)};
-          });
-        })();
-      </script>
     `;
   };
 
-  // ===== Kategorien-Manager =====
+  // ===== Kategorien-Manager (ohne Inline-Script) =====
   const catsManagerHTML = () => {
     const rows = getCats().map(c => `
       <tr class="border-b border-neutral-800">
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}" data-field="key"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}"   data-field="key"></td>
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.label}" data-field="label"></td>
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover}" data-field="cover"></td>
         <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
@@ -159,7 +144,7 @@
     `).join('');
     return `
       <div class="space-y-3">
-        <div class="text-sm text-neutral-400">Achtung: das Ändern eines <b>Key</b> wirkt sich auf Songs aus, die diesen Key benutzen.</div>
+        <div class="text-sm text-neutral-400">Änderungen an <b>Key</b> betreffen Songs, die diesen Key nutzen.</div>
         <table class="w-full text-sm">
           <thead>
             <tr class="text-left text-neutral-400">
@@ -173,29 +158,47 @@
         </table>
         <button id="catAddRow" class="mt-2 px-3 py-1.5 rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-sm">+ Neue Kategorie</button>
       </div>
-      <script>
-        (function(){
-          const tbody = document.getElementById('catRows');
-          document.getElementById('catAddRow').addEventListener('click', () => {
-            const tr = document.createElement('tr');
-            tr.className='border-b border-neutral-800';
-            tr.innerHTML = \`
-              <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key"  placeholder="key"></td>
-              <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label" placeholder="Label"></td>
-              <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover" placeholder="https://..."></td>
-              <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
-            \`;
-            tbody.appendChild(tr);
-          });
-          tbody?.addEventListener('click', (e) => {
-            if (e.target && e.target.dataset.action === 'del') {
-              e.target.closest('tr')?.remove();
-            }
-          });
-        })();
-      </script>
     `;
   };
+
+  // ===== Modal-Event-Delegation (statt Inline-Skripten) =====
+  modalWrap.addEventListener('change', (e) => {
+    const t = e.target;
+    // Kategorie-Auswahl im Song-Formular
+    if (t && t.id === 'f_category_sel') {
+      const neu = $('#f_category_new', modalWrap);
+      if (t.value === '__new__') neu?.classList.remove('hidden');
+      else neu?.classList.add('hidden');
+    }
+  });
+
+  modalWrap.addEventListener('click', (e) => {
+    const t = e.target;
+
+    // Artist-Quickfill
+    if (t && t.id === 'f_artist_fill') {
+      const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
+    }
+
+    // Kategorien: neue Zeile
+    if (t && t.id === 'catAddRow') {
+      const tbody = $('#catRows', modalWrap);
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-neutral-800';
+      tr.innerHTML = `
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="key"  placeholder="key"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="label" placeholder="Label"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" data-field="cover" placeholder="https://..."></td>
+        <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
+      `;
+      tbody?.appendChild(tr);
+    }
+
+    // Kategorien: löschen
+    if (t && t.dataset && t.dataset.action === 'del') {
+      t.closest('tr')?.remove();
+    }
+  });
 
   // ===== Modal-Ausleser =====
   const readSongFromModal = () => {
@@ -246,45 +249,33 @@
         setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
       }
 
-      // ID unique -> ersetzen oder pushen
       const rest = getSongs().filter(x => x.id !== s.id);
       setSongs([...rest, s]);
     });
   };
 
-  // === MP3-Import-Helfer ===
+  // MP3-Import-Helfer
   $('#btnMp3Helper', bar).onclick = () => {
     const fi = el('input'); fi.type = 'file'; fi.accept = 'audio/mpeg,.mp3';
     fi.onchange = async () => {
       const file = fi.files?.[0]; if (!file) return;
 
-      // Dauer ermitteln via Audio
       const objURL = URL.createObjectURL(file);
       const a = new Audio(); a.src = objURL;
       a.addEventListener('loadedmetadata', () => {
         const seconds = Math.floor(a.duration || 0);
         URL.revokeObjectURL(objURL);
 
-        const fname = file.name;
-        const id = niceId(fname);
-        const title = stripExt(fname);
+        const fname   = file.name;
+        const id      = niceId(fname);
+        const title   = stripExt(fname);
         const encoded = encodeURIComponent(fname);
-        const rawURL = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encoded}`;
+        const rawURL  = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encoded}`;
 
-        const pref = {
-          id,
-          title,
-          artist: DEFAULT_ARTIST || 'R.A.L.F.',
-          category: '',
-          cover: '',
-          src: rawURL,
-          duration: seconds
-        };
-
+        const pref = { id, title, artist: DEFAULT_ARTIST, category: '', cover: '', src: rawURL, duration: seconds };
         showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => {
           const s = readSongFromModal(); if (!s) return false;
 
-          // Neue Kategorie on-the-fly?
           if (s.category && !getCats().some(c => c.key === s.category)) {
             const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
             if (!label) return false;
@@ -298,7 +289,7 @@
 
       a.addEventListener('error', () => {
         URL.revokeObjectURL(objURL);
-        alert('Konnte die MP3-Dauer nicht lesen. Datei beschädigt?');
+        alert('Konnte die MP3-Dauer nicht lesen.');
       }, { once: true });
     };
     fi.click();
