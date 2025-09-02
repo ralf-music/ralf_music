@@ -9,26 +9,52 @@
   <meta property="og:title" content="R.A.L.F. – Music Showcase" />
   <meta property="og:description" content="Stream deine Songs direkt auf deiner Seite, ohne Suno-Login." />
   <meta property="og:image" content="assets/logo-512.png" />
+
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
+    /* keine Drag/Copy-Action auf Medien */
     img, audio, video { -webkit-user-drag: none; user-select: none; }
+
+    /*  ——— Orange Theme Details ——— */
+
+    /* Trennlinie unter Banner (Fallback falls Tailwind gradient nicht greift) */
+    .banner-divider { height: 4px; background: linear-gradient(90deg,#ea580c,#f97316,#ea580c); }
+
+    /* Button-Hover Orange (Kategorie-Leiste) */
+    #catBar button:hover {
+      border-color: #ea580c; /* orange-600 */
+      color: #ea580c;
+    }
+
+    /* Karten-Glow */
+    .card-glow:hover {
+      box-shadow: 0 0 12px rgba(234,88,12,0.28);
+    }
+
+    /* Player-Progressbar Gradient */
+    #playerProgress {
+      background: linear-gradient(90deg,#f97316,#ea580c);
+    }
   </style>
 </head>
 
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <!-- Banner mit Logo (du wolltest die 'fill'-Variante) -->
-  <header class="relative w-full h-[180px] bg-black">
-    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner"
-         class="absolute inset-0 w-full h-full object-fill" />
-  </header>
 
-  <!-- Text unter dem Banner -->
-  <div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
+  <!-- Banner mit Logo -->
+  <header class="relative w-full h-[180px] bg-black">
+    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
+  </header>
+  <!-- Dünne orangene Linie unter dem Banner -->
+  <div class="banner-divider"></div>
+
+  <!-- Kopfbereich: Titel + Suche -->
+  <div class="max-w-7xl mx-auto px-4 mt-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
       <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
     </div>
-    <!-- Suchfeld -->
+
     <div class="shrink-0 w-64 sm:w-80">
       <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
              class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white/30">
@@ -38,14 +64,19 @@
   <!-- Kategorien-Leiste -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap gap-2"></div>
 
+  <!-- Kategorien-Galerie -->
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
-    <h2 class="text-lg font-bold mb-4">Kategorien</h2>
+    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+      <span class="h-5 w-1.5 rounded bg-orange-600"></span>
+      Kategorien
+    </h2>
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
   </section>
 
+  <!-- Songs -->
   <main class="max-w-6xl mx-auto px-4 pb-24">
     <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
-    <p id="emptyState" class="text-neutral-400 hidden">Keine Treffer. Suchbegriff anpassen.</p>
+    <p id="emptyState" class="text-neutral-400 hidden mt-6">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
   <!-- Player-Dock -->
@@ -56,7 +87,7 @@
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
         <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
-          <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
+          <div id="playerProgress" class="h-full" style="width:0%"></div>
         </div>
       </div>
       <audio id="audio" controls class="w-64" preload="metadata"></audio>
@@ -74,48 +105,47 @@
   <script>
     const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
 
-    // Editor-Hook: Live neu rendern
+    // Wird vom Editor genutzt, um live zu rendern
     window.renderSite = function(songs, categories){
-      if (songs) state.songs = Array.isArray(songs) ? songs : (songs.songs || []);
+      if (songs)      state.songs      = Array.isArray(songs) ? songs : (songs.songs || []);
       if (categories) state.categories = Array.isArray(categories) ? categories : (categories.categories || []);
       render();
     };
 
     async function loadData() {
-      // lokale Editor-Overrides
+      // lokale Entwürfe aus dem Editor
       const localSongs = localStorage.getItem('ralf_songs_json');
       const localCats  = localStorage.getItem('ralf_categories_json');
       if (localSongs) {
-        try { const s = JSON.parse(localSongs); state.songs = Array.isArray(s) ? s : (s.songs || []); } catch(e){}
+        try { const js = JSON.parse(localSongs); state.songs = Array.isArray(js) ? js : (js.songs || []); } catch(e){}
       }
       if (localCats) {
-        try { const c = JSON.parse(localCats); state.categories = Array.isArray(c) ? c : (c.categories || []); } catch(e){}
+        try { const jc = JSON.parse(localCats); state.categories = Array.isArray(jc) ? jc : (jc.categories || []); } catch(e){}
       }
 
-      // Fallback: vom Server
-      if (!state.songs.length || !state.categories.length) {
-        const s = await fetch('songs.json').then(r=>r.json());
-        const c = await fetch('categories.json').then(r=>r.json());
-        state.songs = Array.isArray(s) ? s : (s.songs || []);
-        state.categories = Array.isArray(c) ? c : (c.categories || []);
+      // wenn leer: vom Server laden
+      if (!state.songs.length) {
+        try { const s = await fetch('songs.json').then(r=>r.json()); state.songs = Array.isArray(s) ? s : (s.songs || []); } catch(e){}
+      }
+      if (!state.categories.length) {
+        try { const c = await fetch('categories.json').then(r=>r.json()); state.categories = Array.isArray(c) ? c : (c.categories || []); } catch(e){}
       }
 
-      // UI bauen
       renderCatBar();
       applyQueryFromURL();
       render();
 
-      // Deep-Link (nach dem Laden)
+      // Deep-Link ?id=<song>
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) {
-        const song = state.songs.find(x => x.id === pid);
-        if (song) setTimeout(() => playSong(song), 100);
+        const s = state.songs.find(x => x.id === pid);
+        if (s) setTimeout(()=>playSong(s), 100);
       }
     }
 
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
-      state.cat = p.get('cat') || 'all';
+      state.cat   = p.get('cat') || 'all';
       state.query = (p.get('q') || '').toLowerCase();
       const search = document.getElementById('search');
       if (search) search.value = state.query;
@@ -131,17 +161,8 @@
 
     function setQuery(q) {
       state.query = (q || '').toLowerCase();
-
-      // Bei aktiver Suche immer global suchen
-      if (state.query) state.cat = 'all';
-
       const p = new URLSearchParams(location.search);
-      if (state.query) {
-        p.set('q', q);
-        p.set('cat', 'all');
-      } else {
-        p.delete('q');
-      }
+      if (q) p.set('q', q); else p.delete('q');
       history.replaceState(null, '', '?' + p.toString());
       render();
     }
@@ -150,7 +171,7 @@
       const bar = document.getElementById('catBar');
       bar.innerHTML = '';
 
-      // „Alle“-Button
+      // „Alle“
       const allBtn = document.createElement('button');
       allBtn.textContent = 'Alle';
       allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition ' +
@@ -181,12 +202,13 @@
 
       const grid = document.getElementById('catGrid');
       grid.innerHTML = '';
+
       state.categories.forEach(c => {
         const card = document.createElement('div');
-        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600';
+        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600 card-glow transition';
         card.onclick = () => setCat(c.key);
         card.innerHTML = `
-          <img src="${c.cover}" alt="${c.label}" class="w-full h-32 object-contain bg-black" />
+          <img src="${c.cover || ''}" alt="${c.label}" class="w-full h-32 object-contain bg-black" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span class="font-semibold text-white text-sm sm:text-base">${c.label}</span>
           </div>`;
@@ -194,50 +216,43 @@
       });
     }
 
-    // WICHTIG: Suche hat Vorrang. Wenn Suche aktiv ist, wird Kategorie ignoriert.
     function renderSongs() {
-      const q = (state.query || '').trim().toLowerCase();
-      const grid = document.getElementById('songsGrid');
-      const empty = document.getElementById('emptyState');
-      if (!grid) return;
-
-      grid.innerHTML = '';
-
-      let list = Array.isArray(state.songs) ? state.songs.slice() : [];
+      const q = (state.query || '').toLowerCase();
+      let filtered = state.songs.filter(s => (state.cat === 'all' || s.category === state.cat));
 
       if (q) {
-        list = list.filter(s =>
-          (s.title  || '').toLowerCase().includes(q) ||
+        filtered = filtered.filter(s =>
+          (s.title || '').toLowerCase().includes(q) ||
           (s.artist || '').toLowerCase().includes(q)
         );
-      } else if (state.cat && state.cat !== 'all') {
-        list = list.filter(s => s.category === state.cat);
       }
 
-      if (list.length === 0) {
-        if (empty) empty.classList.remove('hidden');
+      const grid = document.getElementById('songsGrid');
+      const empty = document.getElementById('emptyState');
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        empty.classList.remove('hidden');
         return;
-      } else {
-        if (empty) empty.classList.add('hidden');
-      }
+      } else empty.classList.add('hidden');
 
-      list.forEach(s => {
+      filtered.forEach(s => {
         const card = document.createElement('div');
-        card.className = 'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition';
+        card.className = 'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition card-glow';
         card.innerHTML = `
-  <div class="aspect-square overflow-hidden relative">
-    <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-  </div>
-  <div class="p-4">
-    <div class="text-xs text-neutral-400 mb-1">${s.category}</div>
-    <h3 class="font-semibold leading-tight">${s.title}</h3>
-    <div class="text-sm text-neutral-400">${s.artist}</div>
-    <div class="mt-3 flex justify-end">
-      <button class="play bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-white">
-        ▶ Abspielen
-      </button>
-    </div>
-  </div>`;
+          <div class="aspect-square overflow-hidden relative">
+            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+          </div>
+          <div class="p-4">
+            <div class="text-xs text-neutral-400 mb-1">${s.category}</div>
+            <h3 class="font-semibold leading-tight">${s.title}</h3>
+            <div class="text-sm text-neutral-400">${s.artist}</div>
+            <div class="mt-3 flex justify-end">
+              <button class="play bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-white">
+                ▶ Abspielen
+              </button>
+            </div>
+          </div>`;
         card.querySelector('.play').onclick = () => playSong(s);
         grid.appendChild(card);
       });
@@ -264,42 +279,44 @@
       renderSongs();
     }
 
-    // Dock schließen
+    // Close Player
     document.getElementById('closeBtn').onclick = () => {
       document.getElementById('playerDock').classList.add('hidden');
       document.getElementById('audio').pause();
     };
 
-    // Suche verdrahten
+    // Suche live
     document.getElementById('search').addEventListener('input', (e) => setQuery(e.target.value));
+
+    // ⌘K / Ctrl+K → Fokus auf Suche
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault(); const i = document.getElementById('search'); i.focus(); i.select();
+        e.preventDefault();
+        const el = document.getElementById('search'); el.focus(); el.select();
       }
     });
 
-    // Los geht's
+    // Seekbar klickbar
+    (function enableScrub(){
+      const audio = document.getElementById('audio');
+      const bar   = document.getElementById('playerBar');
+
+      audio.addEventListener('loadedmetadata', () => {
+        const s = (window.state?.songs || []).find(x => x.id === window.state?.active);
+        if (s) s.duration = Math.floor(audio.duration || 0);
+      });
+
+      bar?.addEventListener('click', (e) => {
+        const rect = bar.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        if (audio.duration > 0) audio.currentTime = ratio * audio.duration;
+      });
+    })();
+
     loadData();
   </script>
 
-  <!-- Extra Script: Scrubbing -->
-  <script>
-    const audioEl = document.getElementById('audio');
-    const barEl   = document.getElementById('playerBar');
-
-    audioEl.addEventListener('loadedmetadata', () => {
-      const s = (window.state?.songs || []).find(x => x.id === window.state?.active);
-      if (s) s.duration = Math.floor(audioEl.duration || 0);
-    });
-
-    barEl?.addEventListener('click', (e) => {
-      const rect = barEl.getBoundingClientRect();
-      const ratio = (e.clientX - rect.left) / rect.width;
-      if (audioEl.duration > 0) audioEl.currentTime = ratio * audioEl.duration;
-    });
-  </script>
-
-  <!-- Editor nur bei ?edit=1 -->
+  <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
   <script>
     if (new URLSearchParams(location.search).get("edit") === "1") {
       var s = document.createElement("script");
