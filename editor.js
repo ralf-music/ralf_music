@@ -1,4 +1,4 @@
-/* RALF Editor v3.4 — MP3-Helfer + Kategorien-Manager (immer state, Default-Cover)
+/* RALF Editor v3.5 — MP3-Helfer + Kategorien-Manager + Default-Cover überall
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
    Speichert Entwürfe in localStorage:
@@ -85,13 +85,59 @@
     $('#modalOK',    modalWrap).onclick = () => { if (!onOK || onOK() !== false) close(); };
   };
 
+  // ===== Song-Formular =====
+  const songFormHTML = (pref = {}) => {
+    const cats = getCats();
+    const catOpts = cats.map(c => `<option value="${c.key}" ${pref.category===c.key?'selected':''}>${c.label} (${c.key})</option>`).join('');
+    return `
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-neutral-400">ID (slug)</label>
+          <input id="f_id" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.id||''}">
+        </div>
+        <div>
+          <label class="text-xs text-neutral-400">Kategorie</label>
+          <select id="f_category_sel" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10">
+            <option value="">— auswählen —</option>
+            ${catOpts}
+            <option value="__new__">+ Neue Kategorie…</option>
+          </select>
+          <input id="f_category_new" class="hidden mt-2 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" placeholder="neuer category-key">
+        </div>
+        <div>
+          <label class="text-xs text-neutral-400">Titel</label>
+          <input id="f_title" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.title||''}">
+        </div>
+        <div>
+          <label class="text-xs text-neutral-400">Artist</label>
+          <div class="flex gap-2">
+            <input id="f_artist" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.artist||''}">
+            <button type="button" id="f_artist_fill" class="mt-1 px-2 rounded-lg bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700 text-xs">↪ ${DEFAULT_ARTIST}</button>
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-xs text-neutral-400">Cover-URL</label>
+          <input id="f_cover" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.cover||''}">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-xs text-neutral-400">MP3-URL (RAW GitHub)</label>
+          <input id="f_src" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.src||''}">
+        </div>
+        <div>
+          <label class="text-xs text-neutral-400">Dauer</label>
+          <input id="f_dur" class="mt-1 w-full px-3 py-2 rounded-lg bg-neutral-800 ring-1 ring-white/10" value="${pref.duration ? fromSeconds(pref.duration) : ''}">
+        </div>
+      </div>
+    `;
+  };
+
   // ===== Kategorien-Manager =====
   const catsManagerHTML = () => {
     const rows = getCats().map(c => `
       <tr class="border-b border-neutral-800">
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}"   data-field="key"></td>
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.label}" data-field="label"></td>
-        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover}" data-field="cover"></td>
+        <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover || DEFAULT_CAT_COVER}" data-field="cover"></td>
         <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
       </tr>
     `).join('');
@@ -112,13 +158,22 @@
   };
 
   // ===== Modal Events =====
+  modalWrap.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t && t.id === 'f_category_sel') {
+      const neu = $('#f_category_new', modalWrap);
+      if (t.value === '__new__') neu?.classList.remove('hidden');
+      else neu?.classList.add('hidden');
+    }
+  });
+
   modalWrap.addEventListener('click', (e) => {
     const t = e.target;
     // Artist schnell füllen
     if (t.id === 'f_artist_fill') {
       const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
     }
-    // Kategorie-Zeile hinzufügen
+    // Kategorie-Zeile hinzufügen (mit Default-Cover)
     if (t.id === 'catAddRow') {
       const tbody = $('#catRows', modalWrap);
       const tr = document.createElement('tr');
@@ -163,6 +218,81 @@
     download(data, 'categories.json');
   };
 
-  // Rest (Songs, MP3-Helper, Discard, Artist-Std) bleibt unverändert...
-  // ...
+  // Song neu
+  const saveSongFromModal = () => {
+    const id = $('#f_id', modalWrap)?.value.trim();
+    const title = $('#f_title', modalWrap)?.value.trim();
+    const artist = $('#f_artist', modalWrap)?.value.trim();
+    const catSel = $('#f_category_sel', modalWrap)?.value;
+    const category = catSel === '__new__' ? $('#f_category_new', modalWrap)?.value.trim() : catSel;
+    const cover = $('#f_cover', modalWrap)?.value.trim();
+    const src = $('#f_src', modalWrap)?.value.trim();
+    const duration = toSeconds($('#f_dur', modalWrap)?.value.trim());
+
+    if (!id || !title || !artist || !category || !cover || !src) { alert('Bitte alles ausfüllen'); return false; }
+
+    // Wenn Kategorie neu ist, sofort in categories mit DEFAULT_CAT_COVER aufnehmen
+    if (!getCats().some(c => c.key === category)) {
+      const labelGuess = category.replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
+      const newCat = { key: category, label: labelGuess || category, cover: DEFAULT_CAT_COVER };
+      setCats([...getCats(), newCat]);
+    }
+
+    const s = { id, title, artist, category, cover, src, duration };
+    const rest = getSongs().filter(x => x.id !== id);
+    setSongs([...rest, s]);
+    return true;
+  };
+
+  $('#btnSongNew', bar).onclick = () => {
+    showModal('Song hinzufügen', songFormHTML(), () => saveSongFromModal());
+  };
+
+  // MP3-Import-Helfer
+  $('#btnMp3Helper', bar).onclick = () => {
+    const fi = el('input'); fi.type = 'file'; fi.accept = 'audio/mpeg,.mp3';
+    fi.onchange = () => {
+      const file = fi.files?.[0]; if (!file) return;
+      const objURL = URL.createObjectURL(file);
+      const a = new Audio(); a.src = objURL;
+      a.addEventListener('loadedmetadata', () => {
+        const seconds = Math.floor(a.duration || 0);
+        URL.revokeObjectURL(objURL);
+        const fname = file.name;
+        const id = niceId(fname);
+        const title = stripExt(fname);
+        const rawURL = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encodeURIComponent(fname)}`;
+        const pref = { id, title, artist: DEFAULT_ARTIST, category: '', cover: '', src: rawURL, duration: seconds };
+        showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => saveSongFromModal());
+      }, { once: true });
+      a.addEventListener('error', () => {
+        URL.revokeObjectURL(objURL);
+        alert('Konnte die MP3-Dauer nicht lesen.');
+      }, { once: true });
+    };
+    fi.click();
+  };
+
+  $('#btnSaveSongs', bar).onclick = () => {
+    const data = { songs: getSongs() };
+    localStorage.setItem(SKEY_SONGS, JSON.stringify(data));
+    download(data, 'songs.json');
+  };
+
+  $('#btnDiscard', bar).onclick = () => {
+    if (!confirm('Entwürfe verwerfen?')) return;
+    localStorage.removeItem(SKEY_SONGS);
+    localStorage.removeItem(SKEY_CATS);
+    location.reload();
+  };
+
+  $('#btnSetArtistStd', bar).onclick = () => {
+    const v = prompt('Standard-Artist setzen:', DEFAULT_ARTIST || 'R.A.L.F.');
+    if (!v) return;
+    DEFAULT_ARTIST = v.trim();
+    localStorage.setItem(SKEY_ARTIST, DEFAULT_ARTIST);
+    $('#artistStd', bar).textContent = DEFAULT_ARTIST;
+    alert('Standard-Artist aktualisiert.');
+  };
+
 })();
