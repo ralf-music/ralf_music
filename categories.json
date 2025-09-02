@@ -1,33 +1,28 @@
 {
   "categories": [
     {
-      "key": "all",
-      "label": "Alle",
-      "cover": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=1200&auto=format&fit=crop"
-    },
-    {
-      "key": "Deutsch Rap",
+      "key": "deutsch-rap",
       "label": "Deutsch Rap",
       "cover": ""
     },
     {
-      "key": "Ballermann/Schlager",
+      "key": "ballermann-schlager",
       "label": "Ballermann/Schlager",
       "cover": ""
     },
     {
-      "key": "Trance / Techno",
-      "label": "Trance",
+      "key": "trance-techno",
+      "label": "Trance / Techno",
       "cover": ""
     },
     {
-      "key": "Freestyle",
-      "label": "Neue Kategorie",
+      "key": "freestyle",
+      "label": "Freestyle",
       "cover": ""
     },
     {
-      "key": "Deutscher Hardrock",
-      "label": "Neue Kategorie",
+      "key": "deutscher-hardrock",
+      "label": "Deutscher Hardrock",
       "cover": ""
     }
   ]
