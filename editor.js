@@ -1,4 +1,4 @@
-/* RALF Editor v3.1 — MP3-Helfer + Kategorien verwalten (fix)
+/* RALF Editor v3.2 — MP3-Helfer + Kategorien-Manager (auto-sync)
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
    Speichert Entwürfe in localStorage:
@@ -39,6 +39,25 @@
 
   let DEFAULT_ARTIST = localStorage.getItem(SKEY_ARTIST) || 'R.A.L.F.';
 
+  // ===== PRIME: hol Daten, wenn leer =====
+  (async function primeIfEmpty(){
+    // Wenn weder Entwurf noch state gefüllt: vom Server ziehen
+    if (!getCats().length) {
+      try {
+        const c = await fetch('/categories.json').then(r=>r.json());
+        const cats = ensureArray(c, 'categories');
+        if (cats.length) setCats(cats);
+      } catch(e) { /* still no cats, fine */ }
+    }
+    if (!getSongs().length) {
+      try {
+        const s = await fetch('/songs.json').then(r=>r.json());
+        const songs = ensureArray(s, 'songs');
+        if (songs.length) setSongs(songs);
+      } catch(e) { /* shrug */ }
+    }
+  })();
+
   // ===== Admin Bar =====
   const bar = el('div', 'fixed top-3 right-3 z-50 flex flex-wrap gap-2');
   bar.innerHTML = `
@@ -55,7 +74,7 @@
     </div>`;
   document.body.appendChild(bar);
 
-  // ===== Modal (ohne Inline-Skripte!) =====
+  // ===== Modal (ohne Inline-Skripte) =====
   const modalWrap = el('div', 'fixed inset-0 z-50 hidden');
   modalWrap.innerHTML = `
     <div class="absolute inset-0 bg-black/60"></div>
@@ -71,7 +90,6 @@
       </div>
     </div>`;
   document.body.appendChild(modalWrap);
-
   const showModal = (title, bodyHTML, onOK) => {
     $('#modalTitle', modalWrap).textContent = title;
     $('#modalBody',  modalWrap).innerHTML   = bodyHTML;
@@ -82,7 +100,7 @@
     $('#modalOK',    modalWrap).onclick = () => { if (!onOK || onOK() !== false) close(); };
   };
 
-  // ===== Song-Formular (Dropdown + Artist-Knopf) =====
+  // ===== Song-Formular =====
   const songFormHTML = (pref = {}) => {
     const cats = getCats();
     const catOpts = cats.map(c => `<option value="${c.key}" ${pref.category===c.key?'selected':''}>${c.label} (${c.key})</option>`).join('');
@@ -132,7 +150,7 @@
     `;
   };
 
-  // ===== Kategorien-Manager (ohne Inline-Script) =====
+  // ===== Kategorien-Manager =====
   const catsManagerHTML = () => {
     const rows = getCats().map(c => `
       <tr class="border-b border-neutral-800">
@@ -161,10 +179,9 @@
     `;
   };
 
-  // ===== Modal-Event-Delegation (statt Inline-Skripten) =====
+  // ===== Modal-Events =====
   modalWrap.addEventListener('change', (e) => {
     const t = e.target;
-    // Kategorie-Auswahl im Song-Formular
     if (t && t.id === 'f_category_sel') {
       const neu = $('#f_category_new', modalWrap);
       if (t.value === '__new__') neu?.classList.remove('hidden');
@@ -174,13 +191,9 @@
 
   modalWrap.addEventListener('click', (e) => {
     const t = e.target;
-
-    // Artist-Quickfill
     if (t && t.id === 'f_artist_fill') {
       const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
     }
-
-    // Kategorien: neue Zeile
     if (t && t.id === 'catAddRow') {
       const tbody = $('#catRows', modalWrap);
       const tr = document.createElement('tr');
@@ -193,8 +206,6 @@
       `;
       tbody?.appendChild(tr);
     }
-
-    // Kategorien: löschen
     if (t && t.dataset && t.dataset.action === 'del') {
       t.closest('tr')?.remove();
     }
@@ -231,7 +242,6 @@
       $$('[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
       return obj;
     }).filter(x => x.key && x.label && x.cover);
-    // Keys einzigartig
     const keys = list.map(x=>x.key);
     if (new Set(keys).size !== keys.length) { alert('Kategorie-Keys müssen eindeutig sein.'); return null; }
     return list;
@@ -241,14 +251,11 @@
   $('#btnSongNew', bar).onclick = () => {
     showModal('Song hinzufügen', songFormHTML(), () => {
       const s = readSongFromModal(); if (!s) return false;
-
-      // Neue Kategorie on-the-fly?
       if (!getCats().some(c => c.key === s.category)) {
         const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
         if (!label) return false;
         setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
       }
-
       const rest = getSongs().filter(x => x.id !== s.id);
       setSongs([...rest, s]);
     });
@@ -275,13 +282,11 @@
         const pref = { id, title, artist: DEFAULT_ARTIST, category: '', cover: '', src: rawURL, duration: seconds };
         showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => {
           const s = readSongFromModal(); if (!s) return false;
-
           if (s.category && !getCats().some(c => c.key === s.category)) {
             const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
             if (!label) return false;
             setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
           }
-
           const rest = getSongs().filter(x => x.id !== s.id);
           setSongs([...rest, s]);
         });
@@ -295,7 +300,15 @@
     fi.click();
   };
 
-  $('#btnCatManage', bar).onclick = () => {
+  $('#btnCatManage', bar).onclick = async () => {
+    // Sicherstellen, dass Kategorien da sind
+    if (!getCats().length) {
+      try {
+        const c = await fetch('/categories.json').then(r=>r.json());
+        const cats = ensureArray(c, 'categories');
+        if (cats.length) setCats(cats);
+      } catch(e) { /* ignore */ }
+    }
     showModal('Kategorien verwalten', catsManagerHTML(), () => {
       const list = readCatsFromModal(); if (!list) return false;
       setCats(list);
