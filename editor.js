@@ -1,4 +1,4 @@
-/* RALF Editor v3.3 — MP3-Helfer + Kategorien-Manager (fix, immer state)
+/* RALF Editor v3.3 — MP3-Helfer + Kategorien-Manager (immer state)
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
    Speichert Entwürfe in localStorage:
@@ -71,6 +71,7 @@
       </div>
     </div>`;
   document.body.appendChild(modalWrap);
+
   const showModal = (title, bodyHTML, onOK) => {
     $('#modalTitle', modalWrap).textContent = title;
     $('#modalBody',  modalWrap).innerHTML   = bodyHTML;
@@ -154,11 +155,22 @@
   };
 
   // ===== Modal Events =====
+  modalWrap.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t && t.id === 'f_category_sel') {
+      const neu = $('#f_category_new', modalWrap);
+      if (t.value === '__new__') neu?.classList.remove('hidden');
+      else neu?.classList.add('hidden');
+    }
+  });
+
   modalWrap.addEventListener('click', (e) => {
     const t = e.target;
+    // Artist schnell füllen
     if (t.id === 'f_artist_fill') {
       const a = $('#f_artist', modalWrap); if (a) a.value = DEFAULT_ARTIST;
     }
+    // Kategorie-Zeile hinzufügen
     if (t.id === 'catAddRow') {
       const tbody = $('#catRows', modalWrap);
       const tr = document.createElement('tr');
@@ -171,8 +183,9 @@
       `;
       tbody.appendChild(tr);
     }
+    // Kategorie-Zeile löschen
     if (t.dataset?.action === 'del') {
-      t.closest('tr').remove();
+      t.closest('tr')?.remove();
     }
   });
 
@@ -233,15 +246,21 @@
           const rest = getSongs().filter(x => x.id !== id);
           setSongs([...rest, s]);
         });
-      });
+      }, { once: true });
+      a.addEventListener('error', () => {
+        URL.revokeObjectURL(objURL);
+        alert('Konnte die MP3-Dauer nicht lesen.');
+      }, { once: true });
     };
     fi.click();
   };
 
   $('#btnCatManage', bar).onclick = () => {
+    // Zeig genau das an, was aktuell im state ist
     console.log("Aktuelle Kategorien:", getCats());
     showModal('Kategorien verwalten', catsManagerHTML(), () => {
-      const list = readCatsFromModal(); if (!list) return false;
+      const list = readCatsFromModal(); 
+      if (!list) return false;
       setCats(list);
     });
   };
@@ -261,4 +280,17 @@
   $('#btnDiscard', bar).onclick = () => {
     if (!confirm('Entwürfe verwerfen?')) return;
     localStorage.removeItem(SKEY_SONGS);
-    local
+    localStorage.removeItem(SKEY_CATS);
+    location.reload();
+  };
+
+  $('#btnSetArtistStd', bar).onclick = () => {
+    const v = prompt('Standard-Artist setzen:', DEFAULT_ARTIST || 'R.A.L.F.');
+    if (!v) return;
+    DEFAULT_ARTIST = v.trim();
+    localStorage.setItem(SKEY_ARTIST, DEFAULT_ARTIST);
+    $('#artistStd', bar).textContent = DEFAULT_ARTIST;
+    alert('Standard-Artist aktualisiert.');
+  };
+
+})();
