@@ -1,12 +1,12 @@
-/* RALF Editor v2 — lädt nur bei ?edit=1
+/* RALF Editor v3 — lädt nur bei ?edit=1
    Voraussetzungen: window.state {songs,categories}, window.renderSite(songs,categories)
-   Entwurfs-Speicher: localStorage keys ralf_songs_json / ralf_categories_json
+   Entwurf-Storage: localStorage ralf_songs_json / ralf_categories_json / ralf_default_artist
 */
 
 (function () {
-  const SKEY_SONGS = 'ralf_songs_json';
-  const SKEY_CATS  = 'ralf_categories_json';
-  const SKEY_ARTIST = 'ralf_default_artist';
+  const SKEY_SONGS   = 'ralf_songs_json';
+  const SKEY_CATS    = 'ralf_categories_json';
+  const SKEY_ARTIST  = 'ralf_default_artist';
 
   // ===== Helpers =====
   const $  = (sel, root = document) => root.querySelector(sel);
@@ -29,12 +29,14 @@
     document.body.appendChild(a); a.click();
     setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 0);
   };
+  const stripExt = (name) => name.replace(/\.[^.]+$/, '');
+  const niceId = (name) => stripExt(name).trim().replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-_]/g,'').toLowerCase();
 
   // ===== State bridges =====
   const getSongs = () => ensureArray(window.state?.songs, 'songs');
   const getCats  = () => ensureArray(window.state?.categories, 'categories');
   const setSongs = (arr) => { window.state.songs = arr; localStorage.setItem(SKEY_SONGS, JSON.stringify({ songs: arr })); window.renderSite(window.state.songs, window.state.categories); };
-  const setCats  = (arr) => { window.state.categories = arr; localStorage.setItem(SKEY_CATS, JSON.stringify({ categories: arr })); window.renderSite(window.state.songs, window.state.categories); };
+  const setCats  = (arr) => { window.state.categories = arr; localStorage.setItem(SKEY_CATS,  JSON.stringify({ categories: arr })); window.renderSite(window.state.songs, window.state.categories); };
 
   let DEFAULT_ARTIST = localStorage.getItem(SKEY_ARTIST) || 'R.A.L.F.';
 
@@ -43,18 +45,18 @@
   bar.innerHTML = `
     <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-neutral-900/90 ring-1 ring-white/10 shadow">
       <span class="text-xs px-2 py-1 rounded-full bg-orange-600 text-white">EDIT</span>
-      <button id="btnSongNew" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Song hinzufügen</button>
+      <button id="btnSongNew"   class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Song hinzufügen</button>
+      <button id="btnMp3Helper" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">MP3 importieren</button>
       <button id="btnCatManage" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Kategorien verwalten</button>
       <button id="btnSaveSongs" class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Songs speichern</button>
       <button id="btnSaveCats"  class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Kategorien speichern</button>
-      <button id="btnImport"    class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Import</button>
       <button id="btnDiscard"   class="px-3 py-1.5 text-sm rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Entwurf verwerfen</button>
       <span class="hidden sm:inline text-xs text-neutral-400">Artist-Standard: <b id="artistStd" class="text-neutral-200">${DEFAULT_ARTIST}</b></span>
       <button id="btnSetArtistStd" class="px-2 py-1 text-xs rounded-lg bg-neutral-800 hover:bg-neutral-700 ring-1 ring-white/10">Standard ändern</button>
     </div>`;
   document.body.appendChild(bar);
 
-  // ===== Modal =====
+  // ===== Modal Grundgerüst =====
   const modalWrap = el('div', 'fixed inset-0 z-50 hidden');
   modalWrap.innerHTML = `
     <div class="absolute inset-0 bg-black/60"></div>
@@ -70,6 +72,7 @@
       </div>
     </div>`;
   document.body.appendChild(modalWrap);
+
   const showModal = (title, bodyHTML, onOK) => {
     $('#modalTitle', modalWrap).textContent = title;
     $('#modalBody',  modalWrap).innerHTML   = bodyHTML;
@@ -128,7 +131,6 @@
         </div>
       </div>
       <script>
-        // kleine Inline-Logik für das Modal
         (function(){
           const sel = document.getElementById('f_category_sel');
           const neu = document.getElementById('f_category_new');
@@ -145,16 +147,14 @@
     `;
   };
 
-  // ===== Kategorien-Manager (Liste mit Bearbeiten/Löschen/Hinzufügen) =====
+  // ===== Kategorien-Manager =====
   const catsManagerHTML = () => {
     const rows = getCats().map(c => `
       <tr class="border-b border-neutral-800">
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.key}" data-field="key"></td>
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.label}" data-field="label"></td>
         <td class="p-2"><input class="w-full px-2 py-1 rounded bg-neutral-800 ring-1 ring-white/10" value="${c.cover}" data-field="cover"></td>
-        <td class="p-2 text-right">
-          <button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button>
-        </td>
+        <td class="p-2 text-right"><button class="px-2 py-1 text-xs rounded bg-neutral-800 ring-1 ring-white/10 hover:bg-neutral-700" data-action="del">Löschen</button></td>
       </tr>
     `).join('');
     return `
@@ -197,16 +197,16 @@
     `;
   };
 
-  // ===== Modal-Helfer zum Auslesen =====
+  // ===== Modal-Ausleser =====
   const readSongFromModal = () => {
     const id = $('#f_id', modalWrap)?.value.trim();
     let category = $('#f_category_sel', modalWrap)?.value || '';
     if (category === '__new__') category = $('#f_category_new', modalWrap)?.value.trim() || '';
-    const title  = $('#f_title', modalWrap)?.value.trim();
+    const title  = $('#f_title',  modalWrap)?.value.trim();
     const artist = $('#f_artist', modalWrap)?.value.trim();
-    const cover  = $('#f_cover', modalWrap)?.value.trim();
-    const src    = $('#f_src', modalWrap)?.value.trim();
-    const durRaw = $('#f_dur', modalWrap)?.value.trim();
+    const cover  = $('#f_cover',  modalWrap)?.value.trim();
+    const src    = $('#f_src',    modalWrap)?.value.trim();
+    const durRaw = $('#f_dur',    modalWrap)?.value.trim();
     const duration = /^\d+:\d{1,2}$/.test(durRaw) ? toSeconds(durRaw) : (isFinite(Number(durRaw)) ? Number(durRaw) : 0);
 
     const missing = [];
@@ -225,22 +225,21 @@
     const rows = $$('#catRows tr', modalWrap);
     const list = rows.map(tr => {
       const obj = {};
-      $$('#catRows tr input', tr);
-      $$( '[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
+      $$('[data-field]', tr).forEach(inp => { obj[inp.dataset.field] = inp.value.trim(); });
       return obj;
     }).filter(x => x.key && x.label && x.cover);
     // Keys einzigartig
-    const dup = list.map(x=>x.key);
-    if (new Set(dup).size !== dup.length) { alert('Kategorie-Keys müssen eindeutig sein.'); return null; }
+    const keys = list.map(x=>x.key);
+    if (new Set(keys).size !== keys.length) { alert('Kategorie-Keys müssen eindeutig sein.'); return null; }
     return list;
   };
 
-  // ===== Buttons: Aktionen =====
+  // ===== Aktionen =====
   $('#btnSongNew', bar).onclick = () => {
     showModal('Song hinzufügen', songFormHTML(), () => {
       const s = readSongFromModal(); if (!s) return false;
 
-      // Neue Kategorie on-the-fly anlegen?
+      // Neue Kategorie on-the-fly?
       if (!getCats().some(c => c.key === s.category)) {
         const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
         if (!label) return false;
@@ -251,6 +250,58 @@
       const rest = getSongs().filter(x => x.id !== s.id);
       setSongs([...rest, s]);
     });
+  };
+
+  // === MP3-Import-Helfer ===
+  $('#btnMp3Helper', bar).onclick = () => {
+    const fi = el('input'); fi.type = 'file'; fi.accept = 'audio/mpeg,.mp3';
+    fi.onchange = async () => {
+      const file = fi.files?.[0]; if (!file) return;
+
+      // Dauer ermitteln via Audio
+      const objURL = URL.createObjectURL(file);
+      const a = new Audio(); a.src = objURL;
+      a.addEventListener('loadedmetadata', () => {
+        const seconds = Math.floor(a.duration || 0);
+        URL.revokeObjectURL(objURL);
+
+        const fname = file.name;
+        const id = niceId(fname);
+        const title = stripExt(fname);
+        const encoded = encodeURIComponent(fname);
+        const rawURL = `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encoded}`;
+
+        const pref = {
+          id,
+          title,
+          artist: DEFAULT_ARTIST || 'R.A.L.F.',
+          category: '',
+          cover: '',
+          src: rawURL,
+          duration: seconds
+        };
+
+        showModal('Neuer Song (aus MP3)', songFormHTML(pref), () => {
+          const s = readSongFromModal(); if (!s) return false;
+
+          // Neue Kategorie on-the-fly?
+          if (s.category && !getCats().some(c => c.key === s.category)) {
+            const label = prompt(`Neue Kategorie "${s.category}" – Anzeigename:`, s.category);
+            if (!label) return false;
+            setCats([...getCats(), { key: s.category, label, cover: s.cover }]);
+          }
+
+          const rest = getSongs().filter(x => x.id !== s.id);
+          setSongs([...rest, s]);
+        });
+      }, { once: true });
+
+      a.addEventListener('error', () => {
+        URL.revokeObjectURL(objURL);
+        alert('Konnte die MP3-Dauer nicht lesen. Datei beschädigt?');
+      }, { once: true });
+    };
+    fi.click();
   };
 
   $('#btnCatManage', bar).onclick = () => {
@@ -270,26 +321,6 @@
     const data = { categories: getCats() };
     localStorage.setItem(SKEY_CATS, JSON.stringify(data));
     download(data, 'categories.json');
-  };
-
-  $('#btnImport', bar).onclick = () => {
-    const fi = el('input'); fi.type = 'file'; fi.accept = '.json,application/json';
-    fi.onchange = async () => {
-      const file = fi.files[0]; if (!file) return;
-      const text = await file.text();
-      try {
-        const json = JSON.parse(text);
-        if (json.songs) { setSongs(json.songs); }
-        else if (json.categories) { setCats(json.categories); }
-        else if (Array.isArray(json)) {
-          if (json.length && json[0]?.id) setSongs(json);
-          else if (json.length && json[0]?.key) setCats(json);
-          else return alert('JSON nicht erkannt. Erwartet songs[] oder categories[].');
-        } else return alert('JSON-Format unbekannt.');
-        alert('Import erfolgreich (Entwurf gespeichert).');
-      } catch (e) { alert('Fehler beim JSON-Import: ' + e.message); }
-    };
-    fi.click();
   };
 
   $('#btnDiscard', bar).onclick = () => {
