@@ -1,4 +1,4 @@
-/* RALF Editor v3.7 — stabile Saves (Cats+Songs), MP3-Import, Default-Cover
+/* RALF Editor v3.8 — stabile Saves (Cats+Songs), MP3-Import, Default-Cover, state-Fix
    Lädt nur bei ?edit=1
    Erwartet: window.state {songs,categories}, window.renderSite(songs,categories)
    Lokale Entwürfe: ralf_songs_json, ralf_categories_json, ralf_default_artist
@@ -9,6 +9,16 @@
   const SKEY_ARTIST  = 'ralf_default_artist';
 
   const DEFAULT_CAT_COVER = "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true";
+
+  // ---------- sicherstellen, dass window.state existiert ----------
+  function ensureState() {
+    if (!window.state || typeof window.state !== 'object') {
+      window.state = { songs: [], categories: [], cat: 'all', query: '', active: null };
+    }
+    if (!Array.isArray(window.state.songs)) window.state.songs = [];
+    if (!Array.isArray(window.state.categories)) window.state.categories = [];
+  }
+  ensureState();
 
   // ---------- kleine Helfer ----------
   const $  = (sel, root = document) => root.querySelector(sel);
@@ -31,15 +41,17 @@
   const niceId   = (name) => stripExt(name).trim().replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-_]/g,'').toLowerCase();
 
   // ---------- Bridge zum App-State ----------
-  const getSongs = () => ensureArray(window.state?.songs, 'songs');
-  const getCats  = () => ensureArray(window.state?.categories, 'categories');
+  const getSongs = () => { ensureState(); return ensureArray(window.state.songs, 'songs'); };
+  const getCats  = () => { ensureState(); return ensureArray(window.state.categories, 'categories'); };
 
   const setSongs = (arr) => {
+    ensureState();
     window.state.songs = arr;
     localStorage.setItem(SKEY_SONGS, JSON.stringify({ songs: arr }));
     if (typeof window.renderSite === 'function') window.renderSite(window.state.songs, window.state.categories);
   };
   const setCats = (arr) => {
+    ensureState();
     window.state.categories = arr;
     localStorage.setItem(SKEY_CATS, JSON.stringify({ categories: arr }));
     if (typeof window.renderSite === 'function') window.renderSite(window.state.songs, window.state.categories);
@@ -95,7 +107,6 @@
     try {
       if (!modalOnOK) { closeModal(); return; }
       const res = modalOnOK();
-      // Nur wenn explizit false zurückkommt, offen lassen
       if (res !== false) closeModal();
     } catch (err) {
       alert('Fehler beim Speichern: ' + (err?.message || err));
@@ -157,7 +168,7 @@
     rows.forEach(tr => {
       const obj = {};
       $$('input[data-field]', tr).forEach(inp => obj[inp.dataset.field] = (inp.value||'').trim());
-      if (!obj.key || !obj.label) return;                 // unvollständige Zeilen ignorieren
+      if (!obj.key || !obj.label) return; // unvollständige Zeilen ignorieren
       if (!obj.cover) obj.cover = DEFAULT_CAT_COVER;
       out.push(obj);
     });
@@ -168,8 +179,8 @@
   $('#btnCatManage', bar).onclick = () => {
     openModal('Kategorien verwalten', catsManagerHTML(), () => {
       const list = readCatsFromModal();
-      setCats(list);   // speichert lokal, re-rendert
-      alert('Kategorien übernommen. Denk daran: mit „Kategorien speichern“ exportierst du die JSON fürs Repo.');
+      setCats(list);
+      alert('Kategorien übernommen. Mit „Kategorien speichern“ exportierst du die JSON fürs Repo.');
     });
   };
 
@@ -230,7 +241,6 @@
       </div>`;
   };
 
-  // Feld-Interaktionen im Song-Modal
   modal.addEventListener('change', (e) => {
     if (e.target?.id === 'f_category_sel') {
       const showNew = e.target.value === '__new__';
@@ -262,26 +272,22 @@
     let cats = getCats();
     let finalCat = cat;
     if (!finalCat) {
-      // Wenn nix gewählt, nimm erste Kategorie oder lege „unsortiert“ an
       if (cats.length === 0) {
         cats = [{ key: 'unsortiert', label: 'Unsortiert', cover: DEFAULT_CAT_COVER }];
         setCats(cats);
       }
       finalCat = cats[0].key;
     }
-    // Neue Kategorie gleich anlegen
     if (!cats.some(c => c.key === finalCat)) {
       const labelGuess = finalCat.replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
       cats = [...cats, { key: finalCat, label: labelGuess || finalCat, cover: DEFAULT_CAT_COVER }];
       setCats(cats);
     }
 
-    // Cover: wenn leer, nimm Cover der Kategorie oder Default
     if (!cov) {
       const catObj = cats.find(c => c.key === finalCat);
       cov = catObj?.cover || DEFAULT_CAT_COVER;
     }
-
     if (!src) return alert('Bitte MP3-URL (RAW) eintragen.'), false;
 
     const s = { id, title: ttl, artist: art, category: finalCat, cover: cov, src, duration: dur };
@@ -291,7 +297,6 @@
     return true;
   };
 
-  // ---------- Buttons: Song neu / MP3-Import ----------
   $('#btnSongNew', bar).onclick = () => openModal('Song hinzufügen', songFormHTML(), () => saveSongFromModal());
 
   $('#btnMp3Helper', bar).onclick = () => {
@@ -318,7 +323,7 @@
     fi.click();
   };
 
-  // ---------- Rest: Discard + Artist-Std ----------
+  // ---------- Rest ----------
   $('#btnDiscard', bar).onclick = () => {
     if (!confirm('Entwürfe verwerfen? (lokale Änderungen werden gelöscht)')) return;
     localStorage.removeItem(SKEY_SONGS);
