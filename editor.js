@@ -1,16 +1,15 @@
-/* === R.A.L.F. Editor v4.1 ===
-   - Songs-Editor als breite Tabelle mit Kopfzeile
+/* === R.A.L.F. Editor v4.1.1 ===
+   - FIX: Artist-Zelle im Songs-Dialog (kein verschachteltes Template mehr)
+   - Songs-Editor als breite Tabelle
    - Kategorie-Dropdown (+ Neue Kategorie…)
-   - MP3-Importer (lokale Datei lesen -> Dauer, ID/Titel aus Name, RAW-URL Vorlage)
+   - MP3-Importer
    - Übernehmen = Draft speichern + Seite neu rendern
-   - Sichtbare Versionsanzeige im Panel
    Draft-Keys:
      ralf_songs_json        { songs: [...] }
      ralf_categories_json   { categories: [...] }
 */
 
 (function () {
-  // --- State absichern ---
   if (!window.state || typeof window.state !== "object") window.state = {};
   if (!Array.isArray(window.state.songs))      window.state.songs = [];
   if (!Array.isArray(window.state.categories)) window.state.categories = [];
@@ -18,18 +17,14 @@
   const STD_COVER = "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true";
   const DEFAULT_ARTIST = "R.A.L.F.";
 
-  // Draft speichern + neu rendern
   const saveDraftSongs = () =>
     localStorage.setItem("ralf_songs_json", JSON.stringify({ songs: state.songs }, null, 2));
   const saveDraftCats = () =>
     localStorage.setItem("ralf_categories_json", JSON.stringify({ categories: state.categories }, null, 2));
   const rerender = () => typeof window.renderSite === "function" && window.renderSite(state.songs, state.categories);
 
-  // Helpers
   const $ = (sel, root = document) => root.querySelector(sel);
-  const slug = (str) => (str || "")
-    .toString().trim().toLowerCase()
-    .replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
+  const slug = (str) => (str || "").toString().trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
   const stripExt = (name) => name.replace(/\.[^.]+$/, "");
   function downloadFile(name, text) {
     const blob = new Blob([text], { type: "application/json" });
@@ -39,13 +34,13 @@
     URL.revokeObjectURL(url);
   }
 
-  // ---------- Toolbar ----------
+  // Toolbar
   const panel = document.createElement("div");
   panel.className = "fixed top-4 right-4 bg-neutral-900 text-white p-4 rounded-lg shadow-xl z-50 flex flex-col gap-2 ring-1 ring-white/10";
   panel.innerHTML = `
     <div class="flex items-center gap-2 mb-1">
       <span class="text-xs px-2 py-0.5 rounded bg-orange-600">EDIT</span>
-      <span class="text-xs text-neutral-300">v4.1</span>
+      <span class="text-xs text-neutral-300">v4.1.1</span>
     </div>
     <div class="grid grid-cols-1 gap-2">
       <button id="btnSongs"     class="bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded">Songs verwalten</button>
@@ -78,7 +73,7 @@
     location.reload();
   };
 
-  // ---------- Modal Helper ----------
+  // Modal
   function makeModal(title, withApply) {
     const wrap = document.createElement("div");
     wrap.className = "fixed inset-0 bg-black/70 flex items-center justify-center z-50";
@@ -99,9 +94,9 @@
     return wrap;
   }
 
-  // ---------- Kategorien-Editor ----------
+  // Kategorien-Editor
   function openCategoryEditor() {
-    const modal = makeModal("Kategorien verwalten", /*withApply*/ true);
+    const modal = makeModal("Kategorien verwalten", true);
     const content = modal.querySelector(".content");
 
     const table = document.createElement("table");
@@ -139,10 +134,7 @@
     const add = document.createElement("button");
     add.textContent = "+ Neue Kategorie";
     add.className = "mt-3 bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded";
-    add.onclick = () => {
-      state.categories.push({ key:"neu", label:"Neue Kategorie", cover: STD_COVER });
-      modal.remove(); openCategoryEditor();
-    };
+    add.onclick = () => { state.categories.push({ key:"neu", label:"Neue Kategorie", cover: STD_COVER }); modal.remove(); openCategoryEditor(); };
 
     content.append(table, add);
 
@@ -150,9 +142,9 @@
     if (apply) apply.onclick = () => { saveDraftCats(); rerender(); };
   }
 
-  // ---------- Songs-Editor (breite Tabelle) ----------
+  // Songs-Editor
   function openSongEditor() {
-    const modal = makeModal("Songs verwalten", /*withApply*/ true);
+    const modal = makeModal("Songs verwalten", true);
     const content = modal.querySelector(".content");
 
     const table = document.createElement("table");
@@ -174,6 +166,13 @@
     `;
     const tbody = table.querySelector("tbody");
 
+    // Hinweis, wenn keine Songs existieren
+    if (!state.songs.length) {
+      const trInfo = document.createElement("tr");
+      trInfo.innerHTML = `<td colspan="8" class="py-4 text-neutral-400">Noch keine Songs. Nutze „+ Neuer Song“ oder den MP3-Importer.</td>`;
+      tbody.appendChild(trInfo);
+    }
+
     const buildCatSelect = (currentKey) => {
       const sel = document.createElement("select");
       sel.className = "w-full px-2 py-1 rounded bg-neutral-800";
@@ -184,12 +183,8 @@
         if (c.key === currentKey) opt.selected = true;
         sel.appendChild(opt);
       });
-      const sep = document.createElement("option");
-      sep.disabled = true; sep.textContent = "────────";
-      sel.appendChild(sep);
-      const plus = document.createElement("option");
-      plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…";
-      sel.appendChild(plus);
+      const sep = document.createElement("option"); sep.disabled = true; sep.textContent = "────────"; sel.appendChild(sep);
+      const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       return sel;
     };
 
@@ -199,7 +194,7 @@
       tr.innerHTML = `
         <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.id||""}"      placeholder="id"></td>
         <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.title||""}"   placeholder="Titel"></td>
-        <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.artist||"${DEFAULT_ARTIST}"}" placeholder="Artist"></td>
+        <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.artist || DEFAULT_ARTIST}" placeholder="Artist"></td>
         <td class="py-2 pr-2 slot-cat"></td>
         <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.cover||""}"   placeholder="Cover-URL"></td>
         <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${s.src||""}"     placeholder="Song-URL (RAW)"></td>
@@ -218,11 +213,7 @@
       let catSel = buildCatSelect(s.category);
       catCell.appendChild(catSel);
 
-      const rebuildCatSel = (current) => {
-        catCell.innerHTML = "";
-        catSel = buildCatSelect(current);
-        catCell.appendChild(catSel);
-      };
+      const rebuildCatSel = (current) => { catCell.innerHTML = ""; catSel = buildCatSelect(current); catCell.appendChild(catSel); };
 
       catSel.onchange = (e) => {
         const v = e.target.value;
@@ -232,8 +223,7 @@
           const key = slug(label) || "neu";
           if (!state.categories.some(c => c.key === key)) {
             state.categories.push({ key, label, cover: STD_COVER });
-            saveDraftCats();
-            rerender();
+            saveDraftCats(); rerender();
           }
           state.songs[i].category = key;
           rebuildCatSel(key);
@@ -265,12 +255,11 @@
     if (apply) apply.onclick = () => { saveDraftSongs(); rerender(); };
   }
 
-  // ---------- MP3-Importer ----------
+  // MP3-Importer
   function openMp3Importer() {
-    const modal = makeModal("MP3 importieren", /*withApply*/ true);
+    const modal = makeModal("MP3 importieren", true);
     const content = modal.querySelector(".content");
 
-    // Form
     const form = document.createElement("div");
     form.className = "grid md:grid-cols-2 gap-3 text-sm";
     form.innerHTML = `
@@ -307,64 +296,49 @@
         <input id="mp3src" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/DATEI.mp3">
       </div>
       <p class="md:col-span-2 text-xs text-neutral-400 mt-2">
-        Hinweis: Hochladen zur GitHub-Repo musst du weiterhin manuell machen (Datei nach <code>/assets/songs</code>).
-        Diese Maske legt dir den Song lokal an und erzeugt die korrekte RAW-URL.
+        Hinweis: Upload zur GitHub-Repo weiterhin manuell (Datei nach <code>/assets/songs</code>). 
+        Diese Maske legt den Song lokal an und erzeugt die passende RAW-URL.
       </p>
     `;
     content.appendChild(form);
 
-    // Kategorie-Select
     const catSlot = $("#mp3catSlot", form);
-    const catSelect = buildCatSelect(state.categories[0]?.key || "");
-    catSlot.appendChild(catSelect);
+    catSlot.appendChild(buildCatSelect(state.categories[0]?.key || ""));
 
     function buildCatSelect(currentKey) {
       const sel = document.createElement("select");
       sel.className = "w-full px-2 py-2 rounded bg-neutral-800";
       state.categories.forEach(c => {
         const opt = document.createElement("option");
-        opt.value = c.key;
-        opt.textContent = `${c.label} (${c.key})`;
+        opt.value = c.key; opt.textContent = `${c.label} (${c.key})`;
         if (c.key === currentKey) opt.selected = true;
         sel.appendChild(opt);
       });
-      const sep = document.createElement("option");
-      sep.disabled = true; sep.textContent = "────────";
-      sel.appendChild(sep);
-      const plus = document.createElement("option");
-      plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…";
-      sel.appendChild(plus);
+      const sep = document.createElement("option"); sep.disabled = true; sep.textContent = "────────"; sel.appendChild(sep);
+      const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       sel.onchange = (e) => {
         if (e.target.value === "__new__") {
-          const label = prompt("Name der neuen Kategorie:");
-          if (!label) { rebuild(); return; }
+          const label = prompt("Name der neuen Kategorie:"); if (!label) { rebuild(); return; }
           const key = slug(label) || "neu";
-          if (!state.categories.some(c => c.key === key)) {
-            state.categories.push({ key, label, cover: STD_COVER });
-            saveDraftCats(); rerender();
-          }
+          if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
           rebuild(key);
         }
       };
       function rebuild(key = currentKey) {
-        catSlot.innerHTML = "";
-        catSlot.appendChild(buildCatSelect(key));
+        catSlot.innerHTML = ""; catSlot.appendChild(buildCatSelect(key));
       }
       return sel;
     }
 
-    // Datei-Metadaten lesen
     const fi = $("#mp3file", form);
     fi.onchange = () => {
       const file = fi.files?.[0]; if (!file) return;
       const fname = file.name;
       $("#mp3id", form).value    = slug(stripExt(fname));
       $("#mp3title", form).value = stripExt(fname);
-      // RAW-URL Vorlage
       $("#mp3src", form).value =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encodeURIComponent(fname)}`;
 
-      // Dauer lesen
       const objURL = URL.createObjectURL(file);
       const a = new Audio(); a.src = objURL;
       a.addEventListener('loadedmetadata', () => {
@@ -377,7 +351,6 @@
       }, { once: true });
     };
 
-    // Übernehmen = Song anlegen
     const apply = modal.querySelector(".apply");
     if (apply) apply.onclick = () => {
       const id     = $("#mp3id", form).value.trim();
@@ -390,16 +363,14 @@
 
       if (!id || !title || !src) { alert("ID, Titel und Song-URL sind Pflicht."); return; }
 
-      const cats = state.categories;
-      const catObj = cats.find(c => c.key === cat);
+      const catObj = state.categories.find(c => c.key === cat);
       const finalCover = cover || catObj?.cover || STD_COVER;
 
-      // ersetzen/nachschieben
       const rest = state.songs.filter(x => x.id !== id);
       state.songs = [...rest, { id, title, artist, category: cat, cover: finalCover, src, duration: dur }];
 
       saveDraftSongs(); rerender();
-      alert("Song angelegt (lokal). Lade die MP3 nach /assets/songs in dein Repo hoch.");
+      alert("Song angelegt (lokal). Lade die MP3 ins Repo nach /assets/songs hoch.");
     };
   }
 
