@@ -23,6 +23,7 @@
 
   <style>
     img, audio, video { -webkit-user-drag: none; user-select: none; }
+
     /* Pulsierende orange Linie */
     @keyframes pulseLine {
       0%, 100% { box-shadow: 0 0 0 rgba(234,88,12,0.0); }
@@ -33,8 +34,13 @@
       background: #ea580c;
       animation: pulseLine 3.2s ease-in-out infinite;
     }
+
     /* dezenter Hover-Glow für Karten und Buttons */
     .glow-hover:hover { box-shadow: 0 0 22px rgba(234,88,12,0.35); }
+
+    /* Fallback: Download-Button im Audio verbergen (Browser-spezifisch) */
+    audio::-internal-media-controls-download-button { display: none; }
+    audio::-webkit-media-controls-enclosure { overflow: hidden; }
   </style>
 </head>
 
@@ -60,6 +66,14 @@
     </div>
   </div>
 
+  <!-- ▶ Alles abspielen -->
+  <div class="max-w-7xl mx-auto px-4 mt-3">
+    <button id="playAllBtn"
+      class="w-full sm:w-auto inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-semibold rounded-full px-4 py-2 glow-hover">
+      ▶ Alles abspielen
+    </button>
+  </div>
+
   <!-- Kategorien-Leiste -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-6 flex flex-wrap gap-2"></div>
 
@@ -80,13 +94,28 @@
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
       <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" alt="">
       <div class="flex-1 min-w-0">
-        <div id="playerTitle" class="text-sm font-semibold truncate"></div>
-        <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div id="playerTitle" class="text-sm font-semibold truncate"></div>
+            <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
+          </div>
+          <div class="text-[11px] text-neutral-400 shrink-0" id="queuePos" aria-label="Position in Warteschlange"></div>
+        </div>
         <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
           <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
         </div>
       </div>
-      <audio id="audio" controls class="w-64" preload="metadata"></audio>
+
+      <!-- Neue Controls -->
+      <div class="flex items-center gap-2">
+        <button id="prevBtn" class="px-2 py-1.5 rounded-lg border border-neutral-700 hover:border-neutral-500">⏮</button>
+        <button id="nextBtn" class="px-2 py-1.5 rounded-lg border border-neutral-700 hover:border-neutral-500">⏭</button>
+        <button id="shuffleBtn"
+          class="px-2 py-1.5 rounded-lg border border-neutral-700 hover:border-neutral-500"
+          title="Shuffle umschalten">🔀</button>
+      </div>
+
+      <audio id="audio" controls controlsList="nodownload" class="w-64" preload="metadata"></audio>
       <button id="closeBtn" class="px-3 py-1.5 text-sm rounded-lg border border-neutral-700 hover:border-neutral-500">Schließen</button>
     </div>
   </div>
@@ -95,15 +124,24 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.2</span>
+      <span>v4.4 · Playlist + No-DL</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
+    const state = {
+      songs: [],
+      categories: [],
+      cat: 'all',
+      query: '',
+      active: null,
+      queue: [],         // array of song ids
+      queueIndex: -1,    // current index in queue
+      shuffle: false
+    };
 
-    // lokale Overrides aus Editor (optional)
+    // lokale Overrides aus Editor (optional – derzeit immer erlaubt)
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
@@ -117,6 +155,9 @@
 
     // Daten laden
     async function loadData() {
+      // Shuffle-Status wiederherstellen
+      try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
+
       loadLocalOverrides();
 
       if (!state.songs.length) {
@@ -134,11 +175,18 @@
 
       applyQueryFromURL();
       render();
+
       // Deep-Link ?id=
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) {
         const s = state.songs.find(x => x.id === pid);
-        if (s) setTimeout(() => playSong(s), 150);
+        if (s) {
+          // Queue passend zur aktuellen Sicht setzen und an das Lied springen
+          ensureQueueForVisible();
+          const pos = state.queue.findIndex(id => id === s.id);
+          if (pos >= 0) state.queueIndex = pos;
+          setTimeout(() => playSong(s), 150);
+        }
       }
     }
 
@@ -156,6 +204,8 @@
       p.set('cat', cat);
       history.replaceState(null, '', '?' + p.toString());
       render();
+      // Queue invalid, neu bilden beim nächsten PlayAll oder Card-Play
+      state.queue = []; state.queueIndex = -1;
     }
 
     function setQuery(q) {
@@ -164,6 +214,96 @@
       if (state.query) p.set('q', state.query); else p.delete('q');
       history.replaceState(null, '', '?' + p.toString());
       render();
+      state.queue = []; state.queueIndex = -1;
+    }
+
+    // Sichtbare Songs nach aktuellem Filter (genau wie renderSongs)
+    function getVisibleSongs() {
+      const q = state.query;
+      return (state.songs || []).filter(s =>
+        (state.cat === 'all' || s.category === state.cat) &&
+        (!q || (s.title || '').toLowerCase().includes(q) || (s.artist || '').toLowerCase().includes(q))
+      );
+    }
+
+    function ensureQueueForVisible() {
+      const vis = getVisibleSongs();
+      let ids = vis.map(s => s.id);
+      if (state.shuffle) ids = shuffleArray(ids);
+      state.queue = ids;
+      state.queueIndex = ids.length ? 0 : -1;
+      updateQueuePos();
+    }
+
+    function startQueueFromVisible() {
+      ensureQueueForVisible();
+      if (state.queueIndex === -1) return;
+      const firstId = state.queue[state.queueIndex];
+      const song = state.songs.find(x => x.id === firstId);
+      if (song) playSong(song);
+    }
+
+    function shuffleArray(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function next() {
+      if (!state.queue.length) return;
+      if (state.queueIndex < state.queue.length - 1) {
+        state.queueIndex++;
+        const id = state.queue[state.queueIndex];
+        const s = state.songs.find(x => x.id === id);
+        if (s) playSong(s);
+      } else {
+        // Ende erreicht – nichts tun (kein Repeat in Phase 1)
+      }
+      updateQueuePos();
+    }
+
+    function prev() {
+      if (!state.queue.length) return;
+      if (state.queueIndex > 0) {
+        state.queueIndex--;
+        const id = state.queue[state.queueIndex];
+        const s = state.songs.find(x => x.id === id);
+        if (s) playSong(s);
+      }
+      updateQueuePos();
+    }
+
+    function toggleShuffle() {
+      state.shuffle = !state.shuffle;
+      try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
+      // Queue auf aktueller Sicht neu bilden
+      const currentId = state.active;
+      ensureQueueForVisible();
+      // Versuchen, auf aktuellem Song zu bleiben
+      const pos = state.queue.findIndex(id => id === currentId);
+      state.queueIndex = pos >= 0 ? pos : (state.queue.length ? 0 : -1);
+      updateQueuePos();
+      updateShuffleButton();
+    }
+
+    function updateShuffleButton() {
+      const btn = document.getElementById('shuffleBtn');
+      if (!btn) return;
+      btn.className = 'px-2 py-1.5 rounded-lg border ' +
+        (state.shuffle
+          ? 'border-orange-500 bg-orange-600/20 text-white'
+          : 'border-neutral-700 hover:border-neutral-500');
+      btn.title = state.shuffle ? 'Shuffle ist an' : 'Shuffle umschalten';
+    }
+
+    function updateQueuePos() {
+      const el = document.getElementById('queuePos');
+      if (!el) return;
+      if (!state.queue.length || state.queueIndex < 0) { el.textContent = ''; return; }
+      el.textContent = (state.queueIndex + 1) + ' / ' + state.queue.length;
     }
 
     // Kategorien-Leiste
@@ -218,18 +358,14 @@
       });
     }
 
-    // Songs rendern (Label nutzen statt Key)
+    // Songs rendern (Label statt Key; robustes Cover via onerror falls gewünscht)
     function renderSongs() {
       const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
-      const q = state.query;
       const grid = document.getElementById('songsGrid');
       const empty = document.getElementById('emptyState');
       grid.innerHTML = '';
 
-      const filtered = (state.songs || []).filter(s =>
-        (state.cat === 'all' || s.category === state.cat) &&
-        (!q || (s.title || '').toLowerCase().includes(q) || (s.artist || '').toLowerCase().includes(q))
-      );
+      const filtered = getVisibleSongs();
 
       if (!filtered.length) {
         empty.classList.remove('hidden');
@@ -242,7 +378,8 @@
           'group bg-neutral-900/70 border border-orange-600 rounded-2xl overflow-hidden hover:border-orange-500 transition glow-hover';
         card.innerHTML = `
           <div class="aspect-[3/4] overflow-hidden relative">
-            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            <img src="${s.cover}" alt="${s.title}"
+                 class="w-full h-full object-cover group-hover:scale-105 transition" />
           </div>
           <div class="p-4">
             <div class="text-xs text-neutral-300 mb-1">${labelByKey.get(s.category) || s.category || ''}</div>
@@ -254,7 +391,13 @@
               </button>
             </div>
           </div>`;
-        card.querySelector('.play').onclick = () => playSong(s);
+        card.querySelector('.play').onclick = () => {
+          // Wenn der Nutzer eine Karte spielt, Queue auf sichtbare Songs setzen und auf diesen springen
+          ensureQueueForVisible();
+          const pos = state.queue.findIndex(id => id === s.id);
+          state.queueIndex = pos >= 0 ? pos : 0;
+          playSong(s);
+        };
         grid.appendChild(card);
       });
     }
@@ -276,14 +419,22 @@
       audio.src = s.src;
       audio.play().catch(() => {});
       audio.ontimeupdate = () => {
-        const pct = Math.min(100, Math.round((audio.currentTime / (s.duration || Math.max(audio.duration || 1, 1))) * 100));
+        const base = s.duration || audio.duration || 1;
+        const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
       };
+      // Auto-Weiter
+      audio.onended = () => next();
 
       // Deep link aktualisieren
       const p = new URLSearchParams(location.search);
       p.set('id', s.id);
       history.replaceState(null, '', '?' + p.toString());
+
+      // Queue-Position aktualisieren
+      const pos = state.queue.findIndex(id => id === s.id);
+      if (pos >= 0) state.queueIndex = pos;
+      updateQueuePos();
     }
 
     // Close player
@@ -313,6 +464,14 @@
       }
     });
 
+    // ▶ Alles abspielen
+    document.getElementById('playAllBtn').addEventListener('click', () => startQueueFromVisible());
+
+    // Player Buttons
+    document.getElementById('prevBtn').addEventListener('click', prev);
+    document.getElementById('nextBtn').addEventListener('click', next);
+    document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
+
     // Editor nur laden, wenn ?edit=1
     (function maybeLoadEditor(){
       if (new URLSearchParams(location.search).get("edit") === "1") {
@@ -324,6 +483,8 @@
 
     // Start
     loadData();
+    // Initial UI für Shuffle
+    updateShuffleButton();
   </script>
 </body>
 </html>
