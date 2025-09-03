@@ -46,10 +46,12 @@
 
   <!-- Kopf mit Titel + Suche -->
   <div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
-    <div>
+    <!-- TITLE BOX: dezente Kachel mit orange Border -->
+    <div class="inline-block rounded-2xl border border-orange-600/35 px-4 py-3 bg-neutral-900/50">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
-      <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
+      <p class="text-neutral-300 text-sm">Musik von mir, für Euch.</p>
     </div>
+
     <!-- Suchfeld: permanenter, dezenter, oranger Rahmen + Glow bei Fokus -->
     <div class="shrink-0 w-64 sm:w-64">
       <input id="search" type="text" placeholder="Suche Songs"
@@ -92,7 +94,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex items-center justify-between">
       <div>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</div>
-      <div class="text-neutral-500/80">v1.0 · Stable Design</div>
+      <div class="text-neutral-500/80">v1.1 · Showcase Frame</div>
     </div>
   </footer>
 
@@ -297,7 +299,7 @@
     });
   </script>
 
-  <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
+  <!-- Editor lädt nur, wenn ?edit=1 -->
   <script>
     if (new URLSearchParams(location.search).get("edit") === "1") {
       var s = document.createElement("script");
