@@ -124,7 +124,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.4 · Playlist + No-DL</span>
+      <span>v4.5 · Category Play</span>
     </div>
   </footer>
 
@@ -141,7 +141,7 @@
       shuffle: false
     };
 
-    // lokale Overrides aus Editor (optional – derzeit immer erlaubt)
+    // lokale Overrides aus Editor (optional – aktuell erlaubt)
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
@@ -155,7 +155,6 @@
 
     // Daten laden
     async function loadData() {
-      // Shuffle-Status wiederherstellen
       try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
 
       loadLocalOverrides();
@@ -181,13 +180,13 @@
       if (pid) {
         const s = state.songs.find(x => x.id === pid);
         if (s) {
-          // Queue passend zur aktuellen Sicht setzen und an das Lied springen
           ensureQueueForVisible();
           const pos = state.queue.findIndex(id => id === s.id);
           if (pos >= 0) state.queueIndex = pos;
           setTimeout(() => playSong(s), 150);
         }
       }
+      updateShuffleButton();
     }
 
     function applyQueryFromURL() {
@@ -204,7 +203,6 @@
       p.set('cat', cat);
       history.replaceState(null, '', '?' + p.toString());
       render();
-      // Queue invalid, neu bilden beim nächsten PlayAll oder Card-Play
       state.queue = []; state.queueIndex = -1;
     }
 
@@ -217,13 +215,17 @@
       state.queue = []; state.queueIndex = -1;
     }
 
-    // Sichtbare Songs nach aktuellem Filter (genau wie renderSongs)
+    // Sichtbare Songs (Filter)
     function getVisibleSongs() {
       const q = state.query;
       return (state.songs || []).filter(s =>
         (state.cat === 'all' || s.category === state.cat) &&
         (!q || (s.title || '').toLowerCase().includes(q) || (s.artist || '').toLowerCase().includes(q))
       );
+    }
+
+    function songsByCategory(key) {
+      return (state.songs || []).filter(s => s.category === key);
     }
 
     function ensureQueueForVisible() {
@@ -243,6 +245,18 @@
       if (song) playSong(song);
     }
 
+    function startQueueForCategory(key) {
+      // unabhängig von der Suche: wirklich alle der Kategorie
+      let ids = songsByCategory(key).map(s => s.id);
+      if (!ids.length) return;
+      if (state.shuffle) ids = shuffleArray(ids);
+      state.queue = ids;
+      state.queueIndex = 0;
+      const first = state.songs.find(x => x.id === ids[0]);
+      if (first) playSong(first);
+      updateQueuePos();
+    }
+
     function shuffleArray(arr) {
       const a = arr.slice();
       for (let i = a.length - 1; i > 0; i--) {
@@ -259,8 +273,6 @@
         const id = state.queue[state.queueIndex];
         const s = state.songs.find(x => x.id === id);
         if (s) playSong(s);
-      } else {
-        // Ende erreicht – nichts tun (kein Repeat in Phase 1)
       }
       updateQueuePos();
     }
@@ -279,10 +291,12 @@
     function toggleShuffle() {
       state.shuffle = !state.shuffle;
       try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
-      // Queue auf aktueller Sicht neu bilden
+      // Queue neu aufbauen und auf aktuellem Track bleiben, wenn möglich
       const currentId = state.active;
-      ensureQueueForVisible();
-      // Versuchen, auf aktuellem Song zu bleiben
+      let ids = state.queue.slice();
+      if (!ids.length) ids = getVisibleSongs().map(s => s.id);
+      ids = state.shuffle ? shuffleArray(ids) : ids; // bei Ausschalten Reihenfolge beibehalten
+      state.queue = ids;
       const pos = state.queue.findIndex(id => id === currentId);
       state.queueIndex = pos >= 0 ? pos : (state.queue.length ? 0 : -1);
       updateQueuePos();
@@ -306,11 +320,14 @@
       el.textContent = (state.queueIndex + 1) + ' / ' + state.queue.length;
     }
 
-    // Kategorien-Leiste
+    // Kategorien-Leiste (mit Abspiel-Button je Kategorie)
     function renderCatBar() {
       const bar = document.getElementById('catBar');
       bar.innerHTML = '';
 
+      // "Alle" Chip (ohne Extra-Play, dafür gibt's den großen Button)
+      const allWrap = document.createElement('div');
+      allWrap.className = 'flex items-center gap-1';
       const allBtn = document.createElement('button');
       allBtn.textContent = 'Alle';
       allBtn.className =
@@ -319,18 +336,37 @@
           ? 'bg-orange-600 border-orange-500 text-white'
           : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
       allBtn.onclick = () => setCat('all');
-      bar.appendChild(allBtn);
+      allWrap.appendChild(allBtn);
+      bar.appendChild(allWrap);
 
+      // Kategorien mit kleinem ▶
       state.categories.forEach(c => {
-        const b = document.createElement('button');
-        b.textContent = c.label || c.key;
-        b.className =
+        const wrap = document.createElement('div');
+        wrap.className = 'flex items-center gap-1';
+
+        const chip = document.createElement('button');
+        chip.textContent = c.label || c.key;
+        chip.className =
           'px-3 py-1.5 rounded-full border text-sm transition glow-hover ' +
           (state.cat === c.key
             ? 'bg-orange-600 border-orange-500 text-white'
             : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
-        b.onclick = () => setCat(c.key);
-        bar.appendChild(b);
+        chip.onclick = () => setCat(c.key);
+
+        const play = document.createElement('button');
+        play.innerText = '▶';
+        play.title = 'Kategorie abspielen';
+        play.className =
+          'px-2 py-1 rounded-full border text-sm ' +
+          'bg-orange-600 text-white border-orange-500 hover:bg-orange-500 glow-hover';
+        play.onclick = (e) => {
+          e.stopPropagation();
+          startQueueForCategory(c.key);
+        };
+
+        wrap.appendChild(chip);
+        wrap.appendChild(play);
+        bar.appendChild(wrap);
       });
     }
 
@@ -358,7 +394,7 @@
       });
     }
 
-    // Songs rendern (Label statt Key; robustes Cover via onerror falls gewünscht)
+    // Songs rendern
     function renderSongs() {
       const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
       const grid = document.getElementById('songsGrid');
@@ -392,7 +428,6 @@
             </div>
           </div>`;
         card.querySelector('.play').onclick = () => {
-          // Wenn der Nutzer eine Karte spielt, Queue auf sichtbare Songs setzen und auf diesen springen
           ensureQueueForVisible();
           const pos = state.queue.findIndex(id => id === s.id);
           state.queueIndex = pos >= 0 ? pos : 0;
@@ -423,7 +458,6 @@
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
       };
-      // Auto-Weiter
       audio.onended = () => next();
 
       // Deep link aktualisieren
@@ -431,7 +465,7 @@
       p.set('id', s.id);
       history.replaceState(null, '', '?' + p.toString());
 
-      // Queue-Position aktualisieren
+      // Queue-Position synchronisieren
       const pos = state.queue.findIndex(id => id === s.id);
       if (pos >= 0) state.queueIndex = pos;
       updateQueuePos();
@@ -483,8 +517,6 @@
 
     // Start
     loadData();
-    // Initial UI für Shuffle
-    updateShuffleButton();
   </script>
 </body>
 </html>
