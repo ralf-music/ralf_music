@@ -1,12 +1,11 @@
-/* === R.A.L.F. Editor v4.1.3 ===
-   - Songs-Dialog komplett auf DOM-API (ohne innerHTML) -> robust
-   - Fallback-Hinweis wenn keine Songs
-   - Kategorie-Dropdown (+ Neue Kategorie…)
-   - MP3-Importer
-   - Übernehmen = Draft speichern + Seite neu rendern
-   Draft-Keys:
-     ralf_songs_json        { songs: [...] }
-     ralf_categories_json   { categories: [...] }
+/* === R.A.L.F. Editor v4.2 ===
+   - Auto-ID:
+       * MP3-Importer: aus Dateinamen Beyond_the_Silence.mp3 -> ID: beyond_the_silence, Titel: Beyond the Silence
+       * Songs-Editor: beim Verlassen des Titels, falls ID leer, automatisch ID aus Titel generieren
+   - Duplicate-Check (IDs):
+       * Prüft beim Übernehmen (Songs-Editor + MP3-Importer) und beim "Songs speichern (JSON)"
+       * Zeigt Alert mit Liste, bricht Speichern ab
+   - DOM-basierter Songs-Editor, Kategorien-Editor, MP3-Importer
 */
 
 (function () {
@@ -18,16 +17,42 @@
   const STD_COVER = "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true";
   const DEFAULT_ARTIST = "R.A.L.F.";
 
+  // ---------- Draft & Render ----------
   const saveDraftSongs = () =>
     localStorage.setItem("ralf_songs_json", JSON.stringify({ songs: state.songs }, null, 2));
   const saveDraftCats = () =>
     localStorage.setItem("ralf_categories_json", JSON.stringify({ categories: state.categories }, null, 2));
   const rerender = () => typeof window.renderSite === "function" && window.renderSite(state.songs, state.categories);
 
+  // ---------- Helpers ----------
   const $ = (sel, root = document) => root.querySelector(sel);
-  const slug = (str) => (str || "").toString().trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
-  const stripExt = (name) => name.replace(/\.[^.]+$/, "");
-  const esc = (v) => String(v ?? "");
+  const stripExt = (name) => String(name || "").replace(/\.[^.]+$/, "");
+
+  // ID aus Dateiname: lower, behalte "_" , alles andere raus, Mehrfach-Unterstriche auf einen
+  function idFromFilename(name) {
+    const base = stripExt(name);
+    return base
+      .replace(/[^A-Za-z0-9_]+/g, "_")
+      .replace(/_+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .toLowerCase();
+  }
+
+  // ID aus Titel: Leerzeichen -> "_", unerlaubte raus, lowercase
+  function idFromTitle(title) {
+    return String(title || "")
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/[^A-Za-z0-9_]+/g, "")
+      .replace(/_+/g, "_")
+      .toLowerCase();
+  }
+
+  // Titel aus Dateiname: "_" -> " ", alle Wörter kapitalisieren
+  function titleFromFilename(name) {
+    const base = stripExt(name).replace(/_/g, " ").trim();
+    return base.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1));
+  }
 
   function downloadFile(name, text) {
     const blob = new Blob([text], { type: "application/json" });
@@ -37,13 +62,23 @@
     URL.revokeObjectURL(url);
   }
 
+  function duplicateIds(songs) {
+    const seen = new Map(); // id -> count
+    for (const s of songs) {
+      const id = String(s.id || "").trim();
+      if (!id) continue;
+      seen.set(id, (seen.get(id) || 0) + 1);
+    }
+    return [...seen.entries()].filter(([,count]) => count > 1).map(([id]) => id);
+  }
+
   // ---------- Toolbar ----------
   const panel = document.createElement("div");
   panel.className = "fixed top-4 right-4 bg-neutral-900 text-white p-4 rounded-lg shadow-xl z-50 flex flex-col gap-2 ring-1 ring-white/10";
   panel.innerHTML = `
     <div class="flex items-center gap-2 mb-1">
       <span class="text-xs px-2 py-0.5 rounded bg-orange-600">EDIT</span>
-      <span class="text-xs text-neutral-300">v4.1.3</span>
+      <span class="text-xs text-neutral-300">v4.2</span>
     </div>
     <div class="grid grid-cols-1 gap-2">
       <button id="btnSongs"     class="bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded">Songs verwalten</button>
@@ -62,6 +97,11 @@
   $("#btnMp3").onclick   = openMp3Importer;
 
   $("#btnSave").onclick = () => {
+    const dups = duplicateIds(state.songs);
+    if (dups.length) {
+      alert("Duplikate gefunden (IDs):\n\n" + dups.join("\n") + "\n\nBitte korrigieren, bevor du speicherst.");
+      return;
+    }
     downloadFile("songs.json", JSON.stringify({ songs: state.songs }, null, 2));
     alert("Songs gespeichert – JSON im Repo ersetzen.");
   };
@@ -124,7 +164,7 @@
       tdKey.className = "py-2 pr-2";
       const inKey = document.createElement("input");
       inKey.className = "w-full px-2 py-1 rounded bg-neutral-800";
-      inKey.value = esc(c.key);
+      inKey.value = c.key || "";
       inKey.placeholder = "key";
       inKey.oninput = e => state.categories[i].key = e.target.value.trim();
       tdKey.appendChild(inKey);
@@ -133,7 +173,7 @@
       tdLabel.className = "py-2 pr-2";
       const inLabel = document.createElement("input");
       inLabel.className = "w-full px-2 py-1 rounded bg-neutral-800";
-      inLabel.value = esc(c.label);
+      inLabel.value = c.label || "";
       inLabel.placeholder = "Label";
       inLabel.oninput = e => state.categories[i].label = e.target.value.trim();
       tdLabel.appendChild(inLabel);
@@ -142,7 +182,7 @@
       tdCover.className = "py-2 pr-2";
       const inCover = document.createElement("input");
       inCover.className = "w-full px-2 py-1 rounded bg-neutral-800";
-      inCover.value = esc(c.cover || STD_COVER);
+      inCover.value = c.cover || STD_COVER;
       inCover.placeholder = "Cover-URL";
       inCover.oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
       tdCover.appendChild(inCover);
@@ -171,7 +211,7 @@
     if (apply) apply.onclick = () => { saveDraftCats(); rerender(); };
   }
 
-  // ---------- Songs-Editor (reine DOM-API) ----------
+  // ---------- Songs-Editor ----------
   function openSongEditor() {
     const modal = makeModal("Songs verwalten", true);
     const content = modal.querySelector(".content");
@@ -224,7 +264,7 @@
         if (v === "__new__") {
           const label = prompt("Name der neuen Kategorie:");
           if (!label) { rebuildCatSel(cell, state.songs[i].category, i); return; }
-          const key = slug(label) || "neu";
+          const key = idFromTitle(label) || "neu";
           if (!state.categories.some(c => c.key === key)) {
             state.categories.push({ key, label, cover: STD_COVER });
             saveDraftCats(); rerender();
@@ -254,17 +294,25 @@
 
       const tdId = document.createElement("td"); tdId.className="py-2 pr-2";
       const inId = document.createElement("input"); inId.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inId.value = esc(s.id); inId.placeholder="id";
+      inId.value = s.id || ""; inId.placeholder="id";
       inId.oninput = e => state.songs[i].id = e.target.value; tdId.appendChild(inId);
 
       const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2";
       const inTitle = document.createElement("input"); inTitle.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inTitle.value = esc(s.title); inTitle.placeholder="Titel";
-      inTitle.oninput = e => state.songs[i].title = e.target.value; tdTitle.appendChild(inTitle);
+      inTitle.value = s.title || ""; inTitle.placeholder="Titel";
+      // Auto-ID aus Titel, falls ID leer, beim Verlassen des Feldes
+      inTitle.onblur = () => {
+        if (!inId.value.trim()) {
+          inId.value = idFromTitle(inTitle.value);
+          state.songs[i].id = inId.value;
+        }
+      };
+      inTitle.oninput = e => state.songs[i].title = e.target.value;
+      tdTitle.appendChild(inTitle);
 
       const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2";
       const inArtist = document.createElement("input"); inArtist.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inArtist.value = esc(s.artist || DEFAULT_ARTIST); inArtist.placeholder="Artist";
+      inArtist.value = s.artist || DEFAULT_ARTIST; inArtist.placeholder="Artist";
       inArtist.oninput = e => state.songs[i].artist = e.target.value; tdArtist.appendChild(inArtist);
 
       const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2";
@@ -272,17 +320,17 @@
 
       const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2";
       const inCover = document.createElement("input"); inCover.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inCover.value = esc(s.cover || ""); inCover.placeholder="Cover-URL";
+      inCover.value = s.cover || ""; inCover.placeholder="Cover-URL";
       inCover.oninput = e => state.songs[i].cover = e.target.value; tdCover.appendChild(inCover);
 
       const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2";
       const inSrc = document.createElement("input"); inSrc.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inSrc.value = esc(s.src || ""); inSrc.placeholder="Song-URL (RAW)";
+      inSrc.value = s.src || ""; inSrc.placeholder="Song-URL (RAW)";
       inSrc.oninput = e => state.songs[i].src = e.target.value; tdSrc.appendChild(inSrc);
 
       const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2";
       const inDur = document.createElement("input"); inDur.className="w-full px-2 py-1 rounded bg-neutral-800";
-      inDur.value = esc(s.duration || 0); inDur.placeholder="Sek.";
+      inDur.value = String(s.duration || 0); inDur.placeholder="Sek.";
       inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0; tdDur.appendChild(inDur);
 
       const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2";
@@ -313,7 +361,15 @@
     content.append(table, add);
 
     const apply = modal.querySelector(".apply");
-    if (apply) apply.onclick = () => { saveDraftSongs(); rerender(); };
+    if (apply) apply.onclick = () => {
+      const dups = duplicateIds(state.songs);
+      if (dups.length) {
+        alert("Duplikate gefunden (IDs):\n\n" + dups.join("\n") + "\n\nBitte korrigieren, bevor du übernimmst.");
+        return;
+      }
+      saveDraftSongs(); rerender();
+      alert("Songs übernommen (lokal gespeichert).");
+    };
   }
 
   // ---------- MP3-Importer ----------
@@ -334,7 +390,7 @@
       </div>
       <div>
         <label class="text-xs text-neutral-400">ID (slug)</label>
-        <input id="mp3id" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="z.B. glasherz">
+        <input id="mp3id" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="z.B. beyond_the_silence">
       </div>
       <div>
         <label class="text-xs text-neutral-400">Titel</label>
@@ -342,7 +398,7 @@
       </div>
       <div>
         <label class="text-xs text-neutral-400">Artist</label>
-        <input id="mp3artist" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" value="${esc(DEFAULT_ARTIST)}">
+        <input id="mp3artist" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" value="${DEFAULT_ARTIST}">
       </div>
       <div>
         <label class="text-xs text-neutral-400">Kategorie</label>
@@ -363,6 +419,7 @@
     `;
     content.appendChild(form);
 
+    // Kategorie-Select
     const catSlot = $("#mp3catSlot", form);
     catSlot.appendChild(buildCatSelect(state.categories[0]?.key || ""));
 
@@ -379,8 +436,9 @@
       const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       sel.onchange = (e) => {
         if (e.target.value === "__new__") {
-          const label = prompt("Name der neuen Kategorie:"); if (!label) { rebuild(); return; }
-          const key = slug(label) || "neu";
+          const label = prompt("Name der neuen Kategorie:"); 
+          if (!label) { rebuild(); return; }
+          const key = idFromTitle(label) || "neu";
           if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
           rebuild(key);
         }
@@ -389,12 +447,13 @@
       return sel;
     }
 
+    // Datei-Metadaten lesen + Auto-ID/Titel/URL
     const fi = $("#mp3file", form);
     fi.onchange = () => {
       const file = fi.files?.[0]; if (!file) return;
       const fname = file.name;
-      $("#mp3id", form).value    = slug(stripExt(fname));
-      $("#mp3title", form).value = stripExt(fname);
+      $("#mp3id", form).value    = idFromFilename(fname);
+      $("#mp3title", form).value = titleFromFilename(fname);
       $("#mp3src", form).value =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${encodeURIComponent(fname)}`;
 
@@ -410,6 +469,7 @@
       }, { once: true });
     };
 
+    // Übernehmen = Song anlegen, Duplicate-Check
     const apply = modal.querySelector(".apply");
     if (apply) apply.onclick = () => {
       const id     = $("#mp3id", form).value.trim();
@@ -422,9 +482,18 @@
 
       if (!id || !title || !src) { alert("ID, Titel und Song-URL sind Pflicht."); return; }
 
+      // Duplikat-Check: aktuelle + neuer Eintrag
+      const future = [...state.songs.filter(x => x.id !== id), { id, title, artist, category: cat, cover, src, duration: dur }];
+      const dups = duplicateIds(future);
+      if (dups.length) {
+        alert("Duplikate gefunden (IDs):\n\n" + dups.join("\n") + "\n\nBitte ID anpassen.");
+        return;
+      }
+
       const catObj = state.categories.find(c => c.key === cat);
       const finalCover = cover || catObj?.cover || STD_COVER;
 
+      // ersetzen/nachschieben
       const rest = state.songs.filter(x => x.id !== id);
       state.songs = [...rest, { id, title, artist, category: cat, cover: finalCover, src, duration: dur }];
 
