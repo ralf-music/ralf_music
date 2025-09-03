@@ -1,13 +1,13 @@
 {
   "categories": [
     {
-      "key": "test",
-      "label": "test",
+      "key": "deutschrap",
+      "label": "Deutsch Rap",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
-      "key": "test2",
-      "label": "test2",
+      "key": "trance_techno",
+      "label": "Trance / Techno",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
