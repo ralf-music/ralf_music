@@ -16,44 +16,38 @@
     /* Pulsierende, dezente, orange Trennlinie (Herzschlag) */
     .pulse-line {
       border: 0;
-      height: 4px;                    /* breiter und sichtbar */
-      background: #ea580c;            /* orange-600 */
+      height: 4px;
+      background: #ea580c;         /* orange-600 */
       opacity: 0.85;
       animation: pulseGlow 2s ease-in-out infinite;
       box-shadow: 0 0 6px rgba(234, 88, 12, .35);
     }
     @keyframes pulseGlow {
-      0%, 100% {
-        opacity: .85;
-        box-shadow: 0 0 6px rgba(234, 88, 12, .35);
-      }
-      50% {
-        opacity: 1;
-        box-shadow: 0 0 14px rgba(234, 88, 12, .55);
-      }
+      0%, 100% { opacity: .85; box-shadow: 0 0 6px rgba(234, 88, 12, .35); }
+      50%      { opacity: 1;   box-shadow: 0 0 14px rgba(234, 88, 12, .55); }
     }
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <!-- Banner mit Logo -->
+  <!-- Banner -->
   <header class="relative w-full h-[180px] bg-black">
     <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner"
          class="absolute inset-0 w-full h-full object-fill" />
   </header>
 
-  <!-- Orange Trennlinie mit sanftem Herzschlag -->
+  <!-- Trennlinie -->
   <hr class="pulse-line my-4" />
 
-  <!-- Kopf mit Titel + Suche -->
-  <div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
-    <!-- TITLE BOX: dezente Kachel mit orange Border -->
+  <!-- Kopf: Titel-Kachel + Suche -->
+  <div class="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap items-start justify-between gap-4">
+    <!-- Kachel -->
     <div class="inline-block rounded-2xl border border-orange-600/35 px-4 py-3 bg-neutral-900/50">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
       <p class="text-neutral-300 text-sm">Musik von mir, für Euch.</p>
     </div>
 
-    <!-- Suchfeld: permanenter, dezenter, oranger Rahmen + Glow bei Fokus -->
-    <div class="shrink-0 w-64 sm:w-64">
+    <!-- Suche: mobil 100%, ab sm kompakt rechts -->
+    <div class="w-full sm:w-64 md:w-72 lg:w-80 sm:ml-auto">
       <input id="search" type="text" placeholder="Suche Songs"
         class="w-full rounded-2xl bg-neutral-800/80 border border-orange-600/35 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400
                focus:outline-none focus:ring-2 focus:ring-orange-500/60 focus:border-orange-500/60
@@ -63,7 +57,7 @@
     </div>
   </div>
 
-  <!-- Kategorien-Leiste (mehr Abstand nach unten) -->
+  <!-- Kategorien-Leiste -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-8 mb-8 flex flex-wrap gap-2"></div>
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
@@ -76,6 +70,7 @@
     <p id="emptyState" class="text-neutral-400 hidden">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
+  <!-- Player -->
   <div id="playerDock" class="fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
       <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" />
@@ -91,10 +86,11 @@
     </div>
   </div>
 
+  <!-- Footer mit Version -->
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex items-center justify-between">
       <div>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</div>
-      <div class="text-neutral-500/80">v1.1 · Showcase Frame</div>
+      <div class="text-neutral-500/80">v1.1.1 · Search Fit</div>
     </div>
   </footer>
 
@@ -168,13 +164,10 @@
         const b = document.createElement('button');
         b.textContent = label;
         b.className =
-          // Standard: immer dezenter oranger Rahmen
           'px-3 py-1.5 rounded-full border border-orange-600/35 text-sm transition ' +
           (active
-            ? // aktiv: voller Orange-Look
-              'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
-            : // inaktiv: dezent, Glow/Border boost auf Hover
-              'bg-neutral-900 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
+            ? 'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
+            : 'bg-neutral-900 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
         b.onclick = onClick;
         return b;
       };
@@ -196,9 +189,7 @@
       state.categories.forEach(c => {
         const card = document.createElement('div');
         card.className =
-          // Standard: dezenter oranger Rahmen
           'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600/35 transition ' +
-          // Hover: Glow/Border stärker
           'hover:border-orange-500/55 hover:drop-shadow-[0_0_0.7rem_rgba(249,115,22,0.30)]';
         card.onclick = () => setCat(c.key);
         card.innerHTML = `
@@ -227,9 +218,7 @@
       filtered.forEach(s => {
         const card = document.createElement('div');
         card.className =
-          // Standard: dezenter oranger Rahmen
           'group bg-neutral-900/70 border border-orange-600/35 rounded-2xl overflow-hidden transition ' +
-          // Hover: Glow/Border stärker
           'hover:border-orange-500/60 hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.30)]';
         card.innerHTML = `
   <div class="aspect-square overflow-hidden relative">
@@ -282,7 +271,7 @@
     loadData();
   </script>
 
-  <!-- Extra Script für Spulen -->
+  <!-- Scrubbing -->
   <script>
     const audio = document.getElementById('audio');
     const bar   = document.getElementById('playerBar');
@@ -299,11 +288,11 @@
     });
   </script>
 
-  <!-- Editor lädt nur, wenn ?edit=1 -->
+  <!-- Editor nur mit ?edit=1 -->
   <script>
     if (new URLSearchParams(location.search).get("edit") === "1") {
       var s = document.createElement("script");
-      s.src = "/editor.js?v=4.2";  // Cache-Breaker für Editor
+      s.src = "/editor.js?v=4.2";
       document.body.appendChild(s);
     }
   </script>
