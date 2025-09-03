@@ -1,15 +1,6 @@
 {
   "songs": [
     {
-      "id": "glasherz",
-      "title": "Glasherz",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://cdn2.suno.ai/8ee37d92-27c2-496b-85aa-776270293755.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Glasherz.mp3",
-      "duration": 242
-    },
-    {
       "id": "beyond_the_silence",
       "title": "Beyond the Silence",
       "artist": "R.A.L.F.",
@@ -35,6 +26,96 @@
       "cover": "https://cdn2.suno.ai/93328fd6-817e-4724-98e0-7055518b8b0c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Edge_of_Tomorrow.mp3",
       "duration": 243
+    },
+    {
+      "id": "augen_sagen_mehr",
+      "title": "Augen Sagen Mehr",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/0b19b8da-8d5d-4267-964c-9618b3d8f4a0.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Augen_sagen_mehr.mp3",
+      "duration": 124
+    },
+    {
+      "id": "falsch_verstanden",
+      "title": "Falsch Verstanden",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/b0b68fe2-b9a9-4aa0-b2f4-58bc29d9e3ef.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Falsch_verstanden.mp3",
+      "duration": 228
+    },
+    {
+      "id": "farben_der_liebe",
+      "title": "Farben Der Liebe",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/7e07a32c-4817-4bcf-a832-d9266588ed10.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Farben_der_Liebe.mp3",
+      "duration": 149
+    },
+    {
+      "id": "glasherz",
+      "title": "Glasherz",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/8ee37d92-27c2-496b-85aa-776270293755.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Glasherz.mp3",
+      "duration": 189
+    },
+    {
+      "id": "kein_wort_von_dir",
+      "title": "Kein Wort Von Dir",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/ab56a6fa-464c-48cd-a6da-d2c967b08c73.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Kein_Wort_von_dir.mp3",
+      "duration": 174
+    },
+    {
+      "id": "keine_heimat",
+      "title": "Keine Heimat",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/87c179d8-7da5-43d0-881e-9d7d2ad8f01f.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Keine%20Heimat.mp3",
+      "duration": 179
+    },
+    {
+      "id": "mitten_in_der_nacht",
+      "title": "Mitten In Der Nacht",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/b8383193-d799-4883-a8e0-b8ad4a9c4490.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Mitten_in_der_Nacht.mp3",
+      "duration": 158
+    },
+    {
+      "id": "ohne_limit",
+      "title": "Ohne Limit",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/7ff309d8-70a7-4ff8-af86-16a2cae1358c.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Ohne_Limit.mp3",
+      "duration": 127
+    },
+    {
+      "id": "straßen_bleiben_kalt",
+      "title": "Straßen Bleiben Kalt",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/d72bb764-a392-4802-aca6-67188bce4ad7.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Straßen_bleiben_kalt.mp3",
+      "duration": 177
+    },
+    {
+      "id": "zwischen_uns",
+      "title": "Zwischen Uns",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/5f935de2-9ac8-4518-8d0a-24c4e14679a1.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Zwischen_uns.mp3",
+      "duration": 163
     }
   ]
 }
