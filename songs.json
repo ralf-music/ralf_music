@@ -161,6 +161,114 @@
       "cover": "https://cdn2.suno.ai/90f936bf-24c9-40f6-8c5a-ff80b1575688.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_V%E2%80%93Ruhig_in_mir.mp3",
       "duration": 219
+    },
+    {
+      "id": "bass_like_fire",
+      "title": "Bass Like Fire",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/fdabd991-7481-4bed-a153-bdde6bd68308.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Bass_Like_Fire.mp3",
+      "duration": 276
+    },
+    {
+      "id": "dancefloor_love",
+      "title": "Dancefloor Love",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/97424fd3-8f8b-4f06-abba-05ea40dc9237.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Dancefloor_Love.mp3",
+      "duration": 175
+    },
+    {
+      "id": "feel_the_light",
+      "title": "Feel The Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/38cfc01f-0a65-4415-890c-345ae305912f.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Feel_the_Light.mp3",
+      "duration": 189
+    },
+    {
+      "id": "fire_within",
+      "title": "Fire Within",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/77658970-6e81-4c69-a746-768c001c81eb.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Fire_Within.mp3",
+      "duration": 299
+    },
+    {
+      "id": "freedom_is_life",
+      "title": "Freedom Is Life",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/e5f7f9a2-c589-4a50-9e4d-30019c600965.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Freedom_Is_Life.mp3",
+      "duration": 192
+    },
+    {
+      "id": "get_ready_now",
+      "title": "Get Ready Now",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/c805ac55-dc16-4907-892d-fc40cf3bf2e0.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Get_Ready_Now.mp3",
+      "duration": 194
+    },
+    {
+      "id": "lost_in_the_light",
+      "title": "Lost In The Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/91ff6ed5-6ab1-40e7-9fb3-1f4b988f485b.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Lost_in_the_Light.mp3",
+      "duration": 184
+    },
+    {
+      "id": "no_gravity",
+      "title": "No Gravity",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/2b6fcda8-4561-4482-b25e-74c98edd420f.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/No_Gravity.mp3",
+      "duration": 223
+    },
+    {
+      "id": "through_the_storm",
+      "title": "Through The Storm",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/86357cec-c7c9-4871-b719-ec799f716e15.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Through_the_Storm.mp3",
+      "duration": 260
+    },
+    {
+      "id": "through_your_eyes",
+      "title": "Through Your Eyes",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/8ccf06bd-7aef-49be-b799-046785a6a939.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Through_Your_Eyes.mp3",
+      "duration": 197
+    },
+    {
+      "id": "weightless_sky",
+      "title": "Weightless Sky",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/43337011-681e-485a-be89-edb3da15bfd5.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Weightless_Sky.mp3",
+      "duration": 170
+    },
+    {
+      "id": "within_the_flow",
+      "title": "Within The Flow",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/4f1308c1-ad22-4213-910e-fa424161f808.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Within_the_Flow.mp3",
+      "duration": 153
     }
   ]
 }
