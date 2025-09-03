@@ -125,6 +125,42 @@
       "cover": "https://cdn2.suno.ai/09b04063-6815-4171-82b6-7ecfc5bf0a7e.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard%E2%80%93Stoff_in_Tueten.mp3",
       "duration": 177
+    },
+    {
+      "id": "howard_ii_tiefer_fall",
+      "title": "Howard II – Tiefer Fall",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/421f637f-aed9-4276-839a-12fcc517639c.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_II%E2%80%93Tiefer_Fall.mp3",
+      "duration": 190
+    },
+    {
+      "id": "howard_iii_keine_freiheit",
+      "title": "Howard III – Keine Freiheit",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/63ef8298-a945-416c-bc52-66a8320e01cc.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_III%E2%80%93Keine_Freiheit.mp3",
+      "duration": 181
+    },
+    {
+      "id": "howard_iv_wie_ein_schatten",
+      "title": "Howard IV – Wie Ein Schatten",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/c822ec80-f1a4-486f-b022-cd4c8a558558.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_IV%E2%80%93Wie_ein_Schatten.mp3",
+      "duration": 149
+    },
+    {
+      "id": "howard_v_ruhig_in_mir",
+      "title": "Howard V – Ruhig In Mir",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/90f936bf-24c9-40f6-8c5a-ff80b1575688.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_V%E2%80%93Ruhig_in_mir.mp3",
+      "duration": 219
     }
   ]
 }
