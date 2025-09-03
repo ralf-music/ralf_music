@@ -4,28 +4,37 @@
       "id": "glasherz",
       "title": "Glasherz",
       "artist": "R.A.L.F.",
-      "category": "Deutsch Rap",
+      "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/8ee37d92-27c2-496b-85aa-776270293755.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Glasherz.mp3",
       "duration": 242
     },
     {
-      "id": "",
-      "title": "",
-      "artist": "R.A.L.F.",
-      "category": "test",
-      "cover": "",
-      "src": "",
-      "duration": 0
-    },
-    {
       "id": "beyond_the_silence",
       "title": "Beyond the Silence",
       "artist": "R.A.L.F.",
-      "category": "test2",
+      "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/41408c24-5290-44a4-969a-4a0f5aa1cc4c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Beyond_the_Silence.mp3",
       "duration": 276
+    },
+    {
+      "id": "zwischen_den_zeilen",
+      "title": "Zwischen Den Zeilen",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/04df5287-fcc1-4e1f-b985-03ff9f8ef357.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Zwischen_den_Zeilen.mp3",
+      "duration": 163
+    },
+    {
+      "id": "edge_of_tomorrow",
+      "title": "Edge Of Tomorrow",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/93328fd6-817e-4724-98e0-7055518b8b0c.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Edge_of_Tomorrow.mp3",
+      "duration": 243
     }
   ]
 }
