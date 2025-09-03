@@ -50,18 +50,18 @@
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
       <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
     </div>
-    <!-- Suchfeld (mit orange Glow bei Fokus) -->
+    <!-- Suchfeld: permanenter, dezenter, oranger Rahmen + Glow bei Fokus -->
     <div class="shrink-0 w-64 sm:w-80">
       <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
-        class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400
-               focus:outline-none focus:ring-2 focus:ring-orange-500/60
+        class="w-full rounded-2xl bg-neutral-800/80 border border-orange-600/35 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400
+               focus:outline-none focus:ring-2 focus:ring-orange-500/60 focus:border-orange-500/60
                hover:ring-orange-500/20
                drop-shadow-[0_0_0_rgba(0,0,0,0)]
                focus:drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]">
     </div>
   </div>
 
-  <!-- Kategorien-Leiste (MEHR ABSTAND nach unten: mb-8) -->
+  <!-- Kategorien-Leiste (mehr Abstand nach unten) -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-8 mb-8 flex flex-wrap gap-2"></div>
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
@@ -98,7 +98,6 @@
   <script>
     const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
 
-    // Editor kann diese Funktion nutzen, um live neu zu rendern
     window.renderSite = function(songs, categories){
       if (songs) state.songs = Array.isArray(songs) ? songs : (songs.songs || []);
       if (categories) state.categories = Array.isArray(categories) ? categories : (categories.categories || []);
@@ -124,7 +123,6 @@
       applyQueryFromURL();
       render();
 
-      // Deep-Link: ?id=<song.id>
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) {
         const s = state.songs.find(x=>x.id===pid);
@@ -154,7 +152,6 @@
       render();
     }
 
-    // Label-Lookup (Anzeige des Labels statt Key)
     function getCategoryLabel(key) {
       const cat = state.categories.find(c => c.key === key);
       return cat ? (cat.label || cat.key) : key;
@@ -168,16 +165,18 @@
         const b = document.createElement('button');
         b.textContent = label;
         b.className =
-          'px-3 py-1.5 rounded-full border text-sm transition ' +
+          // Standard: immer dezenter oranger Rahmen
+          'px-3 py-1.5 rounded-full border border-orange-600/35 text-sm transition ' +
           (active
-            ? 'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
-            : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
+            ? // aktiv: voller Orange-Look
+              'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
+            : // inaktiv: dezent, Glow/Border boost auf Hover
+              'bg-neutral-900 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
         b.onclick = onClick;
         return b;
       };
 
       bar.appendChild(mkBtn('Alle', state.cat === 'all', () => setCat('all')));
-
       state.categories.forEach(c => {
         bar.appendChild(mkBtn(c.label || c.key, state.cat === c.key, () => setCat(c.key)));
       });
@@ -194,8 +193,10 @@
       state.categories.forEach(c => {
         const card = document.createElement('div');
         card.className =
-          'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-orange-500/50 transition ' +
-          'hover:drop-shadow-[0_0_0.7rem_rgba(249,115,22,0.30)]';
+          // Standard: dezenter oranger Rahmen
+          'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600/35 transition ' +
+          // Hover: Glow/Border stärker
+          'hover:border-orange-500/55 hover:drop-shadow-[0_0_0.7rem_rgba(249,115,22,0.30)]';
         card.onclick = () => setCat(c.key);
         card.innerHTML = `
           <img src="${c.cover}" alt="${c.label || c.key}" class="w-full h-32 object-cover bg-black" />
@@ -223,7 +224,9 @@
       filtered.forEach(s => {
         const card = document.createElement('div');
         card.className =
-          'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden transition ' +
+          // Standard: dezenter oranger Rahmen
+          'group bg-neutral-900/70 border border-orange-600/35 rounded-2xl overflow-hidden transition ' +
+          // Hover: Glow/Border stärker
           'hover:border-orange-500/60 hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.30)]';
         card.innerHTML = `
   <div class="aspect-square overflow-hidden relative">
