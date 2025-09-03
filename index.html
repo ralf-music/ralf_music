@@ -21,21 +21,28 @@
          class="absolute inset-0 w-full h-full object-fill" />
   </header>
 
-  <!-- Text unter dem Banner -->
+  <!-- Orange Trennlinie -->
+  <div class="h-px bg-gradient-to-r from-orange-500/0 via-orange-500/70 to-orange-500/0"></div>
+
+  <!-- Kopf mit Titel + Suche -->
   <div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
     <div>
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
       <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
     </div>
-    <!-- Suchfeld -->
+    <!-- Suchfeld (mit orange Glow bei Fokus) -->
     <div class="shrink-0 w-64 sm:w-80">
       <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
-             class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white/30">
+        class="w-full rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400
+               focus:outline-none focus:ring-2 focus:ring-orange-500/60
+               hover:ring-orange-500/20
+               drop-shadow-[0_0_0_rgba(0,0,0,0)]
+               focus:drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]">
     </div>
   </div>
 
-  <!-- Kategorien-Leiste -->
-  <div id="catBar" class="max-w-7xl mx-auto px-4 mt-4 flex flex-wrap gap-2"></div>
+  <!-- Kategorien-Leiste (mehr Luft + Glow auf Hover/Active) -->
+  <div id="catBar" class="max-w-7xl mx-auto px-4 mt-8 mb-2 flex flex-wrap gap-2"></div>
 
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
@@ -127,7 +134,7 @@
       render();
     }
 
-    // --- NEU: Label-Lookup für Kategorien ---
+    // Label-Lookup
     function getCategoryLabel(key) {
       const cat = state.categories.find(c => c.key === key);
       return cat ? (cat.label || cat.key) : key;
@@ -136,59 +143,80 @@
     function renderCatBar() {
       const bar = document.getElementById('catBar');
       bar.innerHTML = '';
-      const allBtn = document.createElement('button');
-      allBtn.textContent = 'Alle';
-      allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition ' + (state.cat === 'all' ? 'bg-orange-600 border-orange-500 text-white' : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-neutral-500');
-      allBtn.onclick = () => setCat('all');
-      bar.appendChild(allBtn);
+
+      const mkBtn = (label, active, onClick) => {
+        const b = document.createElement('button');
+        b.textContent = label;
+        b.className =
+          'px-3 py-1.5 rounded-full border text-sm transition ' +
+          (active
+            ? 'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
+            : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
+        b.onclick = onClick;
+        return b;
+      };
+
+      bar.appendChild(mkBtn('Alle', state.cat === 'all', () => setCat('all')));
 
       state.categories.forEach(c => {
-        const b = document.createElement('button');
-        b.textContent = c.label || c.key;
-        b.className = 'px-3 py-1.5 rounded-full border text-sm transition ' + (state.cat === c.key ? 'bg-orange-600 border-orange-500 text-white' : 'bg-neutral-900 border-neutral-700 text-neutral-300 hover:border-neutral-500');
-        b.onclick = () => setCat(c.key);
-        bar.appendChild(b);
+        bar.appendChild(mkBtn(c.label || c.key, state.cat === c.key, () => setCat(c.key)));
       });
     }
+
     function renderCategoryGallery() {
       const showGallery = state.cat === 'all' && !state.query;
       const section = document.getElementById('catGallery');
       section.classList.toggle('hidden', !showGallery);
       if (!showGallery) return;
+
       const grid = document.getElementById('catGrid');
       grid.innerHTML = '';
       state.categories.forEach(c => {
         const card = document.createElement('div');
-        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-neutral-600';
+        card.className =
+          'group relative cursor-pointer rounded-2xl overflow-hidden border border-neutral-800 hover:border-orange-500/50 transition ' +
+          'hover:drop-shadow-[0_0_0.7rem_rgba(249,115,22,0.30)]';
         card.onclick = () => setCat(c.key);
         card.innerHTML = `
-          <img src="${c.cover}" alt="${c.label || c.key}" class="w-full h-32 object-object-contain bg-black" />
-          <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <span class="font-semibold text-white text-sm sm:text-base">${c.label || c.key}</span>
+          <img src="${c.cover}" alt="${c.label || c.key}" class="w-full h-32 object-cover bg-black" />
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 flex items-center justify-center transition">
+            <span class="font-semibold text-white text-sm sm:text-base drop-shadow-[0_0_0.5rem_rgba(0,0,0,0.6)]">${c.label || c.key}</span>
           </div>`;
         grid.appendChild(card);
       });
     }
+
     function renderSongs() {
       const q = state.query;
-      const filtered = state.songs.filter(s => (state.cat === 'all' || s.category === state.cat) && (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q)));
+      const filtered = state.songs.filter(s =>
+        (state.cat === 'all' || s.category === state.cat) &&
+        (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
+      );
+
       const grid = document.getElementById('songsGrid');
       const empty = document.getElementById('emptyState');
       grid.innerHTML = '';
-      if (filtered.length === 0) { empty.classList.remove('hidden'); return; } else empty.classList.add('hidden');
+
+      if (filtered.length === 0) { empty.classList.remove('hidden'); return; }
+      else empty.classList.add('hidden');
+
       filtered.forEach(s => {
         const card = document.createElement('div');
-        card.className = 'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition';
+        card.className =
+          'group bg-neutral-900/70 border border-neutral-800 rounded-2xl overflow-hidden transition ' +
+          'hover:border-orange-500/60 hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.30)]';
         card.innerHTML = `
   <div class="aspect-square overflow-hidden relative">
     <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
   </div>
   <div class="p-4">
-    <div class="text-xs text-neutral-400 mb-1">${getCategoryLabel(s.category)}</div>
+    <div class="text-xs text-neutral-300 mb-1">${getCategoryLabel(s.category)}</div>
     <h3 class="font-semibold leading-tight">${s.title}</h3>
     <div class="text-sm text-neutral-400">${s.artist}</div>
     <div class="mt-3 flex justify-end">
-      <button class="play bg-white/90 text-black text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-white">
+      <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 shadow
+                     hover:bg-orange-500 hover:brightness-110
+                     drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)] hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.45)]">
         ▶ Abspielen
       </button>
     </div>
@@ -197,6 +225,7 @@
         grid.appendChild(card);
       });
     }
+
     function playSong(s) {
       state.active = s.id;
       document.getElementById('playerDock').classList.remove('hidden');
@@ -211,11 +240,13 @@
         document.getElementById('playerProgress').style.width = pct + '%';
       };
     }
+
     function render() {
       renderCatBar();
       renderCategoryGallery();
       renderSongs();
     }
+
     document.getElementById('closeBtn').onclick = () => {
       document.getElementById('playerDock').classList.add('hidden');
       document.getElementById('audio').pause();
