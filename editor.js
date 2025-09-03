@@ -1,7 +1,7 @@
-/* === R.A.L.F. Editor v4.1.2 ===
-   - FIX: Songs-Dialog robust (Escaping, kein NodeList-Destructuring)
-   - try/catch mit Fehlermeldung im Modal
-   - Breite Tabelle, Kategorie-Dropdown (+ Neue Kategorie…)
+/* === R.A.L.F. Editor v4.1.3 ===
+   - Songs-Dialog komplett auf DOM-API (ohne innerHTML) -> robust
+   - Fallback-Hinweis wenn keine Songs
+   - Kategorie-Dropdown (+ Neue Kategorie…)
    - MP3-Importer
    - Übernehmen = Draft speichern + Seite neu rendern
    Draft-Keys:
@@ -10,6 +10,7 @@
 */
 
 (function () {
+  // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
   if (!Array.isArray(window.state.songs))      window.state.songs = [];
   if (!Array.isArray(window.state.categories)) window.state.categories = [];
@@ -26,7 +27,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const slug = (str) => (str || "").toString().trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
   const stripExt = (name) => name.replace(/\.[^.]+$/, "");
-  const esc = (v) => String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;").replace(/>/g,"&gt;");
+  const esc = (v) => String(v ?? "");
 
   function downloadFile(name, text) {
     const blob = new Blob([text], { type: "application/json" });
@@ -36,13 +37,13 @@
     URL.revokeObjectURL(url);
   }
 
-  // Toolbar
+  // ---------- Toolbar ----------
   const panel = document.createElement("div");
   panel.className = "fixed top-4 right-4 bg-neutral-900 text-white p-4 rounded-lg shadow-xl z-50 flex flex-col gap-2 ring-1 ring-white/10";
   panel.innerHTML = `
     <div class="flex items-center gap-2 mb-1">
       <span class="text-xs px-2 py-0.5 rounded bg-orange-600">EDIT</span>
-      <span class="text-xs text-neutral-300">v4.1.2</span>
+      <span class="text-xs text-neutral-300">v4.1.3</span>
     </div>
     <div class="grid grid-cols-1 gap-2">
       <button id="btnSongs"     class="bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded">Songs verwalten</button>
@@ -75,7 +76,7 @@
     location.reload();
   };
 
-  // Modal
+  // ---------- Modal Helper ----------
   function makeModal(title, withApply) {
     const wrap = document.createElement("div");
     wrap.className = "fixed inset-0 bg-black/70 flex items-center justify-center z-50";
@@ -96,43 +97,69 @@
     return wrap;
   }
 
-  // Kategorien-Editor
+  // ---------- Kategorien-Editor ----------
   function openCategoryEditor() {
     const modal = makeModal("Kategorien verwalten", true);
     const content = modal.querySelector(".content");
 
     const table = document.createElement("table");
     table.className = "w-full text-sm";
-    table.innerHTML = `
-      <thead>
-        <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 w-40">Key</th>
-          <th class="py-2 pr-2 w-48">Label</th>
-          <th class="py-2 pr-2">Cover-URL</th>
-          <th class="py-2 pl-2 w-28">Aktion</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-    const tbody = table.querySelector("tbody");
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    trh.className = "text-left text-neutral-400";
+    ["Key","Label","Cover-URL","Aktion"].forEach((h,i)=>{
+      const th = document.createElement("th");
+      th.className = `py-2 ${i<2?"pr-2": i===2?"pr-2": "pl-2"} ${i===0?"w-40": i===1?"w-48": i===3?"w-28":""}`;
+      th.textContent = h;
+      trh.appendChild(th);
+    });
+    thead.appendChild(trh);
+    const tbody = document.createElement("tbody");
 
     state.categories.forEach((c, i) => {
       const tr = document.createElement("tr");
       tr.className = "border-t border-white/10";
-      tr.innerHTML = `
-        <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(c.key)}"   placeholder="key"></td>
-        <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(c.label)}" placeholder="Label"></td>
-        <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(c.cover || STD_COVER)}" placeholder="Cover-URL"></td>
-        <td class="py-2 pl-2"><button class="del bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm">Löschen</button></td>
-      `;
-      const inputs = tr.querySelectorAll("input");
-      inputs[0].oninput = e => state.categories[i].key   = e.target.value.trim();
-      inputs[1].oninput = e => state.categories[i].label = e.target.value.trim();
-      inputs[2].oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
-      tr.querySelector(".del").onclick = () => { state.categories.splice(i, 1); tr.remove(); };
+
+      const tdKey = document.createElement("td");
+      tdKey.className = "py-2 pr-2";
+      const inKey = document.createElement("input");
+      inKey.className = "w-full px-2 py-1 rounded bg-neutral-800";
+      inKey.value = esc(c.key);
+      inKey.placeholder = "key";
+      inKey.oninput = e => state.categories[i].key = e.target.value.trim();
+      tdKey.appendChild(inKey);
+
+      const tdLabel = document.createElement("td");
+      tdLabel.className = "py-2 pr-2";
+      const inLabel = document.createElement("input");
+      inLabel.className = "w-full px-2 py-1 rounded bg-neutral-800";
+      inLabel.value = esc(c.label);
+      inLabel.placeholder = "Label";
+      inLabel.oninput = e => state.categories[i].label = e.target.value.trim();
+      tdLabel.appendChild(inLabel);
+
+      const tdCover = document.createElement("td");
+      tdCover.className = "py-2 pr-2";
+      const inCover = document.createElement("input");
+      inCover.className = "w-full px-2 py-1 rounded bg-neutral-800";
+      inCover.value = esc(c.cover || STD_COVER);
+      inCover.placeholder = "Cover-URL";
+      inCover.oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
+      tdCover.appendChild(inCover);
+
+      const tdAct = document.createElement("td");
+      tdAct.className = "py-2 pl-2";
+      const del = document.createElement("button");
+      del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
+      del.textContent = "Löschen";
+      del.onclick = () => { state.categories.splice(i, 1); tr.remove(); };
+      tdAct.appendChild(del);
+
+      tr.append(tdKey, tdLabel, tdCover, tdAct);
       tbody.appendChild(tr);
     });
 
+    table.append(thead, tbody);
     const add = document.createElement("button");
     add.textContent = "+ Neue Kategorie";
     add.className = "mt-3 bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded";
@@ -144,124 +171,152 @@
     if (apply) apply.onclick = () => { saveDraftCats(); rerender(); };
   }
 
-  // Songs-Editor (robust)
+  // ---------- Songs-Editor (reine DOM-API) ----------
   function openSongEditor() {
     const modal = makeModal("Songs verwalten", true);
     const content = modal.querySelector(".content");
 
-    try {
-      const table = document.createElement("table");
-      table.className = "w-full text-sm";
-      table.innerHTML = `
-        <thead>
-          <tr class="text-left text-neutral-400">
-            <th class="py-2 pr-2 w-40">ID</th>
-            <th class="py-2 pr-2 w-56">Titel</th>
-            <th class="py-2 pr-2 w-40">Artist</th>
-            <th class="py-2 pr-2 w-48">Kategorie</th>
-            <th class="py-2 pr-2">Cover-URL</th>
-            <th class="py-2 pr-2">Song-URL</th>
-            <th class="py-2 pr-2 w-24">Dauer</th>
-            <th class="py-2 pl-2 w-28">Aktion</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      `;
-      const tbody = table.querySelector("tbody");
+    const table = document.createElement("table");
+    table.className = "w-full text-sm";
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    trh.className = "text-left text-neutral-400";
+    const heads = [
+      {t:"ID", cls:"py-2 pr-2 w-40"},
+      {t:"Titel", cls:"py-2 pr-2 w-56"},
+      {t:"Artist", cls:"py-2 pr-2 w-40"},
+      {t:"Kategorie", cls:"py-2 pr-2 w-48"},
+      {t:"Cover-URL", cls:"py-2 pr-2"},
+      {t:"Song-URL", cls:"py-2 pr-2"},
+      {t:"Dauer", cls:"py-2 pr-2 w-24"},
+      {t:"Aktion", cls:"py-2 pl-2 w-28"},
+    ];
+    heads.forEach(h=>{
+      const th = document.createElement("th");
+      th.className = h.cls;
+      th.textContent = h.t;
+      trh.appendChild(th);
+    });
+    thead.appendChild(trh);
+    const tbody = document.createElement("tbody");
 
-      if (!state.songs.length) {
-        const trInfo = document.createElement("tr");
-        trInfo.innerHTML = `<td colspan="8" class="py-4 text-neutral-400">Noch keine Songs. Nutze „+ Neuer Song“ oder den MP3-Importer.</td>`;
-        tbody.appendChild(trInfo);
-      }
-
-      const buildCatSelect = (currentKey) => {
-        const sel = document.createElement("select");
-        sel.className = "w-full px-2 py-1 rounded bg-neutral-800";
-        state.categories.forEach(c => {
-          const opt = document.createElement("option");
-          opt.value = c.key;
-          opt.textContent = `${c.label} (${c.key})`;
-          if (c.key === currentKey) opt.selected = true;
-          sel.appendChild(opt);
-        });
-        const sep = document.createElement("option"); sep.disabled = true; sep.textContent = "────────"; sel.appendChild(sep);
-        const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
-        return sel;
-      };
-
-      state.songs.forEach((s, i) => {
-        const tr = document.createElement("tr");
-        tr.className = "border-t border-white/10";
-        tr.innerHTML = `
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.id)}"                    placeholder="id"></td>
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.title)}"                 placeholder="Titel"></td>
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.artist || DEFAULT_ARTIST)}" placeholder="Artist"></td>
-          <td class="py-2 pr-2 slot-cat"></td>
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.cover || "")}"           placeholder="Cover-URL"></td>
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.src || "")}"             placeholder="Song-URL (RAW)"></td>
-          <td class="py-2 pr-2"><input class="w-full px-2 py-1 rounded bg-neutral-800" value="${esc(s.duration || 0)}"         placeholder="Sek."></td>
-          <td class="py-2 pl-2"><button class="del bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm">Löschen</button></td>
-        `;
-        const inputs = tr.querySelectorAll("input");
-        inputs[0].oninput = e => state.songs[i].id       = e.target.value;
-        inputs[1].oninput = e => state.songs[i].title    = e.target.value;
-        inputs[2].oninput = e => state.songs[i].artist   = e.target.value;
-        inputs[4].oninput = e => state.songs[i].cover    = e.target.value;
-        inputs[5].oninput = e => state.songs[i].src      = e.target.value;
-        inputs[6].oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0;
-
-        const catCell = tr.querySelector(".slot-cat");
-        let catSel = buildCatSelect(s.category);
-        catCell.appendChild(catSel);
-
-        const rebuildCatSel = (current) => { catCell.innerHTML = ""; catSel = buildCatSelect(current); catCell.appendChild(catSel); };
-
-        catSel.onchange = (e) => {
-          const v = e.target.value;
-          if (v === "__new__") {
-            const label = prompt("Name der neuen Kategorie:"); 
-            if (!label) { rebuildCatSel(s.category); return; }
-            const key = slug(label) || "neu";
-            if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
-            state.songs[i].category = key;
-            rebuildCatSel(key);
-          } else {
-            state.songs[i].category = v;
-          }
-        };
-
-        tr.querySelector(".del").onclick = () => { state.songs.splice(i, 1); tr.remove(); };
-
-        tbody.appendChild(tr);
+    const buildCatSelect = (currentKey, onChange) => {
+      const sel = document.createElement("select");
+      sel.className = "w-full px-2 py-1 rounded bg-neutral-800";
+      state.categories.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.key; opt.textContent = `${c.label} (${c.key})`;
+        if (c.key === currentKey) opt.selected = true;
+        sel.appendChild(opt);
       });
+      const sep = document.createElement("option"); sep.disabled = true; sep.textContent = "────────";
+      sel.appendChild(sep);
+      const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…";
+      sel.appendChild(plus);
+      sel.onchange = onChange;
+      return sel;
+    };
 
-      const add = document.createElement("button");
-      add.textContent = "+ Neuer Song";
-      add.className = "mt-3 bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded";
-      add.onclick = () => {
-        state.songs.push({
-          id: "", title: "", artist: DEFAULT_ARTIST,
-          category: state.categories[0]?.key || "",
-          cover: "", src: "", duration: 0
-        });
-        modal.remove(); openSongEditor();
-      };
+    const rebuildCatSel = (cell, currentKey, i) => {
+      cell.innerHTML = "";
+      const sel = buildCatSelect(currentKey, (e) => {
+        const v = e.target.value;
+        if (v === "__new__") {
+          const label = prompt("Name der neuen Kategorie:");
+          if (!label) { rebuildCatSel(cell, state.songs[i].category, i); return; }
+          const key = slug(label) || "neu";
+          if (!state.categories.some(c => c.key === key)) {
+            state.categories.push({ key, label, cover: STD_COVER });
+            saveDraftCats(); rerender();
+          }
+          state.songs[i].category = key;
+          rebuildCatSel(cell, key, i);
+        } else {
+          state.songs[i].category = v;
+        }
+      });
+      cell.appendChild(sel);
+    };
 
-      content.append(table, add);
-
-      const apply = modal.querySelector(".apply");
-      if (apply) apply.onclick = () => { saveDraftSongs(); rerender(); };
-    } catch (err) {
-      const pre = document.createElement("pre");
-      pre.className = "text-red-400 text-xs bg-black/30 p-3 rounded";
-      pre.textContent = "Fehler im Songs-Editor:\n" + (err?.stack || err);
-      content.appendChild(pre);
-      console.error(err);
+    if (!state.songs.length) {
+      const trInfo = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 8;
+      td.className = "py-4 text-neutral-400";
+      td.textContent = "Noch keine Songs. Nutze „+ Neuer Song“ oder den MP3-Importer.";
+      trInfo.appendChild(td);
+      tbody.appendChild(trInfo);
     }
+
+    state.songs.forEach((s, i) => {
+      const tr = document.createElement("tr");
+      tr.className = "border-t border-white/10";
+
+      const tdId = document.createElement("td"); tdId.className="py-2 pr-2";
+      const inId = document.createElement("input"); inId.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inId.value = esc(s.id); inId.placeholder="id";
+      inId.oninput = e => state.songs[i].id = e.target.value; tdId.appendChild(inId);
+
+      const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2";
+      const inTitle = document.createElement("input"); inTitle.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inTitle.value = esc(s.title); inTitle.placeholder="Titel";
+      inTitle.oninput = e => state.songs[i].title = e.target.value; tdTitle.appendChild(inTitle);
+
+      const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2";
+      const inArtist = document.createElement("input"); inArtist.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inArtist.value = esc(s.artist || DEFAULT_ARTIST); inArtist.placeholder="Artist";
+      inArtist.oninput = e => state.songs[i].artist = e.target.value; tdArtist.appendChild(inArtist);
+
+      const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2";
+      rebuildCatSel(tdCat, s.category, i);
+
+      const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2";
+      const inCover = document.createElement("input"); inCover.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inCover.value = esc(s.cover || ""); inCover.placeholder="Cover-URL";
+      inCover.oninput = e => state.songs[i].cover = e.target.value; tdCover.appendChild(inCover);
+
+      const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2";
+      const inSrc = document.createElement("input"); inSrc.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inSrc.value = esc(s.src || ""); inSrc.placeholder="Song-URL (RAW)";
+      inSrc.oninput = e => state.songs[i].src = e.target.value; tdSrc.appendChild(inSrc);
+
+      const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2";
+      const inDur = document.createElement("input"); inDur.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inDur.value = esc(s.duration || 0); inDur.placeholder="Sek.";
+      inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0; tdDur.appendChild(inDur);
+
+      const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2";
+      const del = document.createElement("button");
+      del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
+      del.textContent = "Löschen";
+      del.onclick = () => { state.songs.splice(i, 1); tr.remove(); };
+      tdAct.appendChild(del);
+
+      tr.append(tdId, tdTitle, tdArtist, tdCat, tdCover, tdSrc, tdDur, tdAct);
+      tbody.appendChild(tr);
+    });
+
+    table.append(thead, tbody);
+
+    const add = document.createElement("button");
+    add.textContent = "+ Neuer Song";
+    add.className = "mt-3 bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded";
+    add.onclick = () => {
+      state.songs.push({
+        id: "", title: "", artist: DEFAULT_ARTIST,
+        category: state.categories[0]?.key || "",
+        cover: "", src: "", duration: 0
+      });
+      modal.remove(); openSongEditor();
+    };
+
+    content.append(table, add);
+
+    const apply = modal.querySelector(".apply");
+    if (apply) apply.onclick = () => { saveDraftSongs(); rerender(); };
   }
 
-  // MP3-Importer
+  // ---------- MP3-Importer ----------
   function openMp3Importer() {
     const modal = makeModal("MP3 importieren", true);
     const content = modal.querySelector(".content");
