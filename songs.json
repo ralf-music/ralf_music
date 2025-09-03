@@ -116,6 +116,15 @@
       "cover": "https://cdn2.suno.ai/5f935de2-9ac8-4518-8d0a-24c4e14679a1.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Zwischen_uns.mp3",
       "duration": 163
+    },
+    {
+      "id": "howard_stoff_in_tueten",
+      "title": "Howard – Stoff In Tüten",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/09b04063-6815-4171-82b6-7ecfc5bf0a7e.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard%E2%80%93Stoff_in_Tueten.mp3",
+      "duration": 177
     }
   ]
 }
