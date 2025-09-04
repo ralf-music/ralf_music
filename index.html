@@ -24,34 +24,24 @@
   <style>
     img, audio, video { -webkit-user-drag: none; user-select: none; }
     /* Pulsierende orange Linie */
-    @keyframes pulseLine {
-      0%, 100% { box-shadow: 0 0 0 rgba(234,88,12,0.0); }
-      50%      { box-shadow: 0 0 16px rgba(234,88,12,0.35); }
-    }
-    .orange-sep {
-      height: 4px;
-      background: #ea580c;
-      animation: pulseLine 3.2s ease-in-out infinite;
-    }
-    /* dezenter Hover-Glow */
-    .glow-hover:hover { box-shadow: 0 0 22px rgba(234,88,12,0.35); }
+    @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
+    .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
+    /* Hover-Glow */
+    .glow-hover:hover { box-shadow: 0 0 22px rgba(234,88,12,.35); }
     /* Safe-Area für Android */
-    .player-dock-safe {
-      padding-bottom: max(env(safe-area-inset-bottom), .5rem);
-    }
+    .player-dock-safe { padding-bottom: max(env(safe-area-inset-bottom), .5rem); }
     /* Größere Touch-Ziele */
-    .btn-touch {
-      min-width: 48px;
-      min-height: 44px;
-    }
+    .btn-touch { min-width: 48px; min-height: 44px; }
+    /* Audio: Download-Button weg (Fallback) */
+    audio::-internal-media-controls-download-button { display:none; }
+    audio::-webkit-media-controls-enclosure { overflow:hidden; }
   </style>
 </head>
 
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
   <!-- Banner -->
   <header class="relative w-full h-[180px] bg-black">
-    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner"
-         class="absolute inset-0 w-full h-full object-fill" />
+    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
   </header>
 
   <!-- dickere orange Trennlinie mit Puls -->
@@ -67,6 +57,14 @@
       <input id="search" type="text" placeholder="Suche Songs"
              class="w-full rounded-2xl border border-orange-600 bg-neutral-800/80 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-orange-500 glow-hover">
     </div>
+  </div>
+
+  <!-- ▶ Alles abspielen -->
+  <div class="max-w-7xl mx-auto px-4 mt-3">
+    <button id="playAllBtn"
+      class="w-full sm:w-auto inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-semibold rounded-full px-4 py-2 glow-hover">
+      ▶ Alles abspielen
+    </button>
   </div>
 
   <!-- Kategorien-Leiste -->
@@ -88,7 +86,6 @@
   <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
       <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" alt="">
-
       <div class="flex-1 min-w-0">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
@@ -102,15 +99,23 @@
         <audio id="audio" controls controlslist="nodownload noplaybackrate" preload="metadata" class="w-64"></audio>
       </div>
 
-      <!-- Mobile: eigene Steuerung -->
-      <div class="flex items-center gap-2 sm:hidden">
-        <button id="btnPrev" class="btn-touch px-2.5 py-1.5 rounded-full border border-orange-600 text-white bg-neutral-900 hover:border-orange-500">⏮</button>
-        <button id="btnPlay" class="btn-touch px-3 py-1.5 rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-500">▶</button>
-        <button id="btnNext" class="btn-touch px-2.5 py-1.5 rounded-full border border-orange-600 text-white bg-neutral-900 hover:border-orange-500">⏭</button>
+      <!-- Steuerung -->
+      <div class="flex items-center gap-2">
+        <button id="prevBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500">⏮</button>
+        <button id="shuffleBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500" title="Shuffle umschalten">🔀</button>
+        <button id="nextBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500">⏭</button>
         <span id="playerCounter" class="text-xs text-neutral-400 min-w-[3.5rem] text-center">1 / 1</span>
       </div>
 
-      <button id="closeBtn" class="px-3 py-1.5 text-sm rounded-lg border border-neutral-700 hover:border-neutral-500">Schließen</button>
+      <!-- Mobile: großer Play/Pause -->
+      <div class="sm:hidden">
+        <button id="btnPlay" class="btn-touch w-11 h-11 flex items-center justify-center rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-500">▶</button>
+      </div>
+
+      <!-- NEU: kompaktes X -->
+      <button id="closeBtn"
+              class="btn-touch w-11 h-11 flex items-center justify-center rounded-full border border-neutral-700 hover:border-neutral-500"
+              aria-label="Schließen" title="Schließen">✕</button>
     </div>
   </div>
 
@@ -118,33 +123,45 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.6</span>
+      <span>v4.7.1</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const state = { songs: [], categories: [], cat: 'all', query: '', active: null, queue: [], queueIndex: -1, shuffle: false };
+    const state = {
+      songs: [], categories: [], cat: 'all', query: '',
+      active: null, queue: [], queueIndex: -1, shuffle: false
+    };
 
-    // lokale Overrides (nur für Editor)
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
-      if (s) { try { const js = JSON.parse(s); state.songs = Array.isArray(js) ? js : (js.songs || []); } catch {} }
-      if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(jc) ? jc : (jc.categories || []); } catch {} }
+      if (s) { try { const js = JSON.parse(s); state.songs = Array.isArray(js) ? js : (js.songs||[]); } catch{} }
+      if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(jc) ? jc : (jc.categories||[]); } catch{} }
     }
 
     async function loadData() {
+      try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
       loadLocalOverrides();
       if (!state.songs.length) {
-        try { const s = await fetch('/songs.json').then(r=>r.json()); state.songs = Array.isArray(s) ? s : (s.songs||[]); } catch(e){}
+        try { const s = await fetch('/songs.json').then(r=>r.json()); state.songs = Array.isArray(s)?s:(s.songs||[]); } catch(e){}
       }
       if (!state.categories.length) {
-        try { const c = await fetch('/categories.json').then(r=>r.json()); state.categories = Array.isArray(c) ? c : (c.categories||[]); } catch(e){}
+        try { const c = await fetch('/categories.json').then(r=>r.json()); state.categories = Array.isArray(c)?c:(c.categories||[]); } catch(e){}
       }
-      applyQueryFromURL(); render();
+      applyQueryFromURL();
+      render();
+
       const pid = new URLSearchParams(location.search).get('id');
-      if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
+      if (pid) {
+        ensureQueueForVisible();
+        const s = state.songs.find(x=>x.id===pid);
+        const pos = state.queue.findIndex(id=>id===pid);
+        if (pos >= 0) state.queueIndex = pos;
+        if (s) setTimeout(()=>playSong(s),150);
+      }
+      updateShuffleButton(); updateCounter();
     }
 
     function applyQueryFromURL() {
@@ -156,43 +173,126 @@
 
     function setCat(cat) {
       state.cat = cat;
-      const p = new URLSearchParams(location.search);
-      p.set('cat', cat); history.replaceState(null,'','?'+p.toString()); render();
+      const p = new URLSearchParams(location.search); p.set('cat', cat);
+      history.replaceState(null,'','?'+p.toString());
+      render();
+      state.queue = []; state.queueIndex = -1; updateCounter();
     }
+
     function setQuery(q) {
       state.query = (q||'').toLowerCase();
       const p = new URLSearchParams(location.search);
       if (state.query) p.set('q', state.query); else p.delete('q');
-      history.replaceState(null,'','?'+p.toString()); render();
+      history.replaceState(null,'','?'+p.toString());
+      render();
+      state.queue = []; state.queueIndex = -1; updateCounter();
     }
 
-    // Kategorien
+    function getVisibleSongs() {
+      const q = state.query;
+      return (state.songs||[]).filter(s =>
+        (state.cat === 'all' || s.category === state.cat) &&
+        (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
+      );
+    }
+    function songsByCategory(key) {
+      return (state.songs||[]).filter(s => s.category === key);
+    }
+
+    function ensureQueueForVisible() {
+      let ids = getVisibleSongs().map(s=>s.id);
+      if (state.shuffle) ids = shuffle(ids);
+      state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
+      updateCounter();
+    }
+    function startQueueFromVisible() {
+      ensureQueueForVisible();
+      if (state.queueIndex === -1) return;
+      const first = state.songs.find(x=>x.id===state.queue[0]);
+      if (first) playSong(first);
+    }
+    function startQueueForCategory(key) {
+      let ids = songsByCategory(key).map(s=>s.id);
+      if (!ids.length) return;
+      if (state.shuffle) ids = shuffle(ids);
+      state.queue = ids; state.queueIndex = 0;
+      const first = state.songs.find(x=>x.id===ids[0]);
+      if (first) playSong(first);
+      updateCounter();
+    }
+    function shuffle(a) {
+      const arr = a.slice();
+      for (let i=arr.length-1; i>0; i--) {
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]] = [arr[j],arr[i]];
+      }
+      return arr;
+    }
+
+    function playNext(){
+      if (!state.queue.length) return;
+      if (state.queueIndex < state.queue.length - 1) {
+        state.queueIndex++; playSongById(state.queue[state.queueIndex]);
+      }
+      updateCounter();
+    }
+    function playPrev(){
+      if (!state.queue.length) return;
+      if (state.queueIndex > 0) {
+        state.queueIndex--; playSongById(state.queue[state.queueIndex]);
+      }
+      updateCounter();
+    }
+    function playSongById(id){
+      const s = state.songs.find(x=>x.id===id);
+      if (s) playSong(s);
+    }
+
     function renderCatBar() {
-      const bar=document.getElementById('catBar'); bar.innerHTML='';
-      const allBtn=document.createElement('button');
-      allBtn.textContent='Alle';
-      allBtn.className='px-3 py-1.5 rounded-full border text-sm transition glow-hover '+(state.cat==='all'?'bg-orange-600 border-orange-500 text-white':'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
-      allBtn.onclick=()=>setCat('all'); bar.appendChild(allBtn);
+      const bar = document.getElementById('catBar'); bar.innerHTML = '';
+
+      const wrapAll = document.createElement('div'); wrapAll.className = 'flex items-center gap-1';
+      const allBtn = document.createElement('button');
+      allBtn.textContent = 'Alle';
+      allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition glow-hover ' +
+        (state.cat==='all' ? 'bg-orange-600 border-orange-500 text-white'
+                           : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
+      allBtn.onclick = ()=>setCat('all');
+      wrapAll.appendChild(allBtn);
+      bar.appendChild(wrapAll);
+
       state.categories.forEach(c=>{
-        const b=document.createElement('button');
-        b.textContent=c.label||c.key;
-        b.className='px-3 py-1.5 rounded-full border text-sm transition glow-hover '+(state.cat===c.key?'bg-orange-600 border-orange-500 text-white':'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
-        b.onclick=()=>setCat(c.key); bar.appendChild(b);
+        const wrap = document.createElement('div'); wrap.className = 'flex items-center gap-1';
+        const chip = document.createElement('button');
+        chip.textContent = c.label || c.key;
+        chip.className = 'px-3 py-1.5 rounded-full border text-sm transition glow-hover ' +
+          (state.cat===c.key ? 'bg-orange-600 border-orange-500 text-white'
+                             : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
+        chip.onclick = ()=>setCat(c.key);
+
+        const play = document.createElement('button');
+        play.innerText = '▶';
+        play.title = 'Kategorie abspielen';
+        play.className = 'px-2 py-1 rounded-full border text-sm bg-orange-600 text-white border-orange-500 hover:bg-orange-500 glow-hover';
+        play.onclick = (e)=>{ e.stopPropagation(); startQueueForCategory(c.key); };
+
+        wrap.appendChild(chip); wrap.appendChild(play);
+        bar.appendChild(wrap);
       });
     }
 
     function renderCategoryGallery() {
-      const showGallery=state.cat==='all'&&!state.query;
-      const section=document.getElementById('catGallery');
-      section.classList.toggle('hidden',!showGallery);
-      if(!showGallery) return;
-      const grid=document.getElementById('catGrid'); grid.innerHTML='';
+      const show = state.cat==='all' && !state.query;
+      const section = document.getElementById('catGallery');
+      section.classList.toggle('hidden', !show);
+      if (!show) return;
+      const grid = document.getElementById('catGrid'); grid.innerHTML = '';
       state.categories.forEach(c=>{
-        const card=document.createElement('div');
-        card.className='group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600 hover:border-orange-500 glow-hover';
-        card.onclick=()=>setCat(c.key);
-        card.innerHTML=`
-          <img src="${c.cover||'/assets/pwa/icon-512.png'}" alt="${c.label||c.key}" class="w-full h-32 object-contain bg-black"/>
+        const card = document.createElement('div');
+        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600 hover:border-orange-500 glow-hover';
+        card.onclick = ()=>setCat(c.key);
+        card.innerHTML = `
+          <img src="${c.cover||'/assets/pwa/icon-512.png'}" alt="${c.label||c.key}" class="w-full h-32 object-contain bg-black" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span class="font-semibold text-white text-sm sm:text-base">${c.label||c.key}</span>
           </div>`;
@@ -202,18 +302,18 @@
 
     function renderSongs() {
       const labelByKey=new Map((state.categories||[]).map(c=>[c.key,c.label||c.key]));
-      const q=state.query;
       const grid=document.getElementById('songsGrid');
       const empty=document.getElementById('emptyState');
       grid.innerHTML='';
-      const filtered=(state.songs||[]).filter(s=>(state.cat==='all'||s.category===state.cat)&&(!q||(s.title||'').toLowerCase().includes(q)||(s.artist||'').toLowerCase().includes(q)));
+      const filtered=getVisibleSongs();
       if(!filtered.length){empty.classList.remove('hidden');return;} else empty.classList.add('hidden');
+
       filtered.forEach(s=>{
         const card=document.createElement('div');
         card.className='group bg-neutral-900/70 border border-orange-600 rounded-2xl overflow-hidden hover:border-orange-500 transition glow-hover';
         card.innerHTML=`
           <div class="aspect-[3/4] overflow-hidden relative">
-            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition"/>
+            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
           </div>
           <div class="p-4">
             <div class="text-xs text-neutral-300 mb-1">${labelByKey.get(s.category)||s.category||''}</div>
@@ -223,67 +323,120 @@
               <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-orange-500 glow-hover">▶ Abspielen</button>
             </div>
           </div>`;
-        card.querySelector('.play').onclick=()=>playSong(s);
+        card.querySelector('.play').onclick=()=>{
+          ensureQueueForVisible();
+          const pos = state.queue.findIndex(id=>id===s.id);
+          state.queueIndex = pos>=0 ? pos : 0;
+          playSong(s);
+        };
         grid.appendChild(card);
       });
     }
 
-    function render(){renderCatBar();renderCategoryGallery();renderSongs();}
-
-    // Queue/Player
-    function buildQueue(){return(state.songs||[]).filter(s=>(state.cat==='all'||s.category===state.cat)&&(!state.query||(s.title||'').toLowerCase().includes(state.query)||(s.artist||'').toLowerCase().includes(state.query)));}
-
-    function startQueue(shuffle=false){
-      const list=buildQueue(); if(!list.length)return;
-      state.queue=shuffle?list.sort(()=>Math.random()-0.5):list;
-      state.queueIndex=0; playSong(state.queue[0]);
-    }
+    function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); }
 
     function playSong(s){
-      state.active=s.id;
-      if(state.queue.length===0){state.queue=[s];state.queueIndex=0;}
-      else{state.queueIndex=state.queue.findIndex(x=>x.id===s.id);}
+      state.active = s.id;
+      if (!state.queue.length) { state.queue = [s.id]; state.queueIndex = 0; }
+      else { const pos = state.queue.findIndex(id=>id===s.id); if (pos>=0) state.queueIndex = pos; }
+
       document.getElementById('playerDock').classList.remove('hidden');
-      document.getElementById('playerCover').src=s.cover||'';
-      document.getElementById('playerTitle').textContent=s.title||'';
-      document.getElementById('playerArtist').textContent=s.artist||'';
-      const audio=document.getElementById('audio'); audio.src=s.src; audio.play().catch(()=>{});
-      audio.ontimeupdate=()=>{const pct=Math.min(100,Math.round((audio.currentTime/(s.duration||Math.max(audio.duration||1,1)))*100));document.getElementById('playerProgress').style.width=pct+'%';};
-      audio.onended=()=>playNext();
-      const p=new URLSearchParams(location.search); p.set('id',s.id); history.replaceState(null,'','?'+p.toString());
-      window.__updateMobileCounter&&window.__updateMobileCounter(); window.__updateMobilePlayIcon&&window.__updateMobilePlayIcon();
+      document.getElementById('playerCover').src = s.cover||'';
+      document.getElementById('playerTitle').textContent = s.title||'';
+      document.getElementById('playerArtist').textContent = s.artist||'';
+
+      const audio = document.getElementById('audio');
+      audio.src = s.src;
+      audio.play().catch(()=>{});
+      audio.ontimeupdate = ()=>{
+        const base = s.duration || audio.duration || 1;
+        const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
+        document.getElementById('playerProgress').style.width = pct + '%';
+      };
+      audio.onended = ()=> playNext();
+
+      const p = new URLSearchParams(location.search); p.set('id', s.id);
+      history.replaceState(null,'','?'+p.toString());
+
+      updateCounter(); updatePlayIcon();
     }
 
-    function playNext(){if(state.queueIndex<state.queue.length-1){state.queueIndex++;playSong(state.queue[state.queueIndex]);}}
-    function playPrev(){if(state.queueIndex>0){state.queueIndex--;playSong(state.queue[state.queueIndex]);}}
+    document.getElementById('prevBtn').addEventListener('click', playPrev);
+    document.getElementById('nextBtn').addEventListener('click', playNext);
+    document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
+    document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
 
-    document.getElementById('closeBtn').onclick=()=>{document.getElementById('playerDock').classList.add('hidden');document.getElementById('audio').pause();};
+    function toggleShuffle(){
+      state.shuffle = !state.shuffle;
+      try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1':'0'); } catch {}
+      const currentId = state.active;
+      let ids = getVisibleSongs().map(s=>s.id);
+      ids = state.shuffle ? shuffle(ids) : ids;
+      state.queue = ids;
+      const pos = state.queue.findIndex(id=>id===currentId);
+      state.queueIndex = pos>=0 ? pos : (state.queue.length?0:-1);
+      updateShuffleButton(); updateCounter();
+    }
+    function updateShuffleButton(){
+      const btn = document.getElementById('shuffleBtn');
+      btn.className = 'btn-touch px-2.5 py-1.5 rounded-full border ' + (state.shuffle
+        ? 'border-orange-500 bg-orange-600/20 text-white'
+        : 'border-neutral-700 hover:border-neutral-500');
+      btn.title = state.shuffle ? 'Shuffle ist an' : 'Shuffle umschalten';
+    }
 
-    (function enableScrub(){const audio=document.getElementById('audio');const bar=document.getElementById('playerBar');if(!bar)return;bar.addEventListener('click',e=>{const rect=bar.getBoundingClientRect();const ratio=(e.clientX-rect.left)/rect.width;if(audio.duration>0)audio.currentTime=ratio*audio.duration;});})();
+    document.getElementById('search').addEventListener('input', e=>setQuery(e.target.value));
+    window.addEventListener('keydown', e=>{
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k') {
+        e.preventDefault(); const inp=document.getElementById('search'); inp.focus(); inp.select();
+      }
+    });
 
-    document.getElementById('search').addEventListener('input',e=>setQuery(e.target.value));
-    window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();const inp=document.getElementById('search');inp.focus();inp.select();}});
-
-    // Mobile Controls
-    (function wireMobilePlayer(){
-      const audio=document.getElementById('audio');
-      const btnPrev=document.getElementById('btnPrev');
-      const btnPlay=document.getElementById('btnPlay');
-      const btnNext=document.getElementById('btnNext');
-      const counter=document.getElementById('playerCounter');
-      if(!audio||!btnPlay)return;
-      btnPlay.onclick=()=>{if(audio.paused)audio.play().catch(()=>{});else audio.pause();};
-      btnPrev&&(btnPrev.onclick=()=>{if(window.playPrev)playPrev();});
-      btnNext&&(btnNext.onclick=()=>{if(window.playNext)playNext();});
-      function updatePlayIcon(){btnPlay.textContent=audio.paused?'▶':'⏸';}
-      function updateCounter(){try{const len=(state.queue&&state.queue.length)?state.queue.length:1;const idx=(typeof state.queueIndex==='number'?state.queueIndex:0)+1;counter.textContent=`${idx} / ${len}`;}catch{counter.textContent='1 / 1';}}
-      audio.addEventListener('play',()=>{updatePlayIcon();updateCounter();});
-      audio.addEventListener('pause',()=>{updatePlayIcon();});
-      audio.addEventListener('ended',()=>{updatePlayIcon();});
-      window.__updateMobileCounter=updateCounter; window.__updateMobilePlayIcon=updatePlayIcon;
+    (function enableScrub(){
+      const audio=document.getElementById('audio'), bar=document.getElementById('playerBar');
+      if (!bar) return;
+      bar.addEventListener('click', e=>{
+        const r=bar.getBoundingClientRect(), ratio=(e.clientX-r.left)/r.width;
+        if (audio.duration>0) audio.currentTime = ratio*audio.duration;
+      });
     })();
 
-    (function maybeLoadEditor(){if(new URLSearchParams(location.search).get("edit")==="1"){var s=document.createElement("script");s.src="/editor.js?v=4.6";document.body.appendChild(s);}})();
+    (function wireMobilePlay(){
+      const audio=document.getElementById('audio');
+      const btn=document.getElementById('btnPlay');
+      if (!btn) return;
+      btn.onclick = ()=>{ if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); };
+      audio.addEventListener('play', updatePlayIcon);
+      audio.addEventListener('pause', updatePlayIcon);
+      audio.addEventListener('ended', updatePlayIcon);
+      updatePlayIcon();
+    })();
+
+    function updatePlayIcon(){
+      const audio=document.getElementById('audio');
+      const btn=document.getElementById('btnPlay');
+      if (!btn || !audio) return;
+      btn.textContent = audio.paused ? '▶' : '⏸';
+    }
+
+    function updateCounter(){
+      const el = document.getElementById('playerCounter');
+      if (!el) return;
+      if (!state.queue.length || state.queueIndex<0) { el.textContent=''; return; }
+      el.textContent = (state.queueIndex+1) + ' / ' + state.queue.length;
+    }
+
+    // Close player
+    document.getElementById('closeBtn').onclick = ()=>{
+      document.getElementById('playerDock').classList.add('hidden');
+      document.getElementById('audio').pause();
+    };
+
+    (function maybeLoadEditor(){
+      if (new URLSearchParams(location.search).get("edit")==="1") {
+        var s=document.createElement("script"); s.src="/editor.js?v=4.7.1"; document.body.appendChild(s);
+      }
+    })();
 
     loadData();
   </script>
