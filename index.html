@@ -65,7 +65,7 @@
     .card:hover::before,
     .card.touch-glow::before { opacity: 1; }
 
-    /* Now-Playing: kombiniere Rahmen-Glow + Badge */
+    /* Now-Playing: Rahmen-Glow + Badge */
     .now-playing {
       box-shadow: 0 0 22px rgba(234,88,12,0.70), 0 0 46px rgba(234,88,12,0.45) !important;
     }
@@ -82,6 +82,13 @@
       font-size: .70rem; line-height: 1; padding: .25rem .45rem;
       border-radius: 9999px; background: rgba(0,0,0,.65);
       color: #e5e5e5; border: 1px solid #ea580c;
+    }
+
+    /* NEU-Badge auf Songkarte */
+    .badge-new {
+      position: absolute; top: .5rem; left: .5rem; z-index: 2;
+      font-size: .65rem; line-height: 1; padding: .25rem .45rem; border-radius: 9999px;
+      background: #ea580c; color: #111; font-weight: 700; border: 1px solid #ea580c;
     }
   </style>
 </head>
@@ -171,14 +178,31 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.8</span>
+      <span>v4.7.9</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const state = { songs: [], categories: [], cat: 'all', query: '', active: null, queue: [], queueIndex: -1, shuffle: false };
+    const state = {
+      songs: [],
+      categories: [],
+      cat: 'all',
+      query: '',
+      active: null,
+      queue: [],
+      queueIndex: -1,
+      shuffle: false,
 
+      // Daily rotation
+      dailyKey: null,       // z.B. "2025-09-04"
+      dailyOrder: null,     // Array mit Song-IDs in Tagesreihenfolge
+
+      // NEU-Set
+      newestSet: new Set()
+    };
+
+    /* ===== Helpers: Local Overrides & Load ===== */
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
@@ -195,27 +219,34 @@
       if (!state.categories.length) {
         try { const c = await fetch('/categories.json').then(r=>r.json()); state.categories = Array.isArray(c)?c:(c.categories||[]); } catch(e){}
       }
+
+      // Build "NEU" Set (letzte 10 per addedAt)
+      buildNewestSet();
+
+      // Daily rotation initialisieren
+      ensureDailyOrder();
+
       applyQueryFromURL(); render();
 
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
     }
 
+    /* ===== URL / Filters ===== */
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
       state.cat = p.get('cat') || 'all';
       state.query = (p.get('q') || '').toLowerCase();
       const search = document.getElementById('search'); if (search) search.value = state.query;
     }
-
     function setCat(cat) {
       state.cat = cat;
       const p = new URLSearchParams(location.search); p.set('cat', cat);
       history.replaceState(null,'','?'+p.toString());
+      ensureDailyOrder(); // falls "Alle" gewählt wird
       render();
       state.queue = []; state.queueIndex = -1; updateCounter();
     }
-
     function setQuery(q) {
       state.query = (q||'').toLowerCase();
       const p = new URLSearchParams(location.search);
@@ -225,13 +256,89 @@
       state.queue = []; state.queueIndex = -1; updateCounter();
     }
 
-    /* Sichtbare Songs */
+    /* ===== NEU-Logik ===== */
+    function parseDateSafe(v) {
+      // akzeptiert ISO (YYYY-MM-DD, YYYY-MM-DDTHH:mm:ssZ), Zahl (ms), oder ignoriert
+      if (!v && v !== 0) return null;
+      if (typeof v === 'number') return new Date(v);
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function buildNewestSet() {
+      const withDates = (state.songs||[])
+        .map(s => ({ id: s.id, d: parseDateSafe(s.addedAt) }))
+        .filter(x => x.id && x.d);
+      withDates.sort((a,b)=> b.d - a.d); // neueste zuerst
+      const top10 = withDates.slice(0, 10).map(x=>x.id);
+      state.newestSet = new Set(top10);
+    }
+
+    /* ===== Daily Rotation (nur für Alle & ohne Suche) ===== */
+    function getLocalDayKey() {
+      // Tages-Schlüssel in Browser-Lokalzeit (z. B. 2025-09-04). Das reicht.
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    }
+    function seededPRNG(seed) {
+      // einfacher LCG (deterministisch): https://en.wikipedia.org/wiki/Linear_congruential_generator
+      let s = 0;
+      // hash seed string -> int
+      for (let i=0;i<seed.length;i++) s = (s*31 + seed.charCodeAt(i)) >>> 0;
+      let x = (s || 123456789) >>> 0;
+      return function() {
+        // glibc-ähnliche Konstanten
+        x = (1103515245 * x + 12345) % 2147483648;
+        return x / 2147483648;
+      };
+    }
+    function seededShuffleIds(ids, seedKey) {
+      const prng = seededPRNG(seedKey);
+      const a = ids.slice();
+      // Fisher-Yates mit PRNG
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(prng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    function ensureDailyOrder() {
+      const key = getLocalDayKey();
+      const ids = (state.songs||[]).map(s=>s.id);
+      // neu berechnen, wenn Tag gewechselt hat oder sich die Songliste geändert hat
+      if (state.dailyKey !== key || !state.dailyOrder || state.dailyOrder.length !== ids.length) {
+        state.dailyKey = key;
+        state.dailyOrder = seededShuffleIds(ids, key);
+      } else {
+        // Falls neue Songs hinzugekommen sind, die Länge aber zufällig gleich blieb:
+        const setKnown = new Set(state.dailyOrder);
+        const missing = ids.filter(id => !setKnown.has(id));
+        if (missing.length) {
+          // hänge neue deterministisch hinten (aber konsistent für den Tag)
+          const tail = seededShuffleIds(missing, key + '-tail');
+          state.dailyOrder = state.dailyOrder.concat(tail);
+        }
+      }
+    }
+
+    /* ===== Sichtbare Songs mit täglicher Rotation (nur Alle & keine Suche) ===== */
     function getVisibleSongs() {
       const q = state.query;
-      return (state.songs||[]).filter(s =>
+      const base = (state.songs||[]).filter(s =>
         (state.cat === 'all' || s.category === state.cat) &&
         (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
       );
+
+      // Daily-Rotation nur anwenden, wenn wirklich "Alle" + keine Suche aktiv ist
+      if (state.cat === 'all' && !q) {
+        ensureDailyOrder();
+        // ordne base nach state.dailyOrder
+        const pos = new Map(state.dailyOrder.map((id,idx)=>[id, idx]));
+        return base.slice().sort((a,b)=> (pos.get(a.id)??0) - (pos.get(b.id)??0));
+      }
+      return base;
     }
     function songsByCategory(key) {
       return (state.songs||[]).filter(s => s.category === key);
@@ -315,7 +422,7 @@
       updateCounter();
     }
 
-    /* UI render */
+    /* ===== UI render ===== */
     function renderCatBar() {
       const bar = document.getElementById('catBar'); bar.innerHTML = '';
 
@@ -389,8 +496,11 @@
         const card=document.createElement('div');
         card.className='card group transition';
         if (state.active === s.id) card.classList.add('now-playing');
+
+        const isNew = state.newestSet.has(s.id);
         card.innerHTML=`
           <div class="aspect-[3/4] overflow-hidden relative">
+            ${isNew ? '<div class="badge-new">NEU</div>' : ''}
             <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
           </div>
           <div class="p-4">
@@ -416,7 +526,7 @@
 
     function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); }
 
-    /* Player */
+    /* ===== Player ===== */
     function playSong(s){
       state.active = s.id;
       if (state.queue.length) {
@@ -445,8 +555,7 @@
       history.replaceState(null,'','?'+p.toString());
 
       updateCounter(); updatePlayIcon();
-      // Markierung im Grid aktualisieren
-      renderSongs();
+      renderSongs(); // Now-Playing + NEU bleiben korrekt
     }
 
     /* HARTE SCHLIESSEN-FUNKTION */
@@ -462,7 +571,7 @@
       updateCounter(); updatePlayIcon();
       const p = new URLSearchParams(location.search); p.delete('id');
       history.replaceState(null,'','?'+p.toString());
-      renderSongs(); // Now-Playing-Markierung wegnehmen
+      renderSongs();
     }
 
     /* Controls */
