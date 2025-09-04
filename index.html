@@ -47,7 +47,6 @@
       background: rgba(23,23,23,0.7);
       transition: box-shadow .25s ease, transform .25s ease;
     }
-    /* Voll-Glow Overlay beim Hover/Tap */
     .card::before {
       content: "";
       position: absolute;
@@ -178,7 +177,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.9</span>
+      <span>v4.8.0</span>
     </div>
   </footer>
 
@@ -195,8 +194,8 @@
       shuffle: false,
 
       // Daily rotation
-      dailyKey: null,       // z.B. "2025-09-04"
-      dailyOrder: null,     // Array mit Song-IDs in Tagesreihenfolge
+      dailyKey: null,
+      dailyOrder: null,
 
       // NEU-Set
       newestSet: new Set()
@@ -258,7 +257,6 @@
 
     /* ===== NEU-Logik ===== */
     function parseDateSafe(v) {
-      // akzeptiert ISO (YYYY-MM-DD, YYYY-MM-DDTHH:mm:ssZ), Zahl (ms), oder ignoriert
       if (!v && v !== 0) return null;
       if (typeof v === 'number') return new Date(v);
       const d = new Date(v);
@@ -268,14 +266,13 @@
       const withDates = (state.songs||[])
         .map(s => ({ id: s.id, d: parseDateSafe(s.addedAt) }))
         .filter(x => x.id && x.d);
-      withDates.sort((a,b)=> b.d - a.d); // neueste zuerst
+      withDates.sort((a,b)=> b.d - a.d);
       const top10 = withDates.slice(0, 10).map(x=>x.id);
       state.newestSet = new Set(top10);
     }
 
     /* ===== Daily Rotation (nur für Alle & ohne Suche) ===== */
     function getLocalDayKey() {
-      // Tages-Schlüssel in Browser-Lokalzeit (z. B. 2025-09-04). Das reicht.
       const d = new Date();
       const y = d.getFullYear();
       const m = String(d.getMonth()+1).padStart(2,'0');
@@ -283,13 +280,10 @@
       return `${y}-${m}-${day}`;
     }
     function seededPRNG(seed) {
-      // einfacher LCG (deterministisch): https://en.wikipedia.org/wiki/Linear_congruential_generator
       let s = 0;
-      // hash seed string -> int
       for (let i=0;i<seed.length;i++) s = (s*31 + seed.charCodeAt(i)) >>> 0;
       let x = (s || 123456789) >>> 0;
       return function() {
-        // glibc-ähnliche Konstanten
         x = (1103515245 * x + 12345) % 2147483648;
         return x / 2147483648;
       };
@@ -297,7 +291,6 @@
     function seededShuffleIds(ids, seedKey) {
       const prng = seededPRNG(seedKey);
       const a = ids.slice();
-      // Fisher-Yates mit PRNG
       for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(prng() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
@@ -307,23 +300,20 @@
     function ensureDailyOrder() {
       const key = getLocalDayKey();
       const ids = (state.songs||[]).map(s=>s.id);
-      // neu berechnen, wenn Tag gewechselt hat oder sich die Songliste geändert hat
       if (state.dailyKey !== key || !state.dailyOrder || state.dailyOrder.length !== ids.length) {
         state.dailyKey = key;
         state.dailyOrder = seededShuffleIds(ids, key);
       } else {
-        // Falls neue Songs hinzugekommen sind, die Länge aber zufällig gleich blieb:
         const setKnown = new Set(state.dailyOrder);
         const missing = ids.filter(id => !setKnown.has(id));
         if (missing.length) {
-          // hänge neue deterministisch hinten (aber konsistent für den Tag)
           const tail = seededShuffleIds(missing, key + '-tail');
           state.dailyOrder = state.dailyOrder.concat(tail);
         }
       }
     }
 
-    /* ===== Sichtbare Songs mit täglicher Rotation (nur Alle & keine Suche) ===== */
+    /* ===== Sichtbare Songs ===== */
     function getVisibleSongs() {
       const q = state.query;
       const base = (state.songs||[]).filter(s =>
@@ -331,10 +321,8 @@
         (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
       );
 
-      // Daily-Rotation nur anwenden, wenn wirklich "Alle" + keine Suche aktiv ist
       if (state.cat === 'all' && !q) {
         ensureDailyOrder();
-        // ordne base nach state.dailyOrder
         const pos = new Map(state.dailyOrder.map((id,idx)=>[id, idx]));
         return base.slice().sort((a,b)=> (pos.get(a.id)??0) - (pos.get(b.id)??0));
       }
@@ -555,7 +543,7 @@
       history.replaceState(null,'','?'+p.toString());
 
       updateCounter(); updatePlayIcon();
-      renderSongs(); // Now-Playing + NEU bleiben korrekt
+      renderSongs();
     }
 
     /* HARTE SCHLIESSEN-FUNKTION */
@@ -654,7 +642,7 @@
     /* Editor nur laden, wenn ?edit=1 */
     (function maybeLoadEditor(){
       if (new URLSearchParams(location.search).get("edit")==="1") {
-        var s=document.createElement("script"); s.src="/editor.js?v=4.7.2"; document.body.appendChild(s);
+        var s=document.createElement("script"); s.src="/editor.js?v=4.3"; document.body.appendChild(s);
       }
     })();
 
