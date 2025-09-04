@@ -7,7 +7,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/41408c24-5290-44a4-969a-4a0f5aa1cc4c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Beyond_the_Silence.mp3",
-      "duration": 276
+      "duration": 276,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "zwischen_den_zeilen",
@@ -16,7 +17,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/04df5287-fcc1-4e1f-b985-03ff9f8ef357.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Zwischen_den_Zeilen.mp3",
-      "duration": 163
+      "duration": 163,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "edge_of_tomorrow",
@@ -25,7 +27,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/93328fd6-817e-4724-98e0-7055518b8b0c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Edge_of_Tomorrow.mp3",
-      "duration": 243
+      "duration": 243,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "augen_sagen_mehr",
@@ -34,7 +37,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/0b19b8da-8d5d-4267-964c-9618b3d8f4a0.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Augen_sagen_mehr.mp3",
-      "duration": 124
+      "duration": 124,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "falsch_verstanden",
@@ -43,7 +47,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/b0b68fe2-b9a9-4aa0-b2f4-58bc29d9e3ef.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Falsch_verstanden.mp3",
-      "duration": 228
+      "duration": 228,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "farben_der_liebe",
@@ -52,7 +57,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/7e07a32c-4817-4bcf-a832-d9266588ed10.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Farben_der_Liebe.mp3",
-      "duration": 149
+      "duration": 149,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "glasherz",
@@ -61,7 +67,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/8ee37d92-27c2-496b-85aa-776270293755.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Glasherz.mp3",
-      "duration": 189
+      "duration": 189,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "kein_wort_von_dir",
@@ -70,7 +77,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/ab56a6fa-464c-48cd-a6da-d2c967b08c73.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Kein_Wort_von_dir.mp3",
-      "duration": 174
+      "duration": 174,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "keine_heimat",
@@ -79,7 +87,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/87c179d8-7da5-43d0-881e-9d7d2ad8f01f.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Keine%20Heimat.mp3",
-      "duration": 179
+      "duration": 179,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "mitten_in_der_nacht",
@@ -88,7 +97,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/b8383193-d799-4883-a8e0-b8ad4a9c4490.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Mitten_in_der_Nacht.mp3",
-      "duration": 158
+      "duration": 158,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "ohne_limit",
@@ -97,7 +107,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/7ff309d8-70a7-4ff8-af86-16a2cae1358c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Ohne_Limit.mp3",
-      "duration": 127
+      "duration": 127,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "straßen_bleiben_kalt",
@@ -106,7 +117,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/d72bb764-a392-4802-aca6-67188bce4ad7.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Straßen_bleiben_kalt.mp3",
-      "duration": 177
+      "duration": 177,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "zwischen_uns",
@@ -115,7 +127,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/5f935de2-9ac8-4518-8d0a-24c4e14679a1.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Zwischen_uns.mp3",
-      "duration": 163
+      "duration": 163,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "howard_stoff_in_tueten",
@@ -124,7 +137,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/09b04063-6815-4171-82b6-7ecfc5bf0a7e.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard%E2%80%93Stoff_in_Tueten.mp3",
-      "duration": 177
+      "duration": 177,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "howard_ii_tiefer_fall",
@@ -133,7 +147,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/421f637f-aed9-4276-839a-12fcc517639c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_II%E2%80%93Tiefer_Fall.mp3",
-      "duration": 190
+      "duration": 190,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "howard_iii_keine_freiheit",
@@ -142,7 +157,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/63ef8298-a945-416c-bc52-66a8320e01cc.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_III%E2%80%93Keine_Freiheit.mp3",
-      "duration": 181
+      "duration": 181,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "howard_iv_wie_ein_schatten",
@@ -151,7 +167,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/c822ec80-f1a4-486f-b022-cd4c8a558558.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_IV%E2%80%93Wie_ein_Schatten.mp3",
-      "duration": 149
+      "duration": 149,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "howard_v_ruhig_in_mir",
@@ -160,7 +177,8 @@
       "category": "deutschrap",
       "cover": "https://cdn2.suno.ai/90f936bf-24c9-40f6-8c5a-ff80b1575688.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Howard_V%E2%80%93Ruhig_in_mir.mp3",
-      "duration": 219
+      "duration": 219,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "bass_like_fire",
@@ -169,7 +187,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/fdabd991-7481-4bed-a153-bdde6bd68308.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Bass_Like_Fire.mp3",
-      "duration": 276
+      "duration": 276,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "dancefloor_love",
@@ -178,7 +197,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/97424fd3-8f8b-4f06-abba-05ea40dc9237.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Dancefloor_Love.mp3",
-      "duration": 175
+      "duration": 175,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "feel_the_light",
@@ -187,7 +207,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/38cfc01f-0a65-4415-890c-345ae305912f.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Feel_the_Light.mp3",
-      "duration": 189
+      "duration": 189,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "fire_within",
@@ -196,7 +217,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/77658970-6e81-4c69-a746-768c001c81eb.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Fire_Within.mp3",
-      "duration": 299
+      "duration": 299,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "freedom_is_life",
@@ -205,7 +227,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/e5f7f9a2-c589-4a50-9e4d-30019c600965.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Freedom_Is_Life.mp3",
-      "duration": 192
+      "duration": 192,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "get_ready_now",
@@ -214,7 +237,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/c805ac55-dc16-4907-892d-fc40cf3bf2e0.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Get_Ready_Now.mp3",
-      "duration": 194
+      "duration": 194,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "lost_in_the_light",
@@ -223,7 +247,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/91ff6ed5-6ab1-40e7-9fb3-1f4b988f485b.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Lost_in_the_Light.mp3",
-      "duration": 184
+      "duration": 184,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "no_gravity",
@@ -232,7 +257,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/2b6fcda8-4561-4482-b25e-74c98edd420f.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/No_Gravity.mp3",
-      "duration": 223
+      "duration": 223,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "through_the_storm",
@@ -241,7 +267,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/86357cec-c7c9-4871-b719-ec799f716e15.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Through_the_Storm.mp3",
-      "duration": 260
+      "duration": 260,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "through_your_eyes",
@@ -250,7 +277,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/8ccf06bd-7aef-49be-b799-046785a6a939.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Through_Your_Eyes.mp3",
-      "duration": 197
+      "duration": 197,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "weightless_sky",
@@ -259,7 +287,8 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/43337011-681e-485a-be89-edb3da15bfd5.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Weightless_Sky.mp3",
-      "duration": 170
+      "duration": 170,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
       "id": "within_the_flow",
@@ -268,7 +297,58 @@
       "category": "trance_techno",
       "cover": "https://cdn2.suno.ai/4f1308c1-ad22-4213-910e-fa424161f808.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Within_the_Flow.mp3",
-      "duration": 153
+      "duration": 153,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "tiefer",
+      "title": "Tiefer",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/ef73dcb8-8424-4340-bbc7-ee8faefb6023.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Tiefer.mp3",
+      "duration": 140,
+      "addedAt": "2025-09-04T21:51:25.007Z"
+    },
+    {
+      "id": "schamlos",
+      "title": "Schamlos",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/9f1b593b-fbc7-46b2-a4be-08920ad47943.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Schamlos.mp3",
+      "duration": 195,
+      "addedAt": "2025-09-04T21:51:51.442Z"
+    },
+    {
+      "id": "kruzifix",
+      "title": "Kruzifix",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/64942598-87a1-40cc-b929-629fac1c7f28.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Kruzifix.mp3",
+      "duration": 217,
+      "addedAt": "2025-09-04T21:52:23.136Z"
+    },
+    {
+      "id": "ich_seh_dich",
+      "title": "Ich Seh Dich",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/9cbfef8d-dce6-409d-9830-e550a0177cb9.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Ich_seh_dich.mp3",
+      "duration": 232,
+      "addedAt": "2025-09-04T21:54:36.239Z"
+    },
+    {
+      "id": "glut",
+      "title": "Glut",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/de1841eb-cdf9-40a7-91a5-d620271a5e22.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Glut.mp3",
+      "duration": 227,
+      "addedAt": "2025-09-04T21:55:01.025Z"
     }
   ]
 }
