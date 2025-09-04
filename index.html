@@ -3,80 +3,121 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>R.A.L.F. – Music Showcase</title>
   <meta name="description" content="R.A.L.F. – Musik mit Kategorien, Cover-Galerie und integriertem Player." />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
   <meta property="og:title" content="R.A.L.F. – Music Showcase" />
   <meta property="og:description" content="Stream deine Songs direkt auf deiner Seite, ohne Suno-Login." />
-  <meta property="og:image" content="assets/logo-512.png" />
+  <meta property="og:image" content="/assets/logo-512.png" />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- PWA / App-Icon -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/pwa/icon-180.png">
+  <meta name="theme-color" content="#ea580c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <style>
     img, audio, video { -webkit-user-drag: none; user-select: none; }
 
-    /* Pulsierende, dezente, orange Trennlinie (Herzschlag) */
-    .pulse-line {
-      border: 0;
-      height: 4px;                    /* breiter und sichtbar */
-      background: #ea580c;            /* orange-600 */
-      opacity: 0.85;
-      animation: pulseGlow 2s ease-in-out infinite;
-      box-shadow: 0 0 6px rgba(234, 88, 12, .35);
+    /* Pulsierende orange Linie */
+    @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
+    .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
+
+    /* Hover-Glow (Rand) bleibt wie gehabt */
+    .glow-hover:hover { box-shadow: 0 0 22px rgba(234,88,12,.35); }
+
+    /* Safe-Area für Android */
+    .player-dock-safe { padding-bottom: max(env(safe-area-inset-bottom), .5rem); }
+
+    /* Größere Touch-Ziele */
+    .btn-touch { min-width: 48px; min-height: 44px; }
+
+    /* Audio: Download-Button weg (Fallback) */
+    audio::-internal-media-controls-download-button { display:none; }
+    audio::-webkit-media-controls-enclosure { overflow:hidden; }
+
+    /* --- Songkarte: KEIN Dauer-Glow. Nur bei Hover/Tap --- */
+    .card {
+      position: relative;
+      border: 1px solid #ea580c;         /* orange Rahmen */
+      border-radius: 1rem;
+      overflow: hidden;
+      background: rgba(23,23,23,0.7);    /* bg-neutral-900/70 */
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
-    @keyframes pulseGlow {
-      0%, 100% {
-        opacity: .85;
-        box-shadow: 0 0 6px rgba(234, 88, 12, .35);
-      }
-      50% {
-        opacity: 1;
-        box-shadow: 0 0 14px rgba(234, 88, 12, .55);
-      }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(120% 80% at 50% 0%,
+          rgba(234,88,12,0.16) 0%,
+          rgba(234,88,12,0.08) 28%,
+          rgba(234,88,12,0.00) 60%);
+      opacity: 0;                        /* standard: aus */
+      transition: opacity .18s ease;
+    }
+    .card:hover::before,
+    .card.touch-glow::before {           /* Mobile-Tap-Highlight */
+      opacity: 1;
     }
   </style>
 </head>
+
 <body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <!-- Banner mit Logo -->
+  <!-- Banner -->
   <header class="relative w-full h-[180px] bg-black">
-    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner"
-         class="absolute inset-0 w-full h-full object-fill" />
+    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
   </header>
 
-  <!-- Orange Trennlinie mit sanftem Herzschlag -->
-  <hr class="pulse-line my-4" />
+  <!-- dickere orange Trennlinie mit Puls -->
+  <div class="orange-sep w-full"></div>
 
-  <!-- Kopf mit Titel + Suche -->
-  <div class="max-w-7xl mx-auto px-4 mt-4 flex items-center justify-between">
-    <div>
+  <!-- Kopfbereich -->
+  <div class="max-w-7xl mx-auto px-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="p-4 border border-orange-600 rounded-2xl">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
       <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
     </div>
-    <!-- Suchfeld: permanenter, dezenter, oranger Rahmen + Glow bei Fokus -->
-    <div class="shrink-0 w-64 sm:w-80">
-      <input id="search" type="text" placeholder="Suche Songs oder Künstler ⌘K"
-        class="w-full rounded-2xl bg-neutral-800/80 border border-orange-600/35 ring-1 ring-white/10 px-4 py-2 text-sm text-white placeholder-neutral-400
-               focus:outline-none focus:ring-2 focus:ring-orange-500/60 focus:border-orange-500/60
-               hover:ring-orange-500/20
-               drop-shadow-[0_0_0_rgba(0,0,0,0)]
-               focus:drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]">
+    <div class="shrink-0 w-full sm:w-72">
+      <input id="search" type="text" placeholder="Suche Songs"
+             class="w-full rounded-2xl border border-orange-600 bg-neutral-800/80 px-4 py-2 text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-orange-500 glow-hover">
     </div>
   </div>
 
-  <!-- Kategorien-Leiste (mehr Abstand nach unten) -->
-  <div id="catBar" class="max-w-7xl mx-auto px-4 mt-8 mb-8 flex flex-wrap gap-2"></div>
+  <!-- ▶ Alles abspielen -->
+  <div class="max-w-7xl mx-auto px-4 mt-3">
+    <button id="playAllBtn"
+      class="w-full sm:w-auto inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-semibold rounded-full px-4 py-2 glow-hover">
+      ▶ Alles abspielen
+    </button>
+  </div>
 
-  <section id="catGallery" class="max-w-6xl mx-auto px-4 py-10 hidden">
+  <!-- Kategorien-Leiste -->
+  <div id="catBar" class="max-w-7xl mx-auto px-4 mt-6 flex flex-wrap gap-2"></div>
+
+  <!-- Kategorien-Galerie -->
+  <section id="catGallery" class="max-w-6xl mx-auto px-4 py-8 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
   </section>
 
-  <main class="max-w-6xl mx-auto px-4 pb-24">
+  <!-- Songs: MEHR ABSTAND NACH OBEN -->
+  <main class="max-w-6xl mx-auto px-4 pb-24 mt-12 sm:mt-16">
     <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
-    <p id="emptyState" class="text-neutral-400 hidden">Keine Treffer. Suchbegriff anpassen.</p>
+    <p id="emptyState" class="text-neutral-400 hidden mt-6">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
-  <div id="playerDock" class="fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
+  <!-- Player-Dock -->
+  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" />
+      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" alt="">
       <div class="flex-1 min-w-0">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
@@ -84,225 +125,350 @@
           <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
         </div>
       </div>
-      <audio id="audio" controls class="w-64" preload="metadata"></audio>
-      <button id="closeBtn" class="px-3 py-1.5 text-sm rounded-lg border border-neutral-700 hover:border-neutral-500">Schließen</button>
+
+      <!-- Desktop: nativer Player -->
+      <div class="hidden sm:block">
+        <audio id="audio" controls controlslist="nodownload noplaybackrate" preload="metadata" class="w-64"></audio>
+      </div>
+
+      <!-- Steuerung -->
+      <div class="flex items-center gap-2">
+        <button id="prevBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500">⏮</button>
+        <button id="shuffleBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500" title="Shuffle umschalten">🔀</button>
+        <button id="nextBtn" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500">⏭</button>
+        <span id="playerCounter" class="text-xs text-neutral-400 min-w-[3.5rem] text-center">1 / 1</span>
+      </div>
+
+      <!-- Mobile: großer Play/Pause -->
+      <div class="sm:hidden">
+        <button id="btnPlay" class="btn-touch w-11 h-11 flex items-center justify-center rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-500">▶</button>
+      </div>
+
+      <!-- Kompaktes X -->
+      <button id="closeBtn"
+              class="btn-touch w-11 h-11 flex items-center justify-center rounded-full border border-neutral-700 hover:border-neutral-500"
+              aria-label="Schließen" title="Schließen">✕</button>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer class="border-t border-neutral-800">
-    <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500">
-      © R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.
+    <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
+      <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
+      <span>v4.7.2</span>
     </div>
   </footer>
 
+  <!-- App-Logik -->
   <script>
-    const state = { songs: [], categories: [], cat: 'all', query: '', active: null };
+    const state = { songs: [], categories: [], cat: 'all', query: '', active: null, queue: [], queueIndex: -1, shuffle: false };
 
-    window.renderSite = function(songs, categories){
-      if (songs) state.songs = Array.isArray(songs) ? songs : (songs.songs || []);
-      if (categories) state.categories = Array.isArray(categories) ? categories : (categories.categories || []);
-      render();
-    };
+    function loadLocalOverrides() {
+      const s = localStorage.getItem('ralf_songs_json');
+      const c = localStorage.getItem('ralf_categories_json');
+      if (s) { try { const js = JSON.parse(s); state.songs = Array.isArray(js)?js:(js.songs||[]); } catch{} }
+      if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(jc)?jc:(jc.categories||[]); } catch{} }
+      try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
+    }
 
     async function loadData() {
-      const localSongs = localStorage.getItem('ralf_songs_json');
-      const localCats  = localStorage.getItem('ralf_categories_json');
-      if (localSongs) {
-        try { const s = JSON.parse(localSongs); state.songs = Array.isArray(s) ? s : (s.songs || []); } catch(e){}
+      loadLocalOverrides();
+      if (!state.songs.length) {
+        try { const s = await fetch('/songs.json').then(r=>r.json()); state.songs = Array.isArray(s)?s:(s.songs||[]); } catch(e){}
       }
-      if (localCats) {
-        try { const c = JSON.parse(localCats); state.categories = Array.isArray(c) ? c : (c.categories || []); } catch(e){}
+      if (!state.categories.length) {
+        try { const c = await fetch('/categories.json').then(r=>r.json()); state.categories = Array.isArray(c)?c:(c.categories||[]); } catch(e){}
       }
-      if (!state.songs.length || !state.categories.length) {
-        const s = await fetch('songs.json').then(r=>r.json());
-        const c = await fetch('categories.json').then(r=>r.json());
-        state.songs = Array.isArray(s) ? s : (s.songs || []);
-        state.categories = Array.isArray(c) ? c : (c.categories || []);
-      }
-      renderCatBar();
-      applyQueryFromURL();
-      render();
+      applyQueryFromURL(); render();
 
       const pid = new URLSearchParams(location.search).get('id');
-      if (pid) {
-        const s = state.songs.find(x=>x.id===pid);
-        if (s) setTimeout(()=>playSong(s), 100);
-      }
+      if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
     }
 
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
       state.cat = p.get('cat') || 'all';
       state.query = (p.get('q') || '').toLowerCase();
-      const search = document.getElementById('search');
-      if (search) search.value = state.query;
+      const search = document.getElementById('search'); if (search) search.value = state.query;
     }
+
     function setCat(cat) {
       state.cat = cat;
-      const p = new URLSearchParams(location.search);
-      p.set('cat', cat);
-      history.replaceState(null, '', '?' + p.toString());
+      const p = new URLSearchParams(location.search); p.set('cat', cat);
+      history.replaceState(null,'','?'+p.toString());
       render();
+      state.queue = []; state.queueIndex = -1; updateCounter();
     }
+
     function setQuery(q) {
-      state.query = (q || '').toLowerCase();
+      state.query = (q||'').toLowerCase();
       const p = new URLSearchParams(location.search);
-      if (q) p.set('q', q); else p.delete('q');
-      history.replaceState(null, '', '?' + p.toString());
+      if (state.query) p.set('q', state.query); else p.delete('q');
+      history.replaceState(null,'','?'+p.toString());
       render();
+      state.queue = []; state.queueIndex = -1; updateCounter();
     }
 
-    function getCategoryLabel(key) {
-      const cat = state.categories.find(c => c.key === key);
-      return cat ? (cat.label || cat.key) : key;
+    /* Sichtbare Songs */
+    function getVisibleSongs() {
+      const q = state.query;
+      return (state.songs||[]).filter(s =>
+        (state.cat === 'all' || s.category === state.cat) &&
+        (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
+      );
     }
 
+    function songsByCategory(key) {
+      return (state.songs||[]).filter(s => s.category === key);
+    }
+
+    /* Queue */
+    function ensureQueueForVisible() {
+      let ids = getVisibleSongs().map(s=>s.id);
+      if (state.shuffle) ids = shuffle(ids);
+      state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
+      updateCounter();
+    }
+
+    function startQueueFromVisible() {
+      ensureQueueForVisible();
+      if (state.queueIndex === -1) return;
+      const first = state.songs.find(x=>x.id===state.queue[0]);
+      if (first) playSong(first);
+    }
+
+    function startQueueForCategory(key) {
+      let ids = songsByCategory(key).map(s=>s.id);
+      if (!ids.length) return;
+      if (state.shuffle) ids = shuffle(ids);
+      state.queue = ids; state.queueIndex = 0;
+      const first = state.songs.find(x=>x.id===ids[0]);
+      if (first) playSong(first);
+      updateCounter();
+    }
+
+    function shuffle(a) {
+      const arr = a.slice();
+      for (let i=arr.length-1; i>0; i--) {
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]] = [arr[j],arr[i]];
+      }
+      return arr;
+    }
+
+    function playNext(){
+      if (!state.queue.length) return;
+      if (state.queueIndex < state.queue.length - 1) {
+        state.queueIndex++; playSongById(state.queue[state.queueIndex]);
+      }
+      updateCounter();
+    }
+    function playPrev(){
+      if (!state.queue.length) return;
+      if (state.queueIndex > 0) {
+        state.queueIndex--; playSongById(state.queue[state.queueIndex]);
+      }
+      updateCounter();
+    }
+    function playSongById(id){
+      const s = state.songs.find(x=>x.id===id);
+      if (s) playSong(s);
+    }
+
+    /* UI render */
     function renderCatBar() {
-      const bar = document.getElementById('catBar');
-      bar.innerHTML = '';
+      const bar = document.getElementById('catBar'); bar.innerHTML = '';
 
-      const mkBtn = (label, active, onClick) => {
-        const b = document.createElement('button');
-        b.textContent = label;
-        b.className =
-          // Standard: immer dezenter oranger Rahmen
-          'px-3 py-1.5 rounded-full border border-orange-600/35 text-sm transition ' +
-          (active
-            ? // aktiv: voller Orange-Look
-              'bg-orange-600 border-orange-500 text-white ring-2 ring-orange-400/50 drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)]'
-            : // inaktiv: dezent, Glow/Border boost auf Hover
-              'bg-neutral-900 text-neutral-300 hover:border-orange-500/60 hover:ring-2 hover:ring-orange-400/40 hover:drop-shadow-[0_0_0.55rem_rgba(249,115,22,0.30)]');
-        b.onclick = onClick;
-        return b;
-      };
+      const wrapAll = document.createElement('div'); wrapAll.className = 'flex items-center gap-1';
+      const allBtn = document.createElement('button');
+      allBtn.textContent = 'Alle';
+      allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition glow-hover ' +
+        (state.cat==='all' ? 'bg-orange-600 border-orange-500 text-white'
+                           : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
+      allBtn.onclick = ()=>setCat('all');
+      wrapAll.appendChild(allBtn);
+      bar.appendChild(wrapAll);
 
-      bar.appendChild(mkBtn('Alle', state.cat === 'all', () => setCat('all')));
-      state.categories.forEach(c => {
-        bar.appendChild(mkBtn(c.label || c.key, state.cat === c.key, () => setCat(c.key)));
+      state.categories.forEach(c=>{
+        const wrap = document.createElement('div'); wrap.className = 'flex items-center gap-1';
+        const chip = document.createElement('button');
+        chip.textContent = c.label || c.key;
+        chip.className = 'px-3 py-1.5 rounded-full border text-sm transition glow-hover ' +
+          (state.cat===c.key ? 'bg-orange-600 border-orange-500 text-white'
+                             : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
+        chip.onclick = ()=>setCat(c.key);
+
+        const play = document.createElement('button');
+        play.innerText = '▶';
+        play.title = 'Kategorie abspielen';
+        play.className = 'px-2 py-1 rounded-full border text-sm bg-orange-600 text-white border-orange-500 hover:bg-orange-500 glow-hover';
+        play.onclick = (e)=>{ e.stopPropagation(); startQueueForCategory(c.key); };
+
+        wrap.appendChild(chip); wrap.appendChild(play);
+        bar.appendChild(wrap);
       });
     }
 
     function renderCategoryGallery() {
-      const showGallery = state.cat === 'all' && !state.query;
+      const show = state.cat==='all' && !state.query;
       const section = document.getElementById('catGallery');
-      section.classList.toggle('hidden', !showGallery);
-      if (!showGallery) return;
-
-      const grid = document.getElementById('catGrid');
-      grid.innerHTML = '';
-      state.categories.forEach(c => {
+      section.classList.toggle('hidden', !show);
+      if (!show) return;
+      const grid = document.getElementById('catGrid'); grid.innerHTML = '';
+      state.categories.forEach(c=>{
         const card = document.createElement('div');
-        card.className =
-          // Standard: dezenter oranger Rahmen
-          'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600/35 transition ' +
-          // Hover: Glow/Border stärker
-          'hover:border-orange-500/55 hover:drop-shadow-[0_0_0.7rem_rgba(249,115,22,0.30)]';
-        card.onclick = () => setCat(c.key);
+        card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600 hover:border-orange-500 glow-hover';
+        card.onclick = ()=>setCat(c.key);
         card.innerHTML = `
-          <img src="${c.cover}" alt="${c.label || c.key}" class="w-full h-32 object-cover bg-black" />
-          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 flex items-center justify-center transition">
-            <span class="font-semibold text-white text-sm sm:text-base drop-shadow-[0_0_0.5rem_rgba(0,0,0,0.6)]">${c.label || c.key}</span>
+          <img src="${c.cover||'/assets/pwa/icon-512.png'}" alt="${c.label||c.key}" class="w-full h-32 object-contain bg-black" />
+          <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <span class="font-semibold text-white text-sm sm:text-base">${c.label||c.key}</span>
           </div>`;
         grid.appendChild(card);
       });
     }
 
     function renderSongs() {
-      const q = state.query;
-      const filtered = state.songs.filter(s =>
-        (state.cat === 'all' || s.category === state.cat) &&
-        (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
-      );
+      const labelByKey=new Map((state.categories||[]).map(c=>[c.key,c.label||c.key]));
+      const grid=document.getElementById('songsGrid');
+      const empty=document.getElementById('emptyState');
+      grid.innerHTML='';
+      const filtered=getVisibleSongs();
+      if(!filtered.length){empty.classList.remove('hidden');return;} else empty.classList.add('hidden');
 
-      const grid = document.getElementById('songsGrid');
-      const empty = document.getElementById('emptyState');
-      grid.innerHTML = '';
-
-      if (filtered.length === 0) { empty.classList.remove('hidden'); return; }
-      else empty.classList.add('hidden');
-
-      filtered.forEach(s => {
-        const card = document.createElement('div');
-        card.className =
-          // Standard: dezenter oranger Rahmen
-          'group bg-neutral-900/70 border border-orange-600/35 rounded-2xl overflow-hidden transition ' +
-          // Hover: Glow/Border stärker
-          'hover:border-orange-500/60 hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.30)]';
-        card.innerHTML = `
-  <div class="aspect-square overflow-hidden relative">
-    <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-  </div>
-  <div class="p-4">
-    <div class="text-xs text-neutral-300 mb-1">${getCategoryLabel(s.category)}</div>
-    <h3 class="font-semibold leading-tight">${s.title}</h3>
-    <div class="text-sm text-neutral-400">${s.artist}</div>
-    <div class="mt-3 flex justify-end">
-      <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 shadow
-                     hover:bg-orange-500 hover:brightness-110
-                     drop-shadow-[0_0_0.65rem_rgba(249,115,22,0.35)] hover:drop-shadow-[0_0_0.9rem_rgba(249,115,22,0.45)]">
-        ▶ Abspielen
-      </button>
-    </div>
-  </div>`;
-        card.querySelector('.play').onclick = () => playSong(s);
+      filtered.forEach(s=>{
+        const card=document.createElement('div');
+        card.className='card group transition';  /* Nur-Hover/Tap-Glow */
+        card.innerHTML=`
+          <div class="aspect-[3/4] overflow-hidden relative">
+            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+          </div>
+          <div class="p-4">
+            <div class="text-xs text-neutral-300 mb-1">${labelByKey.get(s.category)||s.category||''}</div>
+            <h3 class="font-semibold leading-tight">${s.title}</h3>
+            <div class="text-sm text-neutral-400">${s.artist||''}</div>
+            <div class="mt-3 flex justify-end">
+              <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-orange-500 glow-hover">▶ Abspielen</button>
+            </div>
+          </div>`;
+        // Tap-Glow für Mobile simulieren
+        card.addEventListener('touchstart', ()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'), 200); }, {passive:true});
+        card.querySelector('.play').onclick=()=>{
+          ensureQueueForVisible();
+          const pos = state.queue.findIndex(id=>id===s.id);
+          state.queueIndex = pos>=0 ? pos : 0;
+          playSong(s);
+        };
         grid.appendChild(card);
       });
     }
 
-    function playSong(s) {
+    function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); }
+
+    /* Player */
+    function playSong(s){
       state.active = s.id;
+      if (!state.queue.length) { state.queue = [s.id]; state.queueIndex = 0; }
+      else { const pos = state.queue.findIndex(id=>id===s.id); if (pos>=0) state.queueIndex = pos; }
+
       document.getElementById('playerDock').classList.remove('hidden');
-      document.getElementById('playerCover').src = s.cover;
-      document.getElementById('playerTitle').textContent = s.title;
-      document.getElementById('playerArtist').textContent = s.artist;
+      document.getElementById('playerCover').src = s.cover||'';
+      document.getElementById('playerTitle').textContent = s.title||'';
+      document.getElementById('playerArtist').textContent = s.artist||'';
+
       const audio = document.getElementById('audio');
       audio.src = s.src;
-      audio.play().catch(() => {});
-      audio.ontimeupdate = () => {
-        const pct = Math.min(100, Math.round((audio.currentTime / (s.duration || 1)) * 100));
+      audio.play().catch(()=>{});
+      audio.ontimeupdate = ()=>{
+        const base = s.duration || audio.duration || 1;
+        const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
       };
+      audio.onended = ()=> playNext();
+
+      const p = new URLSearchParams(location.search); p.set('id', s.id);
+      history.replaceState(null,'','?'+p.toString());
+
+      updateCounter(); updatePlayIcon();
     }
 
-    function render() {
-      renderCatBar();
-      renderCategoryGallery();
-      renderSongs();
+    /* Controls */
+    document.getElementById('prevBtn').addEventListener('click', playPrev);
+    document.getElementById('nextBtn').addEventListener('click', playNext);
+    document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
+    document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
+
+    function toggleShuffle(){
+      state.shuffle = !state.shuffle;
+      try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1':'0'); } catch {}
+      const currentId = state.active;
+      let ids = getVisibleSongs().map(s=>s.id);
+      ids = state.shuffle ? shuffle(ids) : ids;
+      state.queue = ids;
+      const pos = state.queue.findIndex(id=>id===currentId);
+      state.queueIndex = pos>=0 ? pos : (state.queue.length?0:-1);
+      updateShuffleButton(); updateCounter();
+    }
+    function updateShuffleButton(){
+      const btn = document.getElementById('shuffleBtn');
+      btn.className = 'btn-touch px-2.5 py-1.5 rounded-full border ' + (state.shuffle
+        ? 'border-orange-500 bg-orange-600/20 text-white'
+        : 'border-neutral-700 hover:border-neutral-500');
+      btn.title = state.shuffle ? 'Shuffle ist an' : 'Shuffle umschalten';
     }
 
-    document.getElementById('closeBtn').onclick = () => {
-      document.getElementById('playerDock').classList.add('hidden');
-      document.getElementById('audio').pause();
-    };
-    document.getElementById('search').addEventListener('input', (e) => setQuery(e.target.value));
-    window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('search').focus(); } });
+    /* Suche */
+    document.getElementById('search').addEventListener('input', e=>setQuery(e.target.value));
+    window.addEventListener('keydown', e=>{
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k') {
+        e.preventDefault(); const inp=document.getElementById('search'); inp.focus(); inp.select();
+      }
+    });
+
+    /* Scrub */
+    (function enableScrub(){
+      const audio=document.getElementById('audio'), bar=document.getElementById('playerBar');
+      if (!bar) return;
+      bar.addEventListener('click', e=>{
+        const r=bar.getBoundingClientRect(), ratio=(e.clientX-r.left)/r.width;
+        if (audio.duration>0) audio.currentTime = ratio*audio.duration;
+      });
+    })();
+
+    /* Mobile Play/Pause Button */
+    (function wireMobilePlay(){
+      const audio=document.getElementById('audio');
+      const btn=document.getElementById('btnPlay');
+      if (!btn) return;
+      btn.onclick = ()=>{ if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); };
+      audio.addEventListener('play', updatePlayIcon);
+      audio.addEventListener('pause', updatePlayIcon);
+      audio.addEventListener('ended', updatePlayIcon);
+      updatePlayIcon();
+    })();
+
+    function updatePlayIcon(){
+      const audio=document.getElementById('audio');
+      const btn=document.getElementById('btnPlay');
+      if (!btn || !audio) return;
+      btn.textContent = audio.paused ? '▶' : '⏸';
+    }
+
+    function updateCounter(){
+      const el = document.getElementById('playerCounter');
+      if (!el) return;
+      if (!state.queue.length || state.queueIndex<0) { el.textContent=''; return; }
+      el.textContent = (state.queueIndex+1) + ' / ' + state.queue.length;
+    }
+
+    /* Editor nur laden, wenn ?edit=1 */
+    (function maybeLoadEditor(){
+      if (new URLSearchParams(location.search).get("edit")==="1") {
+        var s=document.createElement("script"); s.src="/editor.js?v=4.7.2"; document.body.appendChild(s);
+      }
+    })();
+
     loadData();
-  </script>
-
-  <!-- Extra Script für Spulen -->
-  <script>
-    const audio = document.getElementById('audio');
-    const bar   = document.getElementById('playerBar');
-
-    audio.addEventListener('loadedmetadata', () => {
-      const s = (window.state?.songs || []).find(x => x.id === window.state?.active);
-      if (s) s.duration = Math.floor(audio.duration || 0);
-    });
-
-    bar?.addEventListener('click', (e) => {
-      const rect = bar.getBoundingClientRect();
-      const ratio = (e.clientX - rect.left) / rect.width;
-      if (audio.duration > 0) audio.currentTime = ratio * audio.duration;
-    });
-  </script>
-
-  <!-- Editor lädt nur, wenn ?edit=1 in der URL steht -->
-  <script>
-    if (new URLSearchParams(location.search).get("edit") === "1") {
-      var s = document.createElement("script");
-      s.src = "/editor.js?v=4.2";  // Cache-Breaker für Editor
-      document.body.appendChild(s);
-    }
   </script>
 </body>
 </html>
