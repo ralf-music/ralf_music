@@ -16,8 +16,8 @@
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
-      "key": "ballermann_schlager",
-      "label": "Ballermann / Schlager",
+      "key": "ballermann",
+      "label": "Ballermann",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
@@ -38,6 +38,11 @@
     {
       "key": "other",
       "label": "Other",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "schlager",
+      "label": "Schlager",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
