@@ -158,7 +158,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.5</span>
+      <span>v4.7.6</span>
     </div>
   </footer>
 
@@ -224,7 +224,7 @@
       return (state.songs||[]).filter(s => s.category === key);
     }
 
-    /* ===== Queue-Helfer (stabiler Shuffle & Next/Prev) ===== */
+    /* ===== Queue-Helfer ===== */
     function getVisibleIds() { return getVisibleSongs().map(s => s.id); }
     function shuffleInPlace(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -248,6 +248,7 @@
       updateCounter();
     }
 
+    /* Queue-Builds */
     function ensureQueueForVisible() {
       let ids = getVisibleIds();
       if (state.shuffle) ids = shuffleInPlace(ids.slice());
@@ -442,10 +443,22 @@
     document.getElementById('shuffleBtn').addEventListener('click', ()=>{
       state.shuffle = !state.shuffle;
       try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
-      const keepIndex = Math.max(0, state.queueIndex|0);
-      const base = getVisibleIds();
-      const list = state.shuffle ? shuffleInPlace(base.slice()) : base;
-      setQueueKeepingIndex(list, keepIndex);
+
+      if (state.shuffle) {
+        // Shuffle EIN: mischen, aktuellen Track elegant einbetten
+        const keepIndex = Math.max(0, state.queueIndex|0);
+        const base = getVisibleIds();
+        const mixed = shuffleInPlace(base.slice());
+        setQueueKeepingIndex(mixed, keepIndex);
+      } else {
+        // Shuffle AUS: Originalreihenfolge wiederherstellen und echten Index setzen
+        const base = getVisibleIds();
+        state.queue = base;
+        const idx = base.indexOf(state.active);
+        state.queueIndex = idx >= 0 ? idx : (base.length ? 0 : -1);
+        updateCounter();
+      }
+
       updateShuffleButton();
     });
     document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
