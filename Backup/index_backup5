@@ -38,7 +38,7 @@
     audio::-internal-media-controls-download-button { display:none; }
     audio::-webkit-media-controls-enclosure { overflow:hidden; }
 
-    /* --- Songkarte mit Außen- UND Voll-Glow nur bei Hover/Tap --- */
+    /* --- Songkarte: Hover/Tap-Glow --- */
     .card {
       position: relative;
       border: 1px solid #ea580c;
@@ -47,28 +47,60 @@
       background: rgba(23,23,23,0.7);
       transition: box-shadow .25s ease, transform .25s ease;
     }
-    /* Voll-Glow Overlay */
     .card::before {
       content: "";
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: rgba(234,88,12,0.15);
-      opacity: 0;
-      transition: opacity .25s ease;
-      pointer-events: none;
+      opacity: 0; transition: opacity .25s ease; pointer-events: none;
     }
-    /* Aktiv: Außen-Glow + leichtes Anheben */
-    .card:hover,
-    .card.touch-glow {
-      box-shadow:
-        0 0 14px rgba(234,88,12,0.45),
-        0 0 28px rgba(234,88,12,0.28),
-        0 0 52px rgba(234,88,12,0.18);
+    .card:hover, .card.touch-glow {
+      box-shadow: 0 0 20px rgba(234,88,12,0.60), 0 0 42px rgba(234,88,12,0.35);
       transform: translateY(-2px);
     }
-    .card:hover::before,
-    .card.touch-glow::before {
-      opacity: 1;
+    .card:hover::before, .card.touch-glow::before { opacity: 1; }
+
+    /* Now-Playing: Rahmen-Glow + Badge */
+    .now-playing { box-shadow: 0 0 22px rgba(234,88,12,0.70), 0 0 46px rgba(234,88,12,0.45) !important; }
+    .now-playing::after {
+      content:"Now Playing";
+      position:absolute; top:.5rem; right:.5rem; z-index:2;
+      font-size:.65rem; line-height:1; padding:.25rem .45rem; border-radius:9999px;
+      background:rgba(0,0,0,.65); color:#f5f5f5; border:1px solid #ea580c;
+    }
+
+    /* Galerie-Badge für Kategorie-Counts */
+    .badge {
+      position: absolute; top: .5rem; right: .5rem;
+      font-size: .70rem; line-height: 1; padding: .25rem .45rem;
+      border-radius: 9999px; background: rgba(0,0,0,.65);
+      color: #e5e5e5; border: 1px solid #ea580c;
+    }
+
+    /* NEU-Badge auf Songkarte */
+    .badge-new {
+      position: absolute; top: .5rem; left: .5rem; z-index: 2;
+      font-size: .65rem; line-height: 1; padding: .25rem .45rem; border-radius: 9999px;
+      background: #ea580c; color: #111; font-weight: 700; border: 1px solid #ea580c;
+    }
+
+    /* === Vollbild-Cover-Overlay (Player bleibt sichtbar) === */
+    .cover-overlay {
+      position: fixed; left: 0; right: 0; top: 0; bottom: 0; /* bottom wird dynamisch auf Dock-Höhe gesetzt */
+      background: rgba(0,0,0,0.98);
+      display: none; /* via JS togglen */
+      z-index: 60; /* über Inhalt, unterhalb ist Dock auf 50 */
+      align-items: center; justify-content: center;
+    }
+    .cover-overlay.active { display: flex; }
+    .cover-overlay img {
+      max-width: 96vw; max-height: 96vh; object-fit: contain; border-radius: 0.75rem;
+      box-shadow: 0 0 30px rgba(234,88,12,0.5);
+    }
+    .cover-close {
+      position: absolute; top: .75rem; right: .75rem;
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.6); border: 1px solid #ea580c; color: #fff; font-size: 18px;
     }
   </style>
 </head>
@@ -118,9 +150,9 @@
   </main>
 
   <!-- Player-Dock -->
-  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
+  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" style="z-index:50;">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover" alt="">
+      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover cursor-pointer" alt="" title="Cover maximieren">
       <div class="flex-1 min-w-0">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
@@ -154,18 +186,30 @@
     </div>
   </div>
 
+  <!-- Vollbild-Cover-Overlay -->
+  <div id="coverOverlay" class="cover-overlay">
+    <button id="coverClose" class="cover-close" aria-label="Cover schließen" title="Schließen">✕</button>
+    <img id="coverOverlayImg" src="" alt="Cover Vollbild">
+  </div>
+
   <!-- Footer -->
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.5</span>
+      <span>v4.8.1</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const state = { songs: [], categories: [], cat: 'all', query: '', active: null, queue: [], queueIndex: -1, shuffle: false };
+    const state = {
+      songs: [], categories: [], cat: 'all', query: '',
+      active: null, queue: [], queueIndex: -1, shuffle: false,
+      dailyKey: null, dailyOrder: null,
+      newestSet: new Set()
+    };
 
+    /* ===== Helpers: Local Overrides & Load ===== */
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
@@ -182,27 +226,31 @@
       if (!state.categories.length) {
         try { const c = await fetch('/categories.json').then(r=>r.json()); state.categories = Array.isArray(c)?c:(c.categories||[]); } catch(e){}
       }
+
+      buildNewestSet();
+      ensureDailyOrder();
+
       applyQueryFromURL(); render();
 
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
     }
 
+    /* ===== URL / Filters ===== */
     function applyQueryFromURL() {
       const p = new URLSearchParams(location.search);
       state.cat = p.get('cat') || 'all';
       state.query = (p.get('q') || '').toLowerCase();
       const search = document.getElementById('search'); if (search) search.value = state.query;
     }
-
     function setCat(cat) {
       state.cat = cat;
       const p = new URLSearchParams(location.search); p.set('cat', cat);
       history.replaceState(null,'','?'+p.toString());
+      ensureDailyOrder();
       render();
       state.queue = []; state.queueIndex = -1; updateCounter();
     }
-
     function setQuery(q) {
       state.query = (q||'').toLowerCase();
       const p = new URLSearchParams(location.search);
@@ -212,19 +260,80 @@
       state.queue = []; state.queueIndex = -1; updateCounter();
     }
 
-    /* Sichtbare Songs */
+    /* ===== NEU-Logik ===== */
+    function parseDateSafe(v) {
+      if (!v && v !== 0) return null;
+      if (typeof v === 'number') return new Date(v);
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function buildNewestSet() {
+      const withDates = (state.songs||[])
+        .map(s => ({ id: s.id, d: parseDateSafe(s.addedAt) }))
+        .filter(x => x.id && x.d);
+      withDates.sort((a,b)=> b.d - a.d);
+      const top10 = withDates.slice(0, 10).map(x=>x.id);
+      state.newestSet = new Set(top10);
+    }
+
+    /* ===== Daily Rotation (nur für Alle & ohne Suche) ===== */
+    function getLocalDayKey() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    }
+    function seededPRNG(seed) {
+      let s = 0; for (let i=0;i<seed.length;i++) s = (s*31 + seed.charCodeAt(i)) >>> 0;
+      let x = (s || 123456789) >>> 0;
+      return function() { x = (1103515245 * x + 12345) % 2147483648; return x / 2147483648; };
+    }
+    function seededShuffleIds(ids, seedKey) {
+      const prng = seededPRNG(seedKey);
+      const a = ids.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(prng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    function ensureDailyOrder() {
+      const key = getLocalDayKey();
+      const ids = (state.songs||[]).map(s=>s.id);
+      if (state.dailyKey !== key || !state.dailyOrder || state.dailyOrder.length !== ids.length) {
+        state.dailyKey = key;
+        state.dailyOrder = seededShuffleIds(ids, key);
+      } else {
+        const setKnown = new Set(state.dailyOrder);
+        const missing = ids.filter(id => !setKnown.has(id));
+        if (missing.length) {
+          const tail = seededShuffleIds(missing, key + '-tail');
+          state.dailyOrder = state.dailyOrder.concat(tail);
+        }
+      }
+    }
+
+    /* ===== Sichtbare Songs ===== */
     function getVisibleSongs() {
       const q = state.query;
-      return (state.songs||[]).filter(s =>
+      const base = (state.songs||[]).filter(s =>
         (state.cat === 'all' || s.category === state.cat) &&
         (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
       );
+
+      if (state.cat === 'all' && !q) {
+        ensureDailyOrder();
+        const pos = new Map(state.dailyOrder.map((id,idx)=>[id, idx]));
+        return base.slice().sort((a,b)=> (pos.get(a.id)??0) - (pos.get(b.id)??0));
+      }
+      return base;
     }
     function songsByCategory(key) {
       return (state.songs||[]).filter(s => s.category === key);
     }
 
-    /* ===== Queue-Helfer (stabiler Shuffle & Next/Prev) ===== */
+    /* ===== Queue-/Shuffle-Helfer ===== */
     function getVisibleIds() { return getVisibleSongs().map(s => s.id); }
     function shuffleInPlace(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -254,12 +363,14 @@
       state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
       updateCounter();
     }
+
     function startQueueFromVisible() {
       ensureQueueForVisible();
       if (state.queueIndex === -1) return;
       const first = state.songs.find(x=>x.id===state.queue[0]);
       if (first) playSong(first);
     }
+
     function startQueueForCategory(key) {
       let ids = songsByCategory(key).map(s=>s.id);
       if (!ids.length) return;
@@ -300,12 +411,15 @@
       updateCounter();
     }
 
-    /* UI render */
+    /* ===== UI render ===== */
     function renderCatBar() {
       const bar = document.getElementById('catBar'); bar.innerHTML = '';
+
+      // "Alle" Chip mit Gesamtanzahl
       const wrapAll = document.createElement('div'); wrapAll.className = 'flex items-center gap-1';
+      const allCount = (state.songs || []).length;
       const allBtn = document.createElement('button');
-      allBtn.textContent = 'Alle';
+      allBtn.textContent = `Alle (${allCount})`;
       allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition ' +
         (state.cat==='all' ? 'bg-orange-600 border-orange-500 text-white'
                            : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
@@ -313,10 +427,13 @@
       wrapAll.appendChild(allBtn);
       bar.appendChild(wrapAll);
 
+      // Kategorie-Chips mit Counts
       state.categories.forEach(c=>{
         const wrap = document.createElement('div'); wrap.className = 'flex items-center gap-1';
+        const count = songsByCategory(c.key).length;
+
         const chip = document.createElement('button');
-        chip.textContent = c.label || c.key;
+        chip.textContent = `${c.label || c.key} (${count})`;
         chip.className = 'px-3 py-1.5 rounded-full border text-sm transition ' +
           (state.cat===c.key ? 'bg-orange-600 border-orange-500 text-white'
                              : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
@@ -338,8 +455,11 @@
       const section = document.getElementById('catGallery');
       section.classList.toggle('hidden', !show);
       if (!show) return;
+
       const grid = document.getElementById('catGrid'); grid.innerHTML = '';
       state.categories.forEach(c=>{
+        const count = songsByCategory(c.key).length;
+
         const card = document.createElement('div');
         card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600 hover:border-orange-500';
         card.onclick = ()=>setCat(c.key);
@@ -347,7 +467,8 @@
           <img src="${c.cover||'/assets/pwa/icon-512.png'}" alt="${c.label||c.key}" class="w-full h-32 object-contain bg-black" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span class="font-semibold text-white text-sm sm:text-base">${c.label||c.key}</span>
-          </div>`;
+          </div>
+          <div class="badge">${count}</div>`;
         grid.appendChild(card);
       });
     }
@@ -363,8 +484,12 @@
       filtered.forEach(s=>{
         const card=document.createElement('div');
         card.className='card group transition';
+        if (state.active === s.id) card.classList.add('now-playing');
+
+        const isNew = state.newestSet.has(s.id);
         card.innerHTML=`
           <div class="aspect-[3/4] overflow-hidden relative">
+            ${isNew ? '<div class="badge-new">NEU</div>' : ''}
             <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
           </div>
           <div class="p-4">
@@ -375,7 +500,7 @@
               <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 shadow hover:bg-orange-500">▶ Abspielen</button>
             </div>
           </div>`;
-        // Tap-Glow für Mobile simulieren
+        // Tap-Glow für Mobile
         card.addEventListener('touchstart', ()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'), 220); }, {passive:true});
         card.querySelector('.play').onclick=()=>{
           const ids = getVisibleIds();
@@ -390,7 +515,7 @@
 
     function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); }
 
-    /* Player */
+    /* ===== Player ===== */
     function playSong(s){
       state.active = s.id;
       if (state.queue.length) {
@@ -419,6 +544,28 @@
       history.replaceState(null,'','?'+p.toString());
 
       updateCounter(); updatePlayIcon();
+      renderSongs();
+    }
+
+    /* === Vollbild-Cover öffnen/schließen === */
+    function sizeOverlayToDock() {
+      const overlay = document.getElementById('coverOverlay');
+      const dock = document.getElementById('playerDock');
+      const h = dock && !dock.classList.contains('hidden') ? dock.getBoundingClientRect().height : 0;
+      overlay.style.bottom = h + 'px';
+    }
+    function openCoverOverlay() {
+      const s = state.songs.find(x=>x.id===state.active);
+      if (!s) return;
+      const img = document.getElementById('coverOverlayImg');
+      img.src = s.cover || '';
+      sizeOverlayToDock();
+      document.getElementById('coverOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCoverOverlay() {
+      document.getElementById('coverOverlay').classList.remove('active');
+      document.body.style.overflow = '';
     }
 
     /* HARTE SCHLIESSEN-FUNKTION */
@@ -434,6 +581,8 @@
       updateCounter(); updatePlayIcon();
       const p = new URLSearchParams(location.search); p.delete('id');
       history.replaceState(null,'','?'+p.toString());
+      closeCoverOverlay();
+      renderSongs();
     }
 
     /* Controls */
@@ -442,14 +591,39 @@
     document.getElementById('shuffleBtn').addEventListener('click', ()=>{
       state.shuffle = !state.shuffle;
       try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
-      const keepIndex = Math.max(0, state.queueIndex|0);
-      const base = getVisibleIds();
-      const list = state.shuffle ? shuffleInPlace(base.slice()) : base;
-      setQueueKeepingIndex(list, keepIndex);
+
+      if (state.shuffle) {
+        const keepIndex = Math.max(0, state.queueIndex|0);
+        const base = getVisibleIds();
+        const mixed = shuffleInPlace(base.slice());
+        setQueueKeepingIndex(mixed, keepIndex);
+      } else {
+        const base = getVisibleIds();
+        state.queue = base;
+        const idx = base.indexOf(state.active);
+        state.queueIndex = idx >= 0 ? idx : (base.length ? 0 : -1);
+        updateCounter();
+      }
       updateShuffleButton();
     });
     document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
     document.getElementById('closeBtn').addEventListener('click', closePlayerHard);
+
+    // Cover Overlay Events
+    document.getElementById('playerCover').addEventListener('click', openCoverOverlay);
+    document.getElementById('coverClose').addEventListener('click', closeCoverOverlay);
+    document.getElementById('coverOverlay').addEventListener('click', (e)=> {
+      if (e.target.id === 'coverOverlay') closeCoverOverlay();
+    });
+    window.addEventListener('resize', ()=> {
+      if (document.getElementById('coverOverlay').classList.contains('active')) sizeOverlayToDock();
+    });
+    window.addEventListener('orientationchange', ()=> {
+      setTimeout(sizeOverlayToDock, 150);
+    });
+    window.addEventListener('keydown', (e)=> {
+      if (e.key === 'Escape') closeCoverOverlay();
+    });
 
     function updateShuffleButton(){
       const btn = document.getElementById('shuffleBtn');
@@ -506,7 +680,7 @@
     /* Editor nur laden, wenn ?edit=1 */
     (function maybeLoadEditor(){
       if (new URLSearchParams(location.search).get("edit")==="1") {
-        var s=document.createElement("script"); s.src="/editor.js?v=4.7.2"; document.body.appendChild(s);
+        var s=document.createElement("script"); s.src="/editor.js?v=4.3"; document.body.appendChild(s);
       }
     })();
 
@@ -514,3 +688,4 @@
   </script>
 </body>
 </html>
+
