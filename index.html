@@ -108,7 +108,7 @@
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
   </section>
 
-  <!-- Songs: MEHR ABSTAND NACH OBEN -->
+  <!-- Songs -->
   <main class="max-w-6xl mx-auto px-4 pb-24 mt-12 sm:mt-16">
     <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
     <p id="emptyState" class="text-neutral-400 hidden mt-6">Keine Treffer. Suchbegriff anpassen.</p>
@@ -155,7 +155,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.3</span>
+      <span>v4.7.4</span>
     </div>
   </footer>
 
@@ -222,10 +222,45 @@
       return (state.songs||[]).filter(s => s.category === key);
     }
 
-    /* Queue */
+    /* ===== Queue-Helfer (stabiler Shuffle & Next/Prev) ===== */
+
+    // Sichtbare IDs in Anzeige-Reihenfolge
+    function getVisibleIds() { return getVisibleSongs().map(s => s.id); }
+
+    // Fisher-Yates
+    function shuffleInPlace(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Schreibe state.queue so, dass current an keepIndex bleibt
+    function setQueueKeepingIndex(ids, keepIndex) {
+      const list = Array.isArray(ids) ? ids.slice() : [];
+      if (!list.length) {
+        state.queue = []; state.queueIndex = -1; updateCounter(); return;
+      }
+      const n = list.length;
+      const curr = state.active;
+      if (!curr || !list.includes(curr)) {
+        state.queue = list;
+        state.queueIndex = Math.min(Math.max(keepIndex, 0), n - 1);
+        updateCounter(); return;
+      }
+      const others = list.filter(id => id !== curr);
+      const before = others.slice(0, Math.min(keepIndex, others.length));
+      const after  = others.slice(before.length);
+      state.queue = [...before, curr, ...after];
+      state.queueIndex = Math.min(keepIndex, state.queue.length - 1);
+      updateCounter();
+    }
+
+    /* Queue-Grundfunktionen */
     function ensureQueueForVisible() {
-      let ids = getVisibleSongs().map(s=>s.id);
-      if (state.shuffle) ids = shuffle(ids);
+      let ids = getVisibleIds();
+      if (state.shuffle) ids = shuffleInPlace(ids.slice());
       state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
       updateCounter();
     }
@@ -240,39 +275,43 @@
     function startQueueForCategory(key) {
       let ids = songsByCategory(key).map(s=>s.id);
       if (!ids.length) return;
-      if (state.shuffle) ids = shuffle(ids);
+      if (state.shuffle) ids = shuffleInPlace(ids.slice());
       state.queue = ids; state.queueIndex = 0;
       const first = state.songs.find(x=>x.id===ids[0]);
       if (first) playSong(first);
       updateCounter();
     }
 
-    function shuffle(a) {
-      const arr = a.slice();
-      for (let i=arr.length-1; i>0; i--) {
-        const j = Math.floor(Math.random()*(i+1));
-        [arr[i],arr[j]] = [arr[j],arr[i]];
-      }
-      return arr;
-    }
-
-    function playNext(){
-      if (!state.queue.length) return;
-      if (state.queueIndex < state.queue.length - 1) {
-        state.queueIndex++; playSongById(state.queue[state.queueIndex]);
-      }
-      updateCounter();
-    }
-    function playPrev(){
-      if (!state.queue.length) return;
-      if (state.queueIndex > 0) {
-        state.queueIndex--; playSongById(state.queue[state.queueIndex]);
-      }
-      updateCounter();
-    }
+    /* Weiter / Zurück nutzen IMMER die Queue */
     function playSongById(id){
       const s = state.songs.find(x=>x.id===id);
       if (s) playSong(s);
+    }
+
+    function playNext(){
+      if (!state.queue.length) {
+        let ids = getVisibleIds();
+        ids = state.shuffle ? shuffleInPlace(ids.slice()) : ids;
+        state.queue = ids;
+        const idx = state.queue.indexOf(state.active);
+        state.queueIndex = idx >= 0 ? idx : 0;
+      }
+      state.queueIndex = (state.queueIndex + 1) % state.queue.length;
+      playSongById(state.queue[state.queueIndex]);
+      updateCounter();
+    }
+
+    function playPrev(){
+      if (!state.queue.length) {
+        let ids = getVisibleIds();
+        ids = state.shuffle ? shuffleInPlace(ids.slice()) : ids;
+        state.queue = ids;
+        const idx = state.queue.indexOf(state.active);
+        state.queueIndex = idx >= 0 ? idx : 0;
+      }
+      state.queueIndex = (state.queueIndex - 1 + state.queue.length) % state.queue.length;
+      playSongById(state.queue[state.queueIndex]);
+      updateCounter();
     }
 
     /* UI render */
@@ -354,9 +393,11 @@
         // Tap-Glow für Mobile simulieren
         card.addEventListener('touchstart', ()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'), 200); }, {passive:true});
         card.querySelector('.play').onclick=()=>{
-          ensureQueueForVisible();
-          const pos = state.queue.findIndex(id=>id===s.id);
-          state.queueIndex = pos>=0 ? pos : 0;
+          // Queue aus sichtbaren IDs, aber aktuellen auf die gewählte Position setzen
+          const ids = getVisibleIds();
+          const pos = ids.findIndex(id=>id===s.id);
+          state.active = s.id;
+          setQueueKeepingIndex(state.shuffle ? shuffleInPlace(ids.slice()) : ids, Math.max(0,pos));
           playSong(s);
         };
         grid.appendChild(card);
@@ -368,8 +409,15 @@
     /* Player */
     function playSong(s){
       state.active = s.id;
-      if (!state.queue.length) { state.queue = [s.id]; state.queueIndex = 0; }
-      else { const pos = state.queue.findIndex(id=>id===s.id); if (pos>=0) state.queueIndex = pos; }
+
+      // Stelle sicher, dass queueIndex zur aktiven ID passt
+      if (state.queue.length) {
+        const idx = state.queue.indexOf(s.id);
+        if (idx >= 0) state.queueIndex = idx;
+      } else {
+        state.queue = [s.id];
+        state.queueIndex = 0;
+      }
 
       document.getElementById('playerDock').classList.remove('hidden');
       document.getElementById('playerCover').src = s.cover||'';
@@ -392,52 +440,37 @@
       updateCounter(); updatePlayIcon();
     }
 
-    /* HARTE SCHLIESSEN-FUNKTION (Option B) */
+    /* HARTE SCHLIESSEN-FUNKTION */
     function closePlayerHard() {
       const audio = document.getElementById('audio');
-      try {
-        audio.pause();
-        audio.removeAttribute('src');   // Quelle lösen
-        audio.load();                   // Netzwerk freigeben
-      } catch {}
-      // UI zurücksetzen
+      try { audio.pause(); audio.removeAttribute('src'); audio.load(); } catch {}
       document.getElementById('playerDock').classList.add('hidden');
       document.getElementById('playerCover').src = '';
       document.getElementById('playerTitle').textContent = '';
       document.getElementById('playerArtist').textContent = '';
       document.getElementById('playerProgress').style.width = '0%';
-
-      // State leeren
-      state.active = null;
-      state.queue = [];
-      state.queueIndex = -1;
-      updateCounter();
-      updatePlayIcon();
-
-      // Deep-Link ?id entfernen
-      const p = new URLSearchParams(location.search);
-      p.delete('id');
+      state.active = null; state.queue = []; state.queueIndex = -1;
+      updateCounter(); updatePlayIcon();
+      const p = new URLSearchParams(location.search); p.delete('id');
       history.replaceState(null,'','?'+p.toString());
     }
 
     /* Controls */
     document.getElementById('prevBtn').addEventListener('click', playPrev);
     document.getElementById('nextBtn').addEventListener('click', playNext);
-    document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
+    document.getElementById('shuffleBtn').addEventListener('click', ()=>{
+      // Toggle + stabiler Index
+      state.shuffle = !state.shuffle;
+      try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
+      const keepIndex = Math.max(0, state.queueIndex|0);
+      const base = getVisibleIds();
+      const list = state.shuffle ? shuffleInPlace(base.slice()) : base;
+      setQueueKeepingIndex(list, keepIndex);
+      updateShuffleButton();
+    });
     document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
     document.getElementById('closeBtn').addEventListener('click', closePlayerHard);
 
-    function toggleShuffle(){
-      state.shuffle = !state.shuffle;
-      try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1':'0'); } catch {}
-      const currentId = state.active;
-      let ids = getVisibleSongs().map(s=>s.id);
-      ids = state.shuffle ? shuffle(ids) : ids;
-      state.queue = ids;
-      const pos = state.queue.findIndex(id=>id===currentId);
-      state.queueIndex = pos>=0 ? pos : (state.queue.length?0:-1);
-      updateShuffleButton(); updateCounter();
-    }
     function updateShuffleButton(){
       const btn = document.getElementById('shuffleBtn');
       btn.className = 'btn-touch px-2.5 py-1.5 rounded-full border ' + (state.shuffle
