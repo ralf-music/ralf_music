@@ -399,6 +399,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Meine_Leber_sagt_nein%2Cmein_Glas_sagt_ja(Remix).mp3",
       "duration": 193,
       "addedAt": "2025-09-04T22:13:23.203Z"
+    },
+    {
+      "id": "magisch_nah",
+      "title": "Magisch Nah",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/d87f4d62-04ca-4f65-871e-502305b3a84c.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Magisch_nah.mp3",
+      "duration": 160,
+      "addedAt": "2025-09-04T22:17:27.920Z"
     }
   ]
 }
