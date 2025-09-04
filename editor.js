@@ -1,14 +1,17 @@
-/* === R.A.L.F. Editor v4.2 ===
-   - Auto-ID:
-       * MP3-Importer: aus Dateinamen Beyond_the_Silence.mp3 -> ID: beyond_the_silence, Titel: Beyond the Silence
-       * Songs-Editor: beim Verlassen des Titels, falls ID leer, automatisch ID aus Titel generieren
-   - Duplicate-Check (IDs):
-       * Prüft beim Übernehmen (Songs-Editor + MP3-Importer) und beim "Songs speichern (JSON)"
-       * Zeigt Alert mit Liste, bricht Speichern ab
-   - DOM-basierter Songs-Editor, Kategorien-Editor, MP3-Importer
+/* === R.A.L.F. Editor v4.3 ===
+   Neu seit 4.3:
+   - addedAt wird automatisch gesetzt:
+       * MP3-Importer: neuer Eintrag => addedAt = now(); bestehender Eintrag behält sein addedAt
+       * "+ Neuer Song": addedAt = now()
+   - Songs-Editor: editierbare Spalte "addedAt" (ISO-String)
+   - Einheitliche Version über EDITOR_VERSION
 */
 
 (function () {
+  // ---------- Version ----------
+  const EDITOR_VERSION = "4.3";
+  window.EDITOR_VERSION = EDITOR_VERSION;
+
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
   if (!Array.isArray(window.state.songs))      window.state.songs = [];
@@ -22,13 +25,19 @@
     localStorage.setItem("ralf_songs_json", JSON.stringify({ songs: state.songs }, null, 2));
   const saveDraftCats = () =>
     localStorage.setItem("ralf_categories_json", JSON.stringify({ categories: state.categories }, null, 2));
-  const rerender = () => typeof window.renderSite === "function" && window.renderSite(state.songs, state.categories);
+
+  // Live-Refresh falls vorhanden
+  const rerender = () => {
+    if (typeof window.render === "function") window.render();
+    else if (typeof window.renderSite === "function") window.renderSite(state.songs, state.categories);
+  };
 
   // ---------- Helpers ----------
   const $ = (sel, root = document) => root.querySelector(sel);
   const stripExt = (name) => String(name || "").replace(/\.[^.]+$/, "");
+  const nowISO = () => new Date().toISOString();
 
-  // ID aus Dateiname: lower, behalte "_" , alles andere raus, Mehrfach-Unterstriche auf einen
+  // ID aus Dateiname
   function idFromFilename(name) {
     const base = stripExt(name);
     return base
@@ -37,8 +46,7 @@
       .replace(/^_+|_+$/g, "")
       .toLowerCase();
   }
-
-  // ID aus Titel: Leerzeichen -> "_", unerlaubte raus, lowercase
+  // ID aus Titel
   function idFromTitle(title) {
     return String(title || "")
       .trim()
@@ -47,8 +55,7 @@
       .replace(/_+/g, "_")
       .toLowerCase();
   }
-
-  // Titel aus Dateiname: "_" -> " ", alle Wörter kapitalisieren
+  // Titel aus Dateiname
   function titleFromFilename(name) {
     const base = stripExt(name).replace(/_/g, " ").trim();
     return base.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1));
@@ -78,7 +85,7 @@
   panel.innerHTML = `
     <div class="flex items-center gap-2 mb-1">
       <span class="text-xs px-2 py-0.5 rounded bg-orange-600">EDIT</span>
-      <span class="text-xs text-neutral-300">v4.2</span>
+      <span class="text-xs text-neutral-300">v${EDITOR_VERSION}</span>
     </div>
     <div class="grid grid-cols-1 gap-2">
       <button id="btnSongs"     class="bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded">Songs verwalten</button>
@@ -229,6 +236,7 @@
       {t:"Cover-URL", cls:"py-2 pr-2"},
       {t:"Song-URL", cls:"py-2 pr-2"},
       {t:"Dauer", cls:"py-2 pr-2 w-24"},
+      {t:"addedAt (ISO)", cls:"py-2 pr-2 w-48"},
       {t:"Aktion", cls:"py-2 pl-2 w-28"},
     ];
     heads.forEach(h=>{
@@ -281,7 +289,7 @@
     if (!state.songs.length) {
       const trInfo = document.createElement("tr");
       const td = document.createElement("td");
-      td.colSpan = 8;
+      td.colSpan = 9;
       td.className = "py-4 text-neutral-400";
       td.textContent = "Noch keine Songs. Nutze „+ Neuer Song“ oder den MP3-Importer.";
       trInfo.appendChild(td);
@@ -300,7 +308,6 @@
       const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2";
       const inTitle = document.createElement("input"); inTitle.className="w-full px-2 py-1 rounded bg-neutral-800";
       inTitle.value = s.title || ""; inTitle.placeholder="Titel";
-      // Auto-ID aus Titel, falls ID leer, beim Verlassen des Feldes
       inTitle.onblur = () => {
         if (!inId.value.trim()) {
           inId.value = idFromTitle(inTitle.value);
@@ -333,6 +340,13 @@
       inDur.value = String(s.duration || 0); inDur.placeholder="Sek.";
       inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0; tdDur.appendChild(inDur);
 
+      const tdAdded = document.createElement("td"); tdAdded.className="py-2 pr-2";
+      const inAdded = document.createElement("input"); inAdded.className="w-full px-2 py-1 rounded bg-neutral-800";
+      inAdded.value = s.addedAt || "";
+      inAdded.placeholder = "YYYY-MM-DD oder ISO";
+      inAdded.oninput = e => state.songs[i].addedAt = e.target.value.trim();
+      tdAdded.appendChild(inAdded);
+
       const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2";
       const del = document.createElement("button");
       del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
@@ -340,7 +354,7 @@
       del.onclick = () => { state.songs.splice(i, 1); tr.remove(); };
       tdAct.appendChild(del);
 
-      tr.append(tdId, tdTitle, tdArtist, tdCat, tdCover, tdSrc, tdDur, tdAct);
+      tr.append(tdId, tdTitle, tdArtist, tdCat, tdCover, tdSrc, tdDur, tdAdded, tdAct);
       tbody.appendChild(tr);
     });
 
@@ -351,9 +365,14 @@
     add.className = "mt-3 bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded";
     add.onclick = () => {
       state.songs.push({
-        id: "", title: "", artist: DEFAULT_ARTIST,
+        id: "",
+        title: "",
+        artist: DEFAULT_ARTIST,
         category: state.categories[0]?.key || "",
-        cover: "", src: "", duration: 0
+        cover: "",
+        src: "",
+        duration: 0,
+        addedAt: nowISO()
       });
       modal.remove(); openSongEditor();
     };
@@ -436,7 +455,7 @@
       const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       sel.onchange = (e) => {
         if (e.target.value === "__new__") {
-          const label = prompt("Name der neuen Kategorie:"); 
+          const label = prompt("Name der neuen Kategorie:");
           if (!label) { rebuild(); return; }
           const key = idFromTitle(label) || "neu";
           if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
@@ -469,7 +488,7 @@
       }, { once: true });
     };
 
-    // Übernehmen = Song anlegen, Duplicate-Check
+    // Übernehmen = Song anlegen/aktualisieren, Duplicate-Check, addedAt automatisch
     const apply = modal.querySelector(".apply");
     if (apply) apply.onclick = () => {
       const id     = $("#mp3id", form).value.trim();
@@ -482,23 +501,26 @@
 
       if (!id || !title || !src) { alert("ID, Titel und Song-URL sind Pflicht."); return; }
 
-      // Duplikat-Check: aktuelle + neuer Eintrag
-      const future = [...state.songs.filter(x => x.id !== id), { id, title, artist, category: cat, cover, src, duration: dur }];
-      const dups = duplicateIds(future);
+      const rest = state.songs.filter(x => x.id !== id);
+      const dups = duplicateIds([...rest, { id }]);
       if (dups.length) {
         alert("Duplikate gefunden (IDs):\n\n" + dups.join("\n") + "\n\nBitte ID anpassen.");
         return;
       }
 
+      // addedAt-Strategie:
+      // - vorhandener Song -> addedAt behalten
+      // - neuer Song -> jetzt setzen
+      const existing = state.songs.find(x => x.id === id);
       const catObj = state.categories.find(c => c.key === cat);
       const finalCover = cover || catObj?.cover || STD_COVER;
+      const finalAddedAt = existing?.addedAt || nowISO();
 
-      // ersetzen/nachschieben
-      const rest = state.songs.filter(x => x.id !== id);
-      state.songs = [...rest, { id, title, artist, category: cat, cover: finalCover, src, duration: dur }];
+      const entry = { id, title, artist, category: cat, cover: finalCover, src, duration: dur, addedAt: finalAddedAt };
+      state.songs = [...rest, entry];
 
       saveDraftSongs(); rerender();
-      alert("Song angelegt (lokal). Lade die MP3 ins Repo nach /assets/songs hoch.");
+      alert("Song angelegt/aktualisiert (lokal). Lade die MP3 ins Repo nach /assets/songs hoch.");
     };
   }
 
