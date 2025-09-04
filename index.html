@@ -31,7 +31,7 @@
     /* Hover-Glow (Rand) bleibt wie gehabt */
     .glow-hover:hover { box-shadow: 0 0 22px rgba(234,88,12,.35); }
 
-    /* Safe-Area für Android */
+    /* Safe-Area für Android/iOS */
     .player-dock-safe { padding-bottom: max(env(safe-area-inset-bottom), .5rem); }
 
     /* Größere Touch-Ziele */
@@ -155,7 +155,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.2</span>
+      <span>v4.7.3</span>
     </div>
   </footer>
 
@@ -392,11 +392,40 @@
       updateCounter(); updatePlayIcon();
     }
 
+    /* HARTE SCHLIESSEN-FUNKTION (Option B) */
+    function closePlayerHard() {
+      const audio = document.getElementById('audio');
+      try {
+        audio.pause();
+        audio.removeAttribute('src');   // Quelle lösen
+        audio.load();                   // Netzwerk freigeben
+      } catch {}
+      // UI zurücksetzen
+      document.getElementById('playerDock').classList.add('hidden');
+      document.getElementById('playerCover').src = '';
+      document.getElementById('playerTitle').textContent = '';
+      document.getElementById('playerArtist').textContent = '';
+      document.getElementById('playerProgress').style.width = '0%';
+
+      // State leeren
+      state.active = null;
+      state.queue = [];
+      state.queueIndex = -1;
+      updateCounter();
+      updatePlayIcon();
+
+      // Deep-Link ?id entfernen
+      const p = new URLSearchParams(location.search);
+      p.delete('id');
+      history.replaceState(null,'','?'+p.toString());
+    }
+
     /* Controls */
     document.getElementById('prevBtn').addEventListener('click', playPrev);
     document.getElementById('nextBtn').addEventListener('click', playNext);
     document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
     document.getElementById('playAllBtn').addEventListener('click', startQueueFromVisible);
+    document.getElementById('closeBtn').addEventListener('click', closePlayerHard);
 
     function toggleShuffle(){
       state.shuffle = !state.shuffle;
