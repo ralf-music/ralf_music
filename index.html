@@ -70,6 +70,20 @@
     .card.touch-glow::before {
       opacity: 1;
     }
+
+    /* Kleine Count-Badge (Galerie) */
+    .badge {
+      position: absolute;
+      top: .5rem;
+      right: .5rem;
+      font-size: .70rem;
+      line-height: 1;
+      padding: .25rem .45rem;
+      border-radius: 9999px;
+      background: rgba(0,0,0,.65);
+      color: #e5e5e5;
+      border: 1px solid #ea580c;
+    }
   </style>
 </head>
 
@@ -158,7 +172,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.7.6</span>
+      <span>v4.7.7</span>
     </div>
   </footer>
 
@@ -304,9 +318,12 @@
     /* UI render */
     function renderCatBar() {
       const bar = document.getElementById('catBar'); bar.innerHTML = '';
+
+      // "Alle" Chip mit Gesamtanzahl
       const wrapAll = document.createElement('div'); wrapAll.className = 'flex items-center gap-1';
+      const allCount = (state.songs || []).length;
       const allBtn = document.createElement('button');
-      allBtn.textContent = 'Alle';
+      allBtn.textContent = `Alle (${allCount})`;
       allBtn.className = 'px-3 py-1.5 rounded-full border text-sm transition ' +
         (state.cat==='all' ? 'bg-orange-600 border-orange-500 text-white'
                            : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
@@ -314,10 +331,13 @@
       wrapAll.appendChild(allBtn);
       bar.appendChild(wrapAll);
 
+      // Kategorie-Chips mit Counts
       state.categories.forEach(c=>{
         const wrap = document.createElement('div'); wrap.className = 'flex items-center gap-1';
+        const count = songsByCategory(c.key).length;
+
         const chip = document.createElement('button');
-        chip.textContent = c.label || c.key;
+        chip.textContent = `${c.label || c.key} (${count})`;
         chip.className = 'px-3 py-1.5 rounded-full border text-sm transition ' +
           (state.cat===c.key ? 'bg-orange-600 border-orange-500 text-white'
                              : 'bg-neutral-900 border-orange-600 text-neutral-200 hover:border-orange-500');
@@ -339,8 +359,11 @@
       const section = document.getElementById('catGallery');
       section.classList.toggle('hidden', !show);
       if (!show) return;
+
       const grid = document.getElementById('catGrid'); grid.innerHTML = '';
       state.categories.forEach(c=>{
+        const count = songsByCategory(c.key).length;
+
         const card = document.createElement('div');
         card.className = 'group relative cursor-pointer rounded-2xl overflow-hidden border border-orange-600 hover:border-orange-500';
         card.onclick = ()=>setCat(c.key);
@@ -348,7 +371,8 @@
           <img src="${c.cover||'/assets/pwa/icon-512.png'}" alt="${c.label||c.key}" class="w-full h-32 object-contain bg-black" />
           <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span class="font-semibold text-white text-sm sm:text-base">${c.label||c.key}</span>
-          </div>`;
+          </div>
+          <div class="badge">${count}</div>`;
         grid.appendChild(card);
       });
     }
@@ -445,13 +469,11 @@
       try { localStorage.setItem('ralf_shuffle', state.shuffle ? '1' : '0'); } catch {}
 
       if (state.shuffle) {
-        // Shuffle EIN: mischen, aktuellen Track elegant einbetten
         const keepIndex = Math.max(0, state.queueIndex|0);
         const base = getVisibleIds();
         const mixed = shuffleInPlace(base.slice());
         setQueueKeepingIndex(mixed, keepIndex);
       } else {
-        // Shuffle AUS: Originalreihenfolge wiederherstellen und echten Index setzen
         const base = getVisibleIds();
         state.queue = base;
         const idx = base.indexOf(state.active);
