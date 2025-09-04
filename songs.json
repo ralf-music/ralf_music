@@ -361,10 +361,40 @@
       "addedAt": "2025-09-04T22:06:08.073Z"
     },
     {
+      "id": "magisch_nah",
+      "title": "Magisch Nah",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/d87f4d62-04ca-4f65-871e-502305b3a84c.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Magisch_nah.mp3",
+      "duration": 160,
+      "addedAt": "2025-09-04T22:17:27.920Z"
+    },
+    {
+      "id": "meine_leber_sagt_nein_mein_glas_sagt_ja_remix",
+      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja(Remix)",
+      "artist": "R.A.L.F.",
+      "category": "ballermann",
+      "cover": "https://cdn2.suno.ai/2b2f0e37-9c7d-4244-a7ac-956e35ca873a.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Meine_Leber_sagt_nein%2Cmein_Glas_sagt_ja(Remix).mp3",
+      "duration": 193,
+      "addedAt": "2025-09-04T22:13:23.203Z"
+    },
+    {
+      "id": "meine_leber_sagt_nein_mein_glas_sagt_ja",
+      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja",
+      "artist": "R.A.L.F.",
+      "category": "ballermann",
+      "cover": "https://cdn2.suno.ai/3aec2db5-2bb1-4a53-b7c3-8c956133d52a.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Meine_Leber_sagt_nein%2Cmein_Glas_sagt_ja.mp3",
+      "duration": 145,
+      "addedAt": "2025-09-04T22:13:01.565Z"
+    },
+    {
       "id": "die_insel_bebt",
       "title": "Die Insel Bebt",
       "artist": "R.A.L.F.",
-      "category": "ballermann_schlager",
+      "category": "ballermann",
       "cover": "https://cdn2.suno.ai/58632182-6b19-4af0-adde-43356f637428.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Die_Insel_bebt.mp3",
       "duration": 143,
@@ -374,41 +404,11 @@
       "id": "nimm_dir_nen_strohhalm_und_halt_dich_fest",
       "title": "Nimm Dir Nen Strohhalm Und Halt Dich Fest",
       "artist": "R.A.L.F.",
-      "category": "ballermann_schlager",
+      "category": "ballermann",
       "cover": "https://cdn2.suno.ai/d368c913-557f-433a-af17-e2134326ad9c.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Nimm_dir_nen_Strohhalm_und_halt_dich_fest.mp3",
       "duration": 187,
       "addedAt": "2025-09-04T22:10:00.202Z"
-    },
-    {
-      "id": "meine_leber_sagt_nein_mein_glas_sagt_ja",
-      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja",
-      "artist": "R.A.L.F.",
-      "category": "ballermann_schlager",
-      "cover": "https://cdn2.suno.ai/3aec2db5-2bb1-4a53-b7c3-8c956133d52a.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Meine_Leber_sagt_nein%2Cmein_Glas_sagt_ja.mp3",
-      "duration": 145,
-      "addedAt": "2025-09-04T22:13:01.565Z"
-    },
-    {
-      "id": "meine_leber_sagt_nein_mein_glas_sagt_ja_remix",
-      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja(Remix)",
-      "artist": "R.A.L.F.",
-      "category": "ballermann_schlager",
-      "cover": "https://cdn2.suno.ai/2b2f0e37-9c7d-4244-a7ac-956e35ca873a.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Meine_Leber_sagt_nein%2Cmein_Glas_sagt_ja(Remix).mp3",
-      "duration": 193,
-      "addedAt": "2025-09-04T22:13:23.203Z"
-    },
-    {
-      "id": "magisch_nah",
-      "title": "Magisch Nah",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://cdn2.suno.ai/d87f4d62-04ca-4f65-871e-502305b3a84c.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Magisch_nah.mp3",
-      "duration": 160,
-      "addedAt": "2025-09-04T22:17:27.920Z"
     }
   ]
 }
