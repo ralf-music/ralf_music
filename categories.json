@@ -44,6 +44,11 @@
       "key": "schlager",
       "label": "Schlager",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "deutsch_rock",
+      "label": "Deutsch Rock",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
 }
