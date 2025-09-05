@@ -31,7 +31,7 @@
     audio::-internal-media-controls-download-button { display:none; }
     audio::-webkit-media-controls-enclosure { overflow:hidden; }
 
-    /* Songkarte Glow */
+    /* Karte Glow */
     .card { position: relative; border: 1px solid #ea580c; border-radius: 1rem; overflow: hidden; background: rgba(23,23,23,0.7); transition: box-shadow .25s ease, transform .25s ease; }
     .card::before { content:""; position:absolute; inset:0; background: rgba(234,88,12,0.15); opacity:0; transition:opacity .25s ease; pointer-events:none; }
     .card:hover, .card.touch-glow { box-shadow: 0 0 20px rgba(234,88,12,0.60), 0 0 42px rgba(234,88,12,0.35); transform: translateY(-2px); }
@@ -43,13 +43,13 @@
     .badge { position:absolute; top:.5rem; right:.5rem; font-size:.70rem; line-height:1; padding:.25rem .45rem; border-radius:9999px; background:rgba(0,0,0,.65); color:#e5e5e5; border:1px solid #ea580c; }
     .badge-new { position:absolute; top:.5rem; left:.5rem; z-index:2; font-size:.65rem; line-height:1; padding:.25rem .45rem; border-radius:9999px; background:#ea580c; color:#111; font-weight:700; border:1px solid #ea580c; }
 
-    /* Vollbild-Cover-Overlay */
+    /* Vollbild-Cover */
     .cover-overlay { position: fixed; left:0; right:0; top:0; bottom:0; background: rgba(0,0,0,0.98); display:none; z-index:60; align-items:center; justify-content:center; }
     .cover-overlay.active { display:flex; }
     .cover-overlay img { max-width:96vw; max-height:96vh; object-fit:contain; border-radius:.75rem; box-shadow:0 0 30px rgba(234,88,12,0.5); }
     .cover-close { position:absolute; top:.75rem; right:.75rem; width:40px; height:40px; border-radius:9999px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.6); border:1px solid #ea580c; color:#fff; font-size:18px; }
 
-    /* Einheitliche Steuer-Buttons (mobile) */
+    /* Einheitliche Buttons */
     .ctrl-btn {
       width: 44px; height: 44px; border-radius: 9999px;
       display:flex; align-items:center; justify-content:center;
@@ -61,16 +61,32 @@
     .ctrl-btn--primary { background: #ea580c; border-color: #ea580c; color: #111; }
     .ctrl-btn--active { border-color:#ea580c; box-shadow: 0 0 0 2px rgba(234,88,12,.15) inset; }
 
-    /* Quickmenü */
-    .menu-panel {
-      position:absolute; bottom:100%; right:0; margin-bottom:.5rem;
-      width: min(320px, 90vw); max-height: 60vh; overflow:auto;
-      background: #0a0a0a; border:1px solid #27272a; border-radius:.75rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+    /* Bottom-Sheet Menü */
+    .menu-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; z-index:59; }
+    .menu-backdrop.open { display:block; }
+    .menu-sheet {
+      position:fixed; left:50%; transform:translateX(-50%); bottom:-100%;
+      width:min(700px,96vw); height:90vh; max-height:90vh;
+      background:#0a0a0a; border:1px solid #27272a; border-bottom:none; border-radius:12px 12px 0 0;
+      box-shadow:0 -20px 60px rgba(0,0,0,.6); z-index:60; transition:bottom .25s ease;
     }
-    .menu-item { display:flex; gap:.5rem; padding:.5rem .75rem; align-items:center; }
-    .menu-item:hover { background:#18181b; }
-    .menu-title { font-size:.8rem; color:#a3a3a3; padding:.5rem .75rem; border-bottom:1px solid #1f1f23; position:sticky; top:0; background:#0a0a0a; }
+    .menu-sheet.open { bottom:0; }
+    .menu-head { position:sticky; top:0; padding:10px 14px; border-bottom:1px solid #1f1f23; display:flex; align-items:center; justify-content:space-between; background:linear-gradient(#121212,#101010); }
+    .menu-x { width:36px; height:36px; border-radius:9999px; border:1px solid #303030; background:#161616; color:#eee; display:flex; align-items:center; justify-content:center; }
+    .menu-body { height:calc(90vh - 56px); overflow:auto; }
+    .menu-section { padding:8px 0; }
+    .menu-title { font-size:.8rem; color:#a3a3a3; padding:8px 14px; }
+    .menu-item { display:flex; gap:10px; align-items:center; padding:10px 14px; border-top:1px solid #151515; }
+    .menu-item:hover { background:#151515; }
+    .menu-pos { width:22px; color:#666; font-size:12px; text-align:right; }
+    .menu-thumb { width:36px; height:36px; border-radius:6px; background:#222 center/cover no-repeat; flex:none; }
+    .menu-meta { min-width:0; }
+    .menu-t { font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .menu-a { font-size:12px; color:#8b8b8b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .menu-btn { font-size:.85rem; padding:.35rem .6rem; border-radius:9999px; border:1px solid #3f3f46; background:#141414; color:#e5e5e5; }
+    .menu-btn.active { background:#ea580c; border-color:#ea580c; color:#111; }
+
+    @media (orientation:landscape){ .menu-sheet{height:70vh;max-height:70vh} .menu-body{height:calc(70vh - 56px)} }
   </style>
 </head>
 
@@ -81,7 +97,7 @@
   </header>
   <div class="orange-sep w-full"></div>
 
-  <!-- Kopfbereich -->
+  <!-- Kopf -->
   <div class="max-w-7xl mx-auto px-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div class="p-4 border border-orange-600 rounded-2xl">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
@@ -101,10 +117,10 @@
     </button>
   </div>
 
-  <!-- Kategorien-Leiste -->
+  <!-- Kategorien -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-6 flex flex-wrap gap-2"></div>
 
-  <!-- Kategorien-Galerie -->
+  <!-- Galerie -->
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-8 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
@@ -118,7 +134,7 @@
 
   <!-- Player-Dock -->
   <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" style="z-index:50;">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4 relative">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3 sm:gap-4 relative">
       <img id="playerCover" class="w-12 h-12 rounded-lg object-cover cursor-pointer" alt="" title="Cover maximieren">
 
       <div class="flex-1 min-w-0">
@@ -134,16 +150,12 @@
         <audio id="audio" controls controlslist="nodownload noplaybackrate" preload="metadata" class="w-64"></audio>
       </div>
 
-      <!-- Steuerung (vereinheitlicht) -->
+      <!-- Steuerung – Variante A: ⏮ • 🔀 • ▶/⏸ • ⏭ • ⋮ -->
       <div class="flex items-center gap-2">
         <button id="prevBtn" class="ctrl-btn" title="Zurück">⏮</button>
-
-        <!-- Mobile Play/Pause neben Shuffle -->
-        <button id="btnPlay" class="ctrl-btn sm:hidden" title="Play/Pause">▶</button>
-
-        <button id="nextBtn" class="ctrl-btn" title="Weiter">⏭</button>
         <button id="shuffleBtn" class="ctrl-btn" title="Shuffle umschalten">🔀</button>
-
+        <button id="btnPlay" class="ctrl-btn sm:hidden" title="Play/Pause">▶</button>
+        <button id="nextBtn" class="ctrl-btn" title="Weiter">⏭</button>
         <span id="playerCounter" class="text-xs text-neutral-400 min-w-[3.5rem] text-center">1 / 1</span>
       </div>
 
@@ -151,17 +163,35 @@
       <div class="flex items-center gap-2">
         <div class="relative">
           <button id="moreBtn" class="ctrl-btn" title="Mehr">⋮</button>
-          <div id="moreMenu" class="menu-panel hidden">
-            <div class="menu-title">Nächste Titel</div>
-            <div id="queueList"></div>
-          </div>
         </div>
         <button id="closeBtn" class="ctrl-btn" aria-label="Schließen" title="Schließen">✕</button>
       </div>
     </div>
   </div>
 
-  <!-- Vollbild-Cover-Overlay -->
+  <!-- Bottom-Sheet: Queue & Optionen -->
+  <div id="menuBackdrop" class="menu-backdrop"></div>
+  <section id="menuSheet" class="menu-sheet" aria-label="Mehr">
+    <div class="menu-head">
+      <strong>Nächste Titel</strong>
+      <button id="menuClose" class="menu-x" aria-label="Schließen">✕</button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section" style="padding-top:6px;">
+        <div class="menu-title">Wiedergabeoptionen</div>
+        <div class="px-3 pb-2 flex items-center gap-2 flex-wrap">
+          <button id="optRepeatOff" class="menu-btn">Wiederholen: Aus</button>
+          <button id="optRepeatOne" class="menu-btn">Nur dieser Song</button>
+          <button id="optRepeatAll" class="menu-btn">Alle</button>
+        </div>
+      </div>
+      <div class="menu-section">
+        <div id="queueList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vollbild-Cover -->
   <div id="coverOverlay" class="cover-overlay">
     <button id="coverClose" class="cover-close" aria-label="Cover schließen" title="Schließen">✕</button>
     <img id="coverOverlayImg" src="" alt="Cover Vollbild">
@@ -171,7 +201,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.8.3</span>
+      <span>v4.8.4</span>
     </div>
   </footer>
 
@@ -179,7 +209,8 @@
     const state = {
       songs: [], categories: [], cat:'all', query:'',
       active:null, queue:[], queueIndex:-1, shuffle:false,
-      dailyKey:null, dailyOrder:null, newestSet:new Set()
+      dailyKey:null, dailyOrder:null, newestSet:new Set(),
+      repeatMode:'all' // 'off' | 'one' | 'all'  (Default = 'all' wie bisheriges Verhalten)
     };
 
     /* ===== Load ===== */
@@ -187,8 +218,9 @@
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
       if (s) { try { const js=JSON.parse(s); state.songs = Array.isArray(js)?js:(js.songs||[]);} catch{} }
-      if (c) { try { const jc=JSON.parse(c); state.categories = Array.isArray(jc)?jc:(jc.categories||[]);} catch{} }
+      if (c) { try { const jc=JSON.parse(c); state.categories = Array.isArray(c)?c:(jc.categories||[]);} catch{} }
       try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
+      try { const r = localStorage.getItem('ralf_repeat'); if (r==='off'||r==='one'||r==='all') state.repeatMode=r; } catch {}
     }
     async function loadData() {
       loadLocalOverrides();
@@ -209,7 +241,7 @@
     function parseDateSafe(v){ if(!v&&v!==0)return null; if(typeof v==='number')return new Date(v); const d=new Date(v); return isNaN(d.getTime())?null:d; }
     function buildNewestSet(){ const withDates=(state.songs||[]).map(s=>({id:s.id,d:parseDateSafe(s.addedAt)})).filter(x=>x.id&&x.d); withDates.sort((a,b)=>b.d-a.d); state.newestSet=new Set(withDates.slice(0,10).map(x=>x.id)); }
 
-    /* ===== Daily rotation (Alle, keine Suche) ===== */
+    /* ===== Daily rotation ===== */
     function getLocalDayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
     function seededPRNG(seed){ let s=0; for(let i=0;i<seed.length;i++) s=(s*31+seed.charCodeAt(i))>>>0; let x=(s||123456789)>>>0; return function(){ x=(1103515245*x+12345)%2147483648; return x/2147483648; }; }
     function seededShuffleIds(ids,seedKey){ const rnd=seededPRNG(seedKey); const a=ids.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -316,7 +348,7 @@
       });
     }
 
-    function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); populateQueueMenu(); }
+    function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); populateQueueMenu(); updateRepeatButtons(); }
 
     /* ===== Overlay utils ===== */
     function sizeOverlayToDock(){
@@ -360,7 +392,16 @@
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
       };
-      audio.onended = ()=> { playNext(); };
+      audio.onended = ()=> {
+        if (state.repeatMode === 'one') {
+          audio.currentTime = 0; audio.play().catch(()=>{});
+        } else if (state.repeatMode === 'all') {
+          playNext();
+        } else { // 'off'
+          if (state.queueIndex < state.queue.length - 1) playNext();
+          // sonst stehen bleiben
+        }
+      };
 
       const p=new URLSearchParams(location.search); p.set('id', s.id); history.replaceState(null,'','?'+p.toString());
       updateCounter(); updatePlayIcon(); renderSongs(); refreshCoverOverlayIfOpen(); populateQueueMenu();
@@ -396,39 +437,61 @@
       updateCounter(); refreshCoverOverlayIfOpen(); populateQueueMenu();
     }
 
-    /* ===== Quickmenü (Queue-Vorschau) ===== */
+    /* ===== Quickmenü ===== */
+    const backdrop = document.getElementById('menuBackdrop');
+    const sheet = document.getElementById('menuSheet');
+    function openMenu(){ backdrop.classList.add('open'); sheet.classList.add('open'); }
+    function closeMenu(){ backdrop.classList.remove('open'); sheet.classList.remove('open'); }
+    document.getElementById('moreBtn').addEventListener('click', openMenu);
+    document.getElementById('menuClose').addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+    // simple swipe to close
+    let startY=null;
+    sheet.addEventListener('touchstart',e=>{startY=e.touches[0].clientY},{passive:true});
+    sheet.addEventListener('touchmove',e=>{ if(startY===null)return; const dy=e.touches[0].clientY-startY; if(dy>60) closeMenu(); },{passive:true});
+
     function populateQueueMenu(){
       const wrap = document.getElementById('queueList'); if (!wrap) return;
       wrap.innerHTML = '';
       let q = state.queue && state.queue.length ? state.queue.slice() : getVisibleIds();
       if (!q.length) { wrap.innerHTML = '<div class="menu-item text-xs text-neutral-500">Keine Titel</div>'; return; }
       const start = Math.max(0, state.queueIndex + 1);
-      const upcoming = q.slice(start).concat(q.slice(0, start)).slice(0, 20);
+      const upcoming = q.slice(start).concat(q.slice(0, start)).slice(0, 30);
       upcoming.forEach((id, i) => {
         const s = state.songs.find(x=>x.id===id); if(!s) return;
         const row = document.createElement('button');
         row.className = 'menu-item w-full text-left';
-        row.innerHTML = `<div class="w-6 text-neutral-500 text-xs">${i+1}.</div>
-                         <img src="${s.cover}" class="w-8 h-8 rounded object-cover" alt="">
-                         <div class="flex-1 min-w-0">
-                           <div class="truncate text-sm">${s.title}</div>
-                           <div class="truncate text-xs text-neutral-400">${s.artist||''}</div>
+        row.innerHTML = `<div class="menu-pos">${i+1}.</div>
+                         <div class="menu-thumb" style="background-image:url('${s.cover}')"></div>
+                         <div class="menu-meta">
+                           <div class="menu-t">${s.title}</div>
+                           <div class="menu-a">${s.artist||''}</div>
                          </div>`;
         row.onclick = () => {
           const idx = state.queue.indexOf(id);
           if (idx >= 0) { state.queueIndex = idx; playSongById(id); } else { playSongById(id); }
-          toggleMoreMenu(false);
+          closeMenu();
         };
         wrap.appendChild(row);
       });
     }
-    function toggleMoreMenu(force){
-      const menu = document.getElementById('moreMenu');
-      if (!menu) return;
-      const willOpen = typeof force === 'boolean' ? force : menu.classList.contains('hidden');
-      if (willOpen) { populateQueueMenu(); menu.classList.remove('hidden'); }
-      else { menu.classList.add('hidden'); }
+
+    /* ===== Repeat-Optionen ===== */
+    function setRepeat(mode){
+      state.repeatMode = mode; try{ localStorage.setItem('ralf_repeat', mode); }catch{}
+      updateRepeatButtons();
     }
+    function updateRepeatButtons(){
+      const off=document.getElementById('optRepeatOff');
+      const one=document.getElementById('optRepeatOne');
+      const all=document.getElementById('optRepeatAll');
+      off.classList.toggle('active', state.repeatMode==='off');
+      one.classList.toggle('active', state.repeatMode==='one');
+      all.classList.toggle('active', state.repeatMode==='all');
+    }
+    document.getElementById('optRepeatOff').addEventListener('click', ()=>setRepeat('off'));
+    document.getElementById('optRepeatOne').addEventListener('click', ()=>setRepeat('one'));
+    document.getElementById('optRepeatAll').addEventListener('click', ()=>setRepeat('all'));
 
     /* ===== Controls & Events ===== */
     document.getElementById('prevBtn').addEventListener('click', playPrev);
@@ -448,7 +511,7 @@
       updateShuffleButton(); populateQueueMenu();
     });
 
-    // Einheitlicher Mobile-Play in Controls
+    // Mobile Play/Pause
     (function wireMobilePlay(){
       const audio=document.getElementById('audio');
       const btn=document.getElementById('btnPlay');
@@ -468,18 +531,7 @@
     document.getElementById('coverOverlay').addEventListener('click', (e)=>{ if(e.target.id==='coverOverlay') closeCoverOverlay(); });
     window.addEventListener('resize', ()=>{ if(document.getElementById('coverOverlay').classList.contains('active')) sizeOverlayToDock(); });
     window.addEventListener('orientationchange', ()=>{ setTimeout(sizeOverlayToDock,150); });
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeCoverOverlay(); toggleMoreMenu(false); } });
-
-    // Quickmenü Toggle + Outside Click
-    document.getElementById('moreBtn').addEventListener('click', ()=>toggleMoreMenu());
-    document.addEventListener('click', (e)=>{
-      const menu = document.getElementById('moreMenu');
-      const btn = document.getElementById('moreBtn');
-      if (!menu) return;
-      if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
-        toggleMoreMenu(false);
-      }
-    });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeCoverOverlay(); closeMenu(); } });
 
     function updateShuffleButton(){
       const btn=document.getElementById('shuffleBtn');
@@ -489,7 +541,7 @@
     function updatePlayIcon(){
       const audio=document.getElementById('audio'); const btn=document.getElementById('btnPlay'); if(!btn||!audio) return;
       btn.textContent = audio.paused ? '▶' : '⏸';
-      btn.classList.toggle('ctrl-btn--primary', !audio.paused); // Playing = orange Button
+      btn.classList.toggle('ctrl-btn--primary', !audio.paused);
     }
     function updateCounter(){
       const el=document.getElementById('playerCounter'); if(!el) return;
