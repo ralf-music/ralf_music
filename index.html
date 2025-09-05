@@ -5,14 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>R.A.L.F. – Music Showcase</title>
-  <meta name="description" content="R.A.L.F. – Musik mit Kategorien, Cover-Galerie und integriertem Player." />
+  <meta name="description" content="KI-Musik von mir, für euch" />
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
-  <meta property="og:title" content="R.A.L.F. – Music Showcase" />
-  <meta property="og:description" content="Stream deine Songs direkt auf deiner Seite, ohne Suno-Login." />
-  <meta property="og:image" content="/assets/logo-512.png" />
 
+  <!-- Open Graph for link previews -->
+  <meta property="og:title" content="R.A.L.F. – Music Showcase" />
+  <meta property="og:description" content="KI-Musik von mir, für euch" />
+  <meta property="og:image" content="/assets/logo-512.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ralf-music.netlify.app/" />
+
+  <!-- Twitter cards (helps messengers too) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="R.A.L.F. – Music Showcase" />
+  <meta name="twitter:description" content="KI-Musik von mir, für euch" />
+  <meta name="twitter:image" content="/assets/logo-512.png" />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- PWA / App-Icon -->
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/pwa/icon-180.png">
   <meta name="theme-color" content="#ea580c">
@@ -83,6 +95,7 @@
     .menu-meta { min-width:0; }
     .menu-t { font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .menu-a { font-size:12px; color:#8b8b8b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
     .menu-btn { font-size:.85rem; padding:.35rem .6rem; border-radius:9999px; border:1px solid #3f3f46; background:#141414; color:#e5e5e5; }
     .menu-btn.active { background:#ea580c; border-color:#ea580c; color:#111; }
 
@@ -97,11 +110,11 @@
   </header>
   <div class="orange-sep w-full"></div>
 
-  <!-- Kopf -->
+  <!-- Kopfbereich -->
   <div class="max-w-7xl mx-auto px-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div class="p-4 border border-orange-600 rounded-2xl">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
-      <p class="text-neutral-400 text-sm">Musik von mir, für Euch.</p>
+      <p class="text-neutral-400 text-sm">KI-Musik von mir, für euch.</p>
     </div>
     <div class="shrink-0 w-full sm:w-72">
       <input id="search" type="text" placeholder="Suche Songs"
@@ -117,10 +130,10 @@
     </button>
   </div>
 
-  <!-- Kategorien -->
+  <!-- Kategorien-Leiste -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-6 flex flex-wrap gap-2"></div>
 
-  <!-- Galerie -->
+  <!-- Kategorien-Galerie -->
   <section id="catGallery" class="max-w-6xl mx-auto px-4 py-8 hidden">
     <h2 class="text-lg font-bold mb-4">Kategorien</h2>
     <div id="catGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10"></div>
@@ -134,15 +147,12 @@
 
   <!-- Player-Dock (zweizeilig mobil) -->
   <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" style="z-index:50;">
-    <!-- Mobil: Grid mit 2 Zeilen; Desktop: flex wie früher -->
     <div class="max-w-6xl mx-auto px-4 py-3 grid grid-cols-[64px,1fr,auto] grid-rows-2 gap-2
                 sm:flex sm:items-center sm:gap-4 relative">
 
-      <!-- Cover: mobil über beide Zeilen, größer; Desktop normal -->
       <img id="playerCover" class="w-16 h-16 rounded-lg object-cover cursor-pointer row-span-2 col-start-1
                                    sm:w-12 sm:h-12 sm:row-span-1" alt="" title="Cover maximieren">
 
-      <!-- Kopfzeile: Titel + Zähler -->
       <div class="col-start-2 row-start-1 min-w-0 sm:flex-1">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
         <div id="playerArtist" class="text-xs text-neutral-400 truncate sm:block hidden"></div>
@@ -151,19 +161,16 @@
         <span id="playerCounter">1 / 1</span>
       </div>
 
-      <!-- Progress-Bar: mobil volle Breite über den Controls -->
       <div class="col-start-2 col-span-2 row-start-2 -mt-1 sm:mt-0 sm:order-2 sm:w-64 sm:col-auto sm:row-auto">
         <div id="playerBar" class="h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
           <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
         </div>
       </div>
 
-      <!-- Desktop: nativer Player -->
       <div class="hidden sm:block sm:order-3">
         <audio id="audio" controls controlslist="nodownload noplaybackrate" preload="metadata" class="w-64"></audio>
       </div>
 
-      <!-- Steuerung: zweite Zeile mobil, Reihenfolge: ⏮ • 🔀 • ▶/⏸ • ⏭ • ⋮ -->
       <div class="col-start-2 row-start-2 mt-2 flex items-center gap-2 sm:mt-0 sm:order-4">
         <button id="prevBtn" class="ctrl-btn" title="Zurück">⏮</button>
         <button id="shuffleBtn" class="ctrl-btn" title="Shuffle umschalten">🔀</button>
@@ -172,7 +179,6 @@
         <button id="moreBtn" class="ctrl-btn" title="Mehr">⋮</button>
       </div>
 
-      <!-- Schließen: ganz rechts unten mobil, rechts außen auf Desktop -->
       <div class="col-start-3 row-start-2 mt-2 flex items-center justify-end sm:mt-0 sm:order-5">
         <button id="closeBtn" class="ctrl-btn" aria-label="Schließen" title="Schließen">✕</button>
       </div>
@@ -210,8 +216,8 @@
   <!-- Footer -->
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
-      <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.8.6</span>
+      <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only.</span>
+      <span>v4.8.7</span>
     </div>
   </footer>
 
@@ -522,7 +528,6 @@
       updateShuffleButton(); populateQueueMenu();
     });
 
-    // Mobile Play/Pause
     (function wireMobilePlay(){
       const audio=document.getElementById('audio');
       const btn=document.getElementById('btnPlay');
