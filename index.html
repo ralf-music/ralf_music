@@ -132,38 +132,48 @@
     <p id="emptyState" class="text-neutral-400 hidden mt-6">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
-  <!-- Player-Dock -->
+  <!-- Player-Dock (zweizeilig mobil) -->
   <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" style="z-index:50;">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3 sm:gap-4 relative">
-      <img id="playerCover" class="w-12 h-12 rounded-lg object-cover cursor-pointer" alt="" title="Cover maximieren">
+    <!-- Mobil: Grid mit 2 Zeilen; Desktop: flex wie früher -->
+    <div class="max-w-6xl mx-auto px-4 py-3 grid grid-cols-[64px,1fr,auto] grid-rows-2 gap-2
+                sm:flex sm:items-center sm:gap-4 relative">
 
-      <div class="flex-1 min-w-0">
+      <!-- Cover: mobil über beide Zeilen, größer; Desktop normal -->
+      <img id="playerCover" class="w-16 h-16 rounded-lg object-cover cursor-pointer row-span-2 col-start-1
+                                   sm:w-12 sm:h-12 sm:row-span-1" alt="" title="Cover maximieren">
+
+      <!-- Kopfzeile: Titel + Zähler -->
+      <div class="col-start-2 row-start-1 min-w-0 sm:flex-1">
         <div id="playerTitle" class="text-sm font-semibold truncate"></div>
-        <div id="playerArtist" class="text-xs text-neutral-400 truncate"></div>
-        <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
+        <div id="playerArtist" class="text-xs text-neutral-400 truncate sm:block hidden"></div>
+      </div>
+      <div class="col-start-3 row-start-1 self-start text-xs text-neutral-400 sm:order-last">
+        <span id="playerCounter">1 / 1</span>
+      </div>
+
+      <!-- Progress-Bar: mobil volle Breite über den Controls -->
+      <div class="col-start-2 col-span-2 row-start-2 -mt-1 sm:mt-0 sm:order-2 sm:w-64 sm:col-auto sm:row-auto">
+        <div id="playerBar" class="h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
           <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
         </div>
       </div>
 
       <!-- Desktop: nativer Player -->
-      <div class="hidden sm:block">
+      <div class="hidden sm:block sm:order-3">
         <audio id="audio" controls controlslist="nodownload noplaybackrate" preload="metadata" class="w-64"></audio>
       </div>
 
-      <!-- Steuerung – Variante A: ⏮ • 🔀 • ▶/⏸ • ⏭ • ⋮ -->
-      <div class="flex items-center gap-2">
+      <!-- Steuerung: zweite Zeile mobil, Reihenfolge: ⏮ • 🔀 • ▶/⏸ • ⏭ • ⋮ -->
+      <div class="col-start-2 row-start-2 mt-2 flex items-center gap-2 sm:mt-0 sm:order-4">
         <button id="prevBtn" class="ctrl-btn" title="Zurück">⏮</button>
         <button id="shuffleBtn" class="ctrl-btn" title="Shuffle umschalten">🔀</button>
         <button id="btnPlay" class="ctrl-btn sm:hidden" title="Play/Pause">▶</button>
         <button id="nextBtn" class="ctrl-btn" title="Weiter">⏭</button>
-        <span id="playerCounter" class="text-xs text-neutral-400 min-w-[3.5rem] text-center">1 / 1</span>
+        <button id="moreBtn" class="ctrl-btn" title="Mehr">⋮</button>
       </div>
 
-      <!-- Rechts: Quickmenü + Schließen -->
-      <div class="flex items-center gap-2">
-        <div class="relative">
-          <button id="moreBtn" class="ctrl-btn" title="Mehr">⋮</button>
-        </div>
+      <!-- Schließen: ganz rechts unten mobil, rechts außen auf Desktop -->
+      <div class="col-start-3 row-start-2 mt-2 flex items-center justify-end sm:mt-0 sm:order-5">
         <button id="closeBtn" class="ctrl-btn" aria-label="Schließen" title="Schließen">✕</button>
       </div>
     </div>
@@ -201,7 +211,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.8.4</span>
+      <span>v4.8.6</span>
     </div>
   </footer>
 
@@ -210,7 +220,7 @@
       songs: [], categories: [], cat:'all', query:'',
       active:null, queue:[], queueIndex:-1, shuffle:false,
       dailyKey:null, dailyOrder:null, newestSet:new Set(),
-      repeatMode:'all' // 'off' | 'one' | 'all'  (Default = 'all' wie bisheriges Verhalten)
+      repeatMode:'all' // 'off' | 'one' | 'all'
     };
 
     /* ===== Load ===== */
@@ -231,23 +241,30 @@
       if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
     }
 
-    /* ===== Filters ===== */
+    /* ===== Filters / helpers ===== */
     function applyQueryFromURL(){ const p=new URLSearchParams(location.search); state.cat=p.get('cat')||'all'; state.query=(p.get('q')||'').toLowerCase(); const search=document.getElementById('search'); if (search) search.value=state.query; }
     function setCat(cat){ state.cat=cat; const p=new URLSearchParams(location.search); p.set('cat',cat); history.replaceState(null,'','?'+p.toString()); ensureDailyOrder(); render(); resetQueue(); }
     function setQuery(q){ state.query=(q||'').toLowerCase(); const p=new URLSearchParams(location.search); if(state.query)p.set('q',state.query); else p.delete('q'); history.replaceState(null,'','?'+p.toString()); render(); resetQueue(); }
     function resetQueue(){ state.queue=[]; state.queueIndex=-1; updateCounter(); }
 
-    /* ===== NEU-Set ===== */
     function parseDateSafe(v){ if(!v&&v!==0)return null; if(typeof v==='number')return new Date(v); const d=new Date(v); return isNaN(d.getTime())?null:d; }
     function buildNewestSet(){ const withDates=(state.songs||[]).map(s=>({id:s.id,d:parseDateSafe(s.addedAt)})).filter(x=>x.id&&x.d); withDates.sort((a,b)=>b.d-a.d); state.newestSet=new Set(withDates.slice(0,10).map(x=>x.id)); }
 
-    /* ===== Daily rotation ===== */
     function getLocalDayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
     function seededPRNG(seed){ let s=0; for(let i=0;i<seed.length;i++) s=(s*31+seed.charCodeAt(i))>>>0; let x=(s||123456789)>>>0; return function(){ x=(1103515245*x+12345)%2147483648; return x/2147483648; }; }
     function seededShuffleIds(ids,seedKey){ const rnd=seededPRNG(seedKey); const a=ids.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-    function ensureDailyOrder(){ const key=getLocalDayKey(); const ids=(state.songs||[]).map(s=>s.id); if(state.dailyKey!==key||!state.dailyOrder||state.dailyOrder.length!==ids.length){ state.dailyKey=key; state.dailyOrder=seededShuffleIds(ids,key); } else { const setKnown=new Set(state.dailyOrder); const missing=ids.filter(id=>!setKnown.has(id)); if(missing.length){ state.dailyOrder=state.dailyOrder.concat(seededShuffleIds(missing,key+'-tail')); } } }
 
-    /* ===== Visible ===== */
+    function ensureDailyOrder(){
+      const key=getLocalDayKey(); const ids=(state.songs||[]).map(s=>s.id);
+      if(state.dailyKey!==key||!state.dailyOrder||state.dailyOrder.length!==ids.length){
+        state.dailyKey=key; state.dailyOrder=seededShuffleIds(ids,key);
+      } else {
+        const setKnown=new Set(state.dailyOrder);
+        const missing=ids.filter(id=>!setKnown.has(id));
+        if(missing.length){ state.dailyOrder=state.dailyOrder.concat(seededShuffleIds(missing,key+'-tail')); }
+      }
+    }
+
     function getVisibleSongs(){
       const q=state.query;
       const base=(state.songs||[]).filter(s=>(state.cat==='all'||s.category===state.cat)&&(!q||(s.title||'').toLowerCase().includes(q)||(s.artist||'').toLowerCase().includes(q)));
@@ -255,9 +272,8 @@
       return base;
     }
     function songsByCategory(key){ return (state.songs||[]).filter(s=>s.category===key); }
-
-    /* ===== Queue/Shuffle ===== */
     function getVisibleIds(){ return getVisibleSongs().map(s=>s.id); }
+
     function shuffleInPlace(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
     function setQueueKeepingIndex(ids,keepIndex){
       const list=Array.isArray(ids)?ids.slice():[]; if(!list.length){ state.queue=[]; state.queueIndex=-1; updateCounter(); return; }
@@ -274,7 +290,6 @@
     function startQueueForCategory(key){ let ids=songsByCategory(key).map(s=>s.id); if(!ids.length) return; if(state.shuffle) ids=shuffleInPlace(ids.slice()); state.queue=ids; state.queueIndex=0; const first=state.songs.find(x=>x.id===ids[0]); if(first) playSong(first); updateCounter(); }
     function playSongById(id){ const s=state.songs.find(x=>x.id===id); if(s) playSong(s); }
 
-    /* ===== Render ===== */
     function renderCatBar(){
       const bar=document.getElementById('catBar'); bar.innerHTML='';
       const wrapAll=document.createElement('div'); wrapAll.className='flex items-center gap-1';
@@ -350,7 +365,7 @@
 
     function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButton(); populateQueueMenu(); updateRepeatButtons(); }
 
-    /* ===== Overlay utils ===== */
+    /* ===== Overlay sizing ===== */
     function sizeOverlayToDock(){
       const overlay=document.getElementById('coverOverlay'); const dock=document.getElementById('playerDock');
       const h = dock && !dock.classList.contains('hidden') ? dock.getBoundingClientRect().height : 0;
@@ -399,7 +414,6 @@
           playNext();
         } else { // 'off'
           if (state.queueIndex < state.queue.length - 1) playNext();
-          // sonst stehen bleiben
         }
       };
 
@@ -477,10 +491,7 @@
     }
 
     /* ===== Repeat-Optionen ===== */
-    function setRepeat(mode){
-      state.repeatMode = mode; try{ localStorage.setItem('ralf_repeat', mode); }catch{}
-      updateRepeatButtons();
-    }
+    function setRepeat(mode){ state.repeatMode = mode; try{ localStorage.setItem('ralf_repeat', mode); }catch{} updateRepeatButtons(); }
     function updateRepeatButtons(){
       const off=document.getElementById('optRepeatOff');
       const one=document.getElementById('optRepeatOne');
