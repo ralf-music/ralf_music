@@ -629,6 +629,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Fuer_den_Moment.mp3",
       "duration": 249,
       "addedAt": "2025-09-05T09:12:55.475Z"
+    },
+    {
+      "id": "sehnsucht",
+      "title": "Sehnsucht",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://cdn2.suno.ai/6393c24a-fccd-4a7f-b69d-68d7befeb9a4.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Sehnsucht.mp3",
+      "duration": 220,
+      "addedAt": "2025-09-06T03:24:02.994Z"
     }
   ]
 }
