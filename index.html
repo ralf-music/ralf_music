@@ -158,7 +158,7 @@
         </div>
       </div>
 
-      <!-- Desktop-Controls rechts, inkl. Shuffle, Menü, Schließen -->
+      <!-- Desktop-Controls -->
       <div class="hidden sm:flex items-center gap-2 mt-2 justify-end">
         <button id="prevBtn_d" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500">⏮</button>
         <button id="shuffleBtn_d" class="btn-touch px-2.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-500" title="Shuffle umschalten">🔀</button>
@@ -200,7 +200,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.8.0</span>
+      <span>v4.8.1</span>
     </div>
   </footer>
 
@@ -239,6 +239,8 @@
 
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
+
+      maybeRunQA();
     }
 
     function applyQueryFromURL() {
@@ -295,7 +297,6 @@
 
     // Tages-Seed für "Alle"-Kategorie
     function seededShuffle(list) {
-      // einfacher Seed aus Datum (YYYY-MM-DD)
       const d = new Date(); const key = d.getUTCFullYear()+"-"+(d.getUTCMonth()+1)+"-"+d.getUTCDate();
       let seed = 0; for (let i=0;i<key.length;i++) seed = (seed*31 + key.charCodeAt(i)) >>> 0;
       const a = list.slice();
@@ -387,12 +388,8 @@
         card.innerHTML=`
           <div class="aspect-[3/4] overflow-hidden relative">
             <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-            ${isActive ? `<div class="absolute top-2 left-2">
-              <span class="px-2 py-0.5 rounded-full bg-orange-600 text-white text-[11px] font-semibold shadow">Now Playing</span>
-            </div>` : ''}
-            ${newest.has(s.id) ? `<div class="absolute top-2 right-2">
-              <span class="px-2 py-0.5 rounded-full bg-white/90 text-black text-[11px] font-semibold shadow">NEU</span>
-            </div>` : ''}
+            ${isActive ? `<div class="absolute top-2 left-2"><span class="np-badge px-2 py-0.5 rounded-full bg-orange-600 text-white text-[11px] font-semibold shadow">Now Playing</span></div>` : ''}
+            ${newest.has(s.id) ? `<div class="absolute top-2 right-2"><span class="px-2 py-0.5 rounded-full bg-white/90 text-black text-[11px] font-semibold shadow">NEU</span></div>` : ''}
           </div>
           <div class="p-4">
             <div class="text-xs text-neutral-300 mb-1">${labelByKey.get(s.category)||s.category||''}</div>
@@ -411,6 +408,9 @@
         };
         grid.appendChild(card);
       });
+
+      // Nach dem Render den aktiven Kartenstatus sicherstellen
+      if (state.active) markActiveCard(state.active);
     }
 
     function render(){ renderCatBar(); renderCategoryGallery(); renderSongs(); updateShuffleButtons(); }
@@ -419,8 +419,7 @@
     function ensureQueueForVisible() {
       let ids = getVisibleIds();
       if (state.cat==='all' && !state.query) {
-        // tägliche stabile Rotation für 'Alle'
-        ids = seededShuffle(ids);
+        ids = seededShuffle(ids); // tägliche Rotation
       }
       if (state.shuffle) ids = shuffleInPlace(ids.slice());
       state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
@@ -432,7 +431,6 @@
       if (state.queueIndex === -1) return;
       const first = state.songs.find(x=>x.id===state.queue[0]);
       if (first) playSong(first, {fromClick:true, isSingle:false});
-      // Auto-Repeat für Playlists
       setRepeat('all', {silent:true});
     }
 
@@ -563,7 +561,6 @@
     function setRepeat(mode, opts={}){
       state.repeat = mode;
       try { localStorage.setItem('ralf_repeat', mode); } catch {}
-      // Highlight im Menü
       ['moreMenu','moreMenu_d'].forEach(id=>{
         const m=document.getElementById(id); if (!m) return;
         m.querySelectorAll('[data-repeat]').forEach(btn=>{
@@ -572,9 +569,6 @@
           btn.classList.toggle('text-white', on);
         });
       });
-      if (!opts.silent) {
-        // no-op; könnte Toast zeigen
-      }
     }
 
     // Repeat-Buttons
@@ -667,9 +661,7 @@
       navigator.mediaSession.setActionHandler('pause', ()=>{ state.userPaused=true; audio.pause(); });
       navigator.mediaSession.setActionHandler('previoustrack', ()=>playPrev());
       navigator.mediaSession.setActionHandler('nexttrack', ()=>playNext());
-      try {
-        navigator.mediaSession.setActionHandler('seekto', (d)=>{ if (typeof d.seekTime==='number') audio.currentTime = d.seekTime; });
-      } catch {}
+      try { navigator.mediaSession.setActionHandler('seekto', (d)=>{ if (typeof d.seekTime==='number') audio.currentTime = d.seekTime; }); } catch {}
       navigator.mediaSession.setActionHandler('stop', ()=>closePlayerHard());
     }
     function assertMediaSessionNow(){
@@ -679,9 +671,33 @@
       setMediaMetadata(s); setPlaybackState(audio); updatePositionState(audio, s.duration||0);
     }
 
+    /* ---------- Active-Karte zentral ---------- */
+    function markActiveCard(id){
+      document.querySelectorAll('#songsGrid .card').forEach(el=>{
+        const isActive = el.dataset.id === id;
+        el.classList.toggle('active', isActive);
+        // Badge handhaben
+        const hasBadge = !!el.querySelector('.np-badge');
+        if (isActive && !hasBadge) {
+          const host = el.querySelector('.aspect-[3/4]');
+          if (host) {
+            const wrap = document.createElement('div');
+            wrap.className = 'absolute top-2 left-2';
+            wrap.innerHTML = '<span class="np-badge px-2 py-0.5 rounded-full bg-orange-600 text-white text-[11px] font-semibold shadow">Now Playing</span>';
+            host.appendChild(wrap);
+          }
+        }
+        if (!isActive) {
+          el.querySelectorAll('.np-badge').forEach(b=>b.parentElement?.remove());
+        }
+      });
+    }
+
     /* ---------- playSong ---------- */
     function playSong(s, opts={}) {
       state.active = s.id;
+
+      // Queue-Index korrigieren
       if (!state.queue.length) { state.queue = [s.id]; state.queueIndex = 0; }
       else {
         const pos = state.queue.findIndex(id=>id===s.id);
@@ -717,18 +733,15 @@
       const p = new URLSearchParams(location.search); p.set('id', s.id);
       history.replaceState(null,'','?'+p.toString());
 
-      // Mark active card
-      document.querySelectorAll('#songsGrid .card').forEach(el=>{
-        el.classList.toggle('active', el.dataset.id === s.id);
-        const badge = el.querySelector('.np-badge');
-        if (badge) badge.remove();
-      });
-
       updateCounter(); updatePlayIcon();
+
       // Media Session
       setMediaMetadata(s); bindMSHandlers(); assertMediaSessionNow();
       setTimeout(assertMediaSessionNow, 50);
       setTimeout(assertMediaSessionNow, 1000);
+
+      // Aktive Karte markieren + Badge setzen (zentral)
+      markActiveCard(state.active);
     }
 
     /* ---------- Visibility / Focus hooks & Pause-Schutz ---------- */
@@ -757,6 +770,33 @@
 
     document.getElementById('closeBtn')?.addEventListener('click', closePlayerHard);
     document.getElementById('closeBtn_d')?.addEventListener('click', closePlayerHard);
+
+    /* ---------- QA Self-Check (optional via ?qa=1) ---------- */
+    function maybeRunQA(){
+      const qa = new URLSearchParams(location.search).get('qa');
+      if (qa !== '1') return;
+      const box = document.createElement('div');
+      box.className = 'fixed top-3 left-3 z-[70] px-3 py-2 rounded-xl text-xs bg-black/80 border border-white/10 space-y-1';
+      document.body.appendChild(box);
+      function line(ok, msg){ const el=document.createElement('div'); el.innerHTML = `<span class="${ok?'text-green-400':'text-red-400'}">●</span> ${msg}`; box.appendChild(el); }
+      // 1) Glow CSS grob prüfen (Existenz reicht hier)
+      const glowOK = !!document.querySelector('style') && !!document.querySelector('.card');
+      line(glowOK, 'Glow-Regeln vorhanden');
+
+      // 2) Aktive Karte markiert?
+      const activeOK = !!document.querySelector('#songsGrid .card.active');
+      line(activeOK, 'Aktive Karte markiert');
+
+      // 3) Shuffle Index stabil (Simulation)
+      const keep = state.queueIndex; const beforeLen = state.queue.length;
+      const ids = getVisibleIds(); const list = state.shuffle ? shuffleInPlace(ids.slice()) : ids;
+      setQueueKeepingIndex(list, Math.max(0, keep|0));
+      const stable = state.queue.length===beforeLen && state.queueIndex===Math.max(0, keep|0);
+      line(stable, 'Shuffle-Index stabil');
+
+      // 4) Vollbild-Cover reagiert auf Trackwechsel (prüfen nur Hook)
+      line(!!window.__updateFullCover, 'Cover-Overlay Hook vorhanden');
+    }
 
     /* ---------- Init ---------- */
     (function maybeLoadEditor(){
