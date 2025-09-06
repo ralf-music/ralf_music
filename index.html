@@ -217,7 +217,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only.</span>
-      <span>v4.9.0</span>
+      <span>v4.9.1</span>
     </div>
   </footer>
 
@@ -295,7 +295,7 @@
     function startQueueFromVisible(){
       ensureQueueForVisible();
       if (state.queueIndex === -1) return;
-      setRepeat('all'); // Wunsch: Playlists => Repeat Alle
+      setRepeat('all'); // Playlists => Repeat Alle
       const first=state.songs.find(x=>x.id===state.queue[0]); if (first) playSong(first);
     }
     function startQueueForCategory(key){
@@ -303,7 +303,7 @@
       if(!ids.length) return;
       if(state.shuffle) ids=shuffleInPlace(ids.slice());
       state.queue=ids; state.queueIndex=0;
-      setRepeat('all'); // Wunsch: Kategorien => Repeat Alle
+      setRepeat('all'); // Kategorien => Repeat Alle
       const first=state.songs.find(x=>x.id===ids[0]); if(first) playSong(first);
       updateCounter();
     }
@@ -423,22 +423,42 @@
         window.__ms_bound = true;
       } catch {}
     }
+    function artworkBust(url){ if(!url) return ''; return url + (url.includes('?')?'&':'?') + 'v=' + (Date.now()%1e7); }
+    function setPlaybackState(audio){
+      if (!('mediaSession' in navigator)) return;
+      try { navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing'; } catch {}
+    }
+    function updatePositionState(audio, fallbackDur){
+      if (!('mediaSession' in navigator)) return;
+      const dur = Number.isFinite(audio.duration) && audio.duration>0 ? audio.duration : (fallbackDur||0);
+      const pos = Number.isFinite(audio.currentTime) && audio.currentTime>=0 ? audio.currentTime : 0;
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: dur,
+          playbackRate: audio.playbackRate || 1,
+          position: Math.min(pos, dur||pos)
+        });
+      } catch {}
+    }
     function applyMediaSession(s, audio){
       if (!('mediaSession' in navigator) || !s) return;
       try {
+        const aSrc = artworkBust(s.cover);
         navigator.mediaSession.metadata = new MediaMetadata({
           title:  s.title || 'Unbekannter Titel',
           artist: s.artist || 'R.A.L.F.',
           album:  'R.A.L.F. – Music Showcase',
           artwork: [
-            { src: s.cover, sizes:'96x96',  type:'image/jpeg' },
-            { src: s.cover, sizes:'128x128', type:'image/jpeg' },
-            { src: s.cover, sizes:'192x192', type:'image/jpeg' },
-            { src: s.cover, sizes:'256x256', type:'image/jpeg' },
-            { src: s.cover, sizes:'384x384', type:'image/jpeg' },
-            { src: s.cover, sizes:'512x512', type:'image/jpeg' }
+            { src: aSrc, sizes:'96x96',  type:'image/jpeg' },
+            { src: aSrc, sizes:'128x128', type:'image/jpeg' },
+            { src: aSrc, sizes:'192x192', type:'image/jpeg' },
+            { src: aSrc, sizes:'256x256', type:'image/jpeg' },
+            { src: aSrc, sizes:'384x384', type:'image/jpeg' },
+            { src: aSrc, sizes:'512x512', type:'image/jpeg' }
           ]
         });
+        setPlaybackState(audio);
+        updatePositionState(audio, s.duration||0);
       } catch {}
     }
 
@@ -449,12 +469,10 @@
       if (__endGuard) { clearTimeout(__endGuard); __endGuard = null; }
       if (__stallTimer){ clearTimeout(__stallTimer); __stallTimer=null; }
     }
-
     function armStallWatch(audio){
       if (__stallTimer) clearTimeout(__stallTimer);
       const t0 = audio.currentTime;
       __stallTimer = setTimeout(()=>{
-        // keine Bewegung innerhalb 3s => weiter
         if (Math.abs(audio.currentTime - t0) < 0.01) playNext();
       }, 3000);
     }
@@ -471,34 +489,37 @@
 
       const audio=document.getElementById('audio');
       bindMediaSessionHandlers(audio);
-      applyMediaSession(s, audio);
+      safeClearTimers();
+
+      audio.src = s.src;
       document.title = (s.title ? `${s.title} – R.A.L.F.` : 'R.A.L.F. – Music Showcase');
 
-      safeClearTimers();
-      audio.src = s.src;
-      audio.play().catch(()=>{});
-
+      // Events
+      audio.onloadedmetadata = ()=> { applyMediaSession(s, audio); updatePositionState(audio, s.duration||0); };
       audio.ontimeupdate = ()=>{
         const base = s.duration || audio.duration || 1;
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
+        updatePositionState(audio, s.duration||0);
 
-        // Watchdog: kurz vor Ende garantiert weiter
         if (audio.duration && (audio.duration - audio.currentTime) <= 0.75 && !__endGuard){
           __endGuard = setTimeout(()=>{ if (!audio.paused) playNext(); }, 800);
         }
-
-        // Stall-Watch rearmen wenn Fortschritt
         if (Math.abs(audio.currentTime - __lastTime) > 0.05) {
           __lastTime = audio.currentTime;
           armStallWatch(audio);
         }
       };
+      audio.onplay = ()=>{ setPlaybackState(audio); };
+      audio.onpause= ()=>{ setPlaybackState(audio); };
 
       audio.onended = ()=> { safeClearTimers(); if (state.repeatMode === 'one') { audio.currentTime=0; audio.play().catch(()=>{}); } else if (state.repeatMode === 'all') { playNext(); } else { if (state.queueIndex < state.queue.length - 1) playNext(); } };
       audio.onerror = ()=> { safeClearTimers(); playNext(); };
       audio.onstalled = ()=> { armStallWatch(audio); };
       audio.onabort = ()=> { safeClearTimers(); playNext(); };
+
+      applyMediaSession(s, audio);
+      audio.play().catch(()=>{});
 
       const p=new URLSearchParams(location.search); p.set('id', s.id); history.replaceState(null,'','?'+p.toString());
       updateCounter(); updatePlayIcon(); renderSongs(); refreshCoverOverlayIfOpen(); populateQueueMenu();
@@ -515,6 +536,7 @@
       const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString());
       closeCoverOverlay(); renderSongs(); populateQueueMenu();
       document.title = 'R.A.L.F. – Music Showcase';
+      setPlaybackState(document.getElementById('audio'));
     }
 
     function playNext(){
@@ -545,7 +567,6 @@
     document.getElementById('moreBtn').addEventListener('click', openMenu);
     document.getElementById('menuClose').addEventListener('click', closeMenu);
     backdrop.addEventListener('click', closeMenu);
-    // swipe to close
     let startY=null;
     sheet.addEventListener('touchstart',e=>{startY=e.touches[0].clientY},{passive:true});
     sheet.addEventListener('touchmove',e=>{ if(startY===null)return; const dy=e.touches[0].clientY-startY; if(dy>60) closeMenu(); },{passive:true});
@@ -613,8 +634,8 @@
       const btn=document.getElementById('btnPlay');
       if (!btn) return;
       btn.onclick = ()=>{ if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); };
-      audio.addEventListener('play', updatePlayIcon);
-      audio.addEventListener('pause', updatePlayIcon);
+      audio.addEventListener('play', ()=>{ updatePlayIcon(); setPlaybackState(audio); });
+      audio.addEventListener('pause', ()=>{ updatePlayIcon(); setPlaybackState(audio); });
       audio.addEventListener('ended', updatePlayIcon);
       updatePlayIcon();
     })();
