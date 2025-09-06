@@ -639,6 +639,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Sehnsucht.mp3",
       "duration": 220,
       "addedAt": "2025-09-06T03:24:02.994Z"
+    },
+    {
+      "id": "run_with_the_night",
+      "title": "Run With The Night",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/4c5fad20-550e-496a-8777-753d2dc8b374.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Run_with_the_Night.mp3",
+      "duration": 246,
+      "addedAt": "2025-09-06T03:42:11.131Z"
     }
   ]
 }
