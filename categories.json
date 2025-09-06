@@ -6,13 +6,23 @@
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
-      "key": "trance_techno",
-      "label": "Trance / Techno",
+      "key": "deutsch_rock",
+      "label": "Deutsch Rock",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
       "key": "deutscher_hardrock",
       "label": "Deutscher Hardrock",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "trance_techno",
+      "label": "Trance / Techno",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "schlager",
+      "label": "Schlager",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
@@ -26,28 +36,18 @@
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
-      "key": "freestyle",
-      "label": "Freestyle",
-      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
-    },
-    {
       "key": "classic_rock",
       "label": "Classic Rock",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     },
     {
+      "key": "freestyle",
+      "label": "Freestyle",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
       "key": "other",
       "label": "Other",
-      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
-    },
-    {
-      "key": "schlager",
-      "label": "Schlager",
-      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
-    },
-    {
-      "key": "deutsch_rock",
-      "label": "Deutsch Rock",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
