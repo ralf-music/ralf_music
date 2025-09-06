@@ -199,8 +199,8 @@
   <!-- Footer -->
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
-      <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Downloads deaktiviert.</span>
-      <span>v4.8.1</span>
+      <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only.</span>
+      <span>v4.8.2</span>
     </div>
   </footer>
 
@@ -216,12 +216,15 @@
       userPaused: false
     };
 
+    let __posTimer = null;   // throttled position updates
+    let __endedKick = null;  // fallback after ended
+
     /* ---------- Local overrides / persist ---------- */
     function loadLocalOverrides() {
       const s = localStorage.getItem('ralf_songs_json');
       const c = localStorage.getItem('ralf_categories_json');
       if (s) { try { const js = JSON.parse(s); state.songs = Array.isArray(js)?js:(js.songs||[]); } catch{} }
-      if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(jc)?jc:(jc.categories||[]); } catch{} }
+      if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(c)?c:(jc.categories||[]); } catch{} }
       try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
       try { state.repeat  = localStorage.getItem('ralf_repeat')  || 'off'; } catch {}
     }
@@ -239,8 +242,6 @@
 
       const pid = new URLSearchParams(location.search).get('id');
       if (pid) { const s = state.songs.find(x=>x.id===pid); if (s) setTimeout(()=>playSong(s),150); }
-
-      maybeRunQA();
     }
 
     function applyQueryFromURL() {
@@ -409,7 +410,6 @@
         grid.appendChild(card);
       });
 
-      // Nach dem Render den aktiven Kartenstatus sicherstellen
       if (state.active) markActiveCard(state.active);
     }
 
@@ -418,9 +418,7 @@
     /* ---------- Queue Controls ---------- */
     function ensureQueueForVisible() {
       let ids = getVisibleIds();
-      if (state.cat==='all' && !state.query) {
-        ids = seededShuffle(ids); // tägliche Rotation
-      }
+      if (state.cat==='all' && !state.query) ids = seededShuffle(ids); // tägliche Rotation
       if (state.shuffle) ids = shuffleInPlace(ids.slice());
       state.queue = ids; state.queueIndex = ids.length ? 0 : -1;
       updateCounter();
@@ -608,6 +606,7 @@
     // Player schließen
     function closePlayerHard(){
       const audio=document.getElementById('audio');
+      stopPositionTimer();
       try { audio.pause(); } catch {}
       audio.src=''; audio.removeAttribute('src');
       state.active=null; state.queue=[]; state.queueIndex=-1; updateCounter();
@@ -624,16 +623,25 @@
       const el=document.getElementById(id); if (el) el.onclick = ()=>{ closeMenus(); closePlayerHard(); };
     });
 
-    /* ---------- Media Session ---------- */
+    /* ---------- Media Session (throttled) ---------- */
+    function pickArtworkType(url){
+      if (!url) return 'image/png';
+      const u = url.toLowerCase();
+      if (u.endsWith('.jpg') || u.endsWith('.jpeg')) return 'image/jpeg';
+      if (u.endsWith('.png')) return 'image/png';
+      return 'image/png';
+    }
     function setMediaMetadata(s) {
       try {
         if (!('mediaSession' in navigator)) return;
+        const art = s.cover || '/assets/logo-512.png';
         navigator.mediaSession.metadata = new MediaMetadata({
           title: s.title || '',
           artist: s.artist || '',
           album: 'R.A.L.F. – Music Showcase',
           artwork: [
-            { src: s.cover || '/assets/logo-512.png', sizes: '512x512', type: 'image/png' }
+            { src: art, sizes: '512x512', type: pickArtworkType(art) },
+            { src: '/assets/logo-512.png', sizes: '512x512', type: 'image/png' }
           ]
         });
       } catch {}
@@ -644,15 +652,27 @@
         navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing';
       } catch {}
     }
-    function updatePositionState(audio, duration){
+    function updatePositionStateThrottled(){
+      const audio=document.getElementById('audio');
+      const s = state.songs.find(x=>x.id===state.active);
+      if (!audio || !s) return;
+      const dur = Number.isFinite(audio.duration) && audio.duration>0 ? audio.duration : (s.duration||0);
       try {
-        if (!('setPositionState' in navigator.mediaSession)) return;
-        navigator.mediaSession.setPositionState({
-          duration: duration || audio.duration || 0,
-          position: audio.currentTime || 0,
-          playbackRate: audio.playbackRate || 1
-        });
+        if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+          navigator.mediaSession.setPositionState({
+            duration: dur || 0,
+            position: audio.currentTime || 0,
+            playbackRate: audio.playbackRate || 1
+          });
+        }
       } catch {}
+    }
+    function startPositionTimer(){
+      stopPositionTimer();
+      __posTimer = setInterval(updatePositionStateThrottled, 1000);
+    }
+    function stopPositionTimer(){
+      if (__posTimer){ clearInterval(__posTimer); __posTimer=null; }
     }
     function bindMSHandlers(){
       if (!('mediaSession' in navigator)) return;
@@ -663,12 +683,6 @@
       navigator.mediaSession.setActionHandler('nexttrack', ()=>playNext());
       try { navigator.mediaSession.setActionHandler('seekto', (d)=>{ if (typeof d.seekTime==='number') audio.currentTime = d.seekTime; }); } catch {}
       navigator.mediaSession.setActionHandler('stop', ()=>closePlayerHard());
-    }
-    function assertMediaSessionNow(){
-      const audio=document.getElementById('audio');
-      const s = state.songs.find(x=>x.id===state.active);
-      if (!s || !audio) return;
-      setMediaMetadata(s); setPlaybackState(audio); updatePositionState(audio, s.duration||0);
     }
 
     /* ---------- Active-Karte zentral ---------- */
@@ -693,8 +707,12 @@
       });
     }
 
-    /* ---------- playSong ---------- */
+    /* ---------- playSong (Hotfix-Edition) ---------- */
     function playSong(s, opts={}) {
+      // merken, ob wirklich Trackwechsel
+      const prevId = state.active;
+      const isNewTrack = !prevId || prevId !== s.id;
+
       state.active = s.id;
 
       // Queue-Index korrigieren
@@ -714,6 +732,13 @@
 
       // Audio
       const audio = document.getElementById('audio');
+
+      // alte Listener sauber entfernen
+      audio.onplay = audio.onpause = audio.ontimeupdate = audio.onended = null;
+      audio.removeEventListener('ended', handleEnded);
+      stopPositionTimer();
+      if (__endedKick){ clearTimeout(__endedKick); __endedKick=null; }
+
       const oldPaused = audio.paused;
       const sameSrc = audio.src === s.src;
       if (!sameSrc) audio.src = s.src;
@@ -722,12 +747,26 @@
       if (opts.fromClick || !oldPaused) { state.userPaused=false; doPlay(); }
 
       audio.ontimeupdate = ()=>{
-        const base = s.duration || audio.duration || 1;
+        // Fortschrittsbalken nach realer Dauer updaten
+        const base = Number.isFinite(audio.duration) && audio.duration>0 ? audio.duration : (s.duration || 1);
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
-        updatePositionState(audio, s.duration||0);
       };
-      audio.onended = ()=> { playNext(); };
+
+      function handleEnded(){
+        stopPositionTimer();
+        playNext();
+        // Sicherheits-Kick, falls Headunit/Browser End-Start frisst
+        __endedKick = setTimeout(()=>{
+          const cur = state.songs.find(x=>x.id===state.active);
+          if (cur && audio.paused && !state.userPaused) {
+            audio.play().catch(()=>{});
+          }
+        }, 200);
+      }
+      audio.addEventListener('ended', handleEnded);
+      audio.onplay  = ()=>{ setPlaybackState(audio); startPositionTimer(); };
+      audio.onpause = ()=>{ setPlaybackState(audio); stopPositionTimer(); };
 
       // URL
       const p = new URLSearchParams(location.search); p.set('id', s.id);
@@ -735,28 +774,13 @@
 
       updateCounter(); updatePlayIcon();
 
-      // Media Session
-      setMediaMetadata(s); bindMSHandlers(); assertMediaSessionNow();
-      setTimeout(assertMediaSessionNow, 50);
-      setTimeout(assertMediaSessionNow, 1000);
+      // Media Session: nur bei Trackwechsel neu setzen, dann kurz re-asserten
+      if (isNewTrack) { setMediaMetadata(s); bindMSHandlers(); }
+      setTimeout(()=>{ setPlaybackState(audio); updatePositionStateThrottled(); }, 300);
 
-      // Aktive Karte markieren + Badge setzen (zentral)
+      // Aktive Karte markieren + Badge setzen
       markActiveCard(state.active);
     }
-
-    /* ---------- Visibility / Focus hooks & Pause-Schutz ---------- */
-    (function visibilityHooks(){
-      const audio=document.getElementById('audio');
-      window.addEventListener('visibilitychange', ()=>{
-        if (document.visibilityState==='visible' && !audio.paused && !state.userPaused) {
-          setTimeout(assertMediaSessionNow, 50);
-        }
-      });
-      window.addEventListener('focus', ()=>{
-        if (!audio.paused && !state.userPaused) setTimeout(assertMediaSessionNow, 50);
-      });
-      audio.addEventListener('playing', ()=>{ setTimeout(assertMediaSessionNow, 1000); });
-    })();
 
     /* ---------- Controls ---------- */
     const audio = document.getElementById('audio');
@@ -770,33 +794,6 @@
 
     document.getElementById('closeBtn')?.addEventListener('click', closePlayerHard);
     document.getElementById('closeBtn_d')?.addEventListener('click', closePlayerHard);
-
-    /* ---------- QA Self-Check (optional via ?qa=1) ---------- */
-    function maybeRunQA(){
-      const qa = new URLSearchParams(location.search).get('qa');
-      if (qa !== '1') return;
-      const box = document.createElement('div');
-      box.className = 'fixed top-3 left-3 z-[70] px-3 py-2 rounded-xl text-xs bg-black/80 border border-white/10 space-y-1';
-      document.body.appendChild(box);
-      function line(ok, msg){ const el=document.createElement('div'); el.innerHTML = `<span class="${ok?'text-green-400':'text-red-400'}">●</span> ${msg}`; box.appendChild(el); }
-      // 1) Glow CSS grob prüfen (Existenz reicht hier)
-      const glowOK = !!document.querySelector('style') && !!document.querySelector('.card');
-      line(glowOK, 'Glow-Regeln vorhanden');
-
-      // 2) Aktive Karte markiert?
-      const activeOK = !!document.querySelector('#songsGrid .card.active');
-      line(activeOK, 'Aktive Karte markiert');
-
-      // 3) Shuffle Index stabil (Simulation)
-      const keep = state.queueIndex; const beforeLen = state.queue.length;
-      const ids = getVisibleIds(); const list = state.shuffle ? shuffleInPlace(ids.slice()) : ids;
-      setQueueKeepingIndex(list, Math.max(0, keep|0));
-      const stable = state.queue.length===beforeLen && state.queueIndex===Math.max(0, keep|0);
-      line(stable, 'Shuffle-Index stabil');
-
-      // 4) Vollbild-Cover reagiert auf Trackwechsel (prüfen nur Hook)
-      line(!!window.__updateFullCover, 'Cover-Overlay Hook vorhanden');
-    }
 
     /* ---------- Init ---------- */
     (function maybeLoadEditor(){
