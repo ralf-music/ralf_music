@@ -8,14 +8,14 @@
   <meta name="description" content="KI-Musik von mir, für euch" />
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
 
-  <!-- Open Graph for link previews -->
+  <!-- Open Graph -->
   <meta property="og:title" content="R.A.L.F. – Music Showcase" />
   <meta property="og:description" content="KI-Musik von mir, für euch" />
   <meta property="og:image" content="/assets/logo-512.png" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ralf-music.netlify.app/" />
 
-  <!-- Twitter cards (helps messengers too) -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="R.A.L.F. – Music Showcase" />
   <meta name="twitter:description" content="KI-Musik von mir, für euch" />
@@ -24,7 +24,7 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- PWA / App-Icon -->
+  <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/pwa/icon-180.png">
   <meta name="theme-color" content="#ea580c">
@@ -43,7 +43,7 @@
     audio::-internal-media-controls-download-button { display:none; }
     audio::-webkit-media-controls-enclosure { overflow:hidden; }
 
-    /* Karte Glow */
+    /* Karten-Glow */
     .card { position: relative; border: 1px solid #ea580c; border-radius: 1rem; overflow: hidden; background: rgba(23,23,23,0.7); transition: box-shadow .25s ease, transform .25s ease; }
     .card::before { content:""; position:absolute; inset:0; background: rgba(234,88,12,0.15); opacity:0; transition:opacity .25s ease; pointer-events:none; }
     .card:hover, .card.touch-glow { box-shadow: 0 0 20px rgba(234,88,12,0.60), 0 0 42px rgba(234,88,12,0.35); transform: translateY(-2px); }
@@ -145,7 +145,7 @@
     <p id="emptyState" class="text-neutral-400 hidden mt-6">Keine Treffer. Suchbegriff anpassen.</p>
   </main>
 
-  <!-- Player-Dock (zweizeilig mobil) -->
+  <!-- Player-Dock -->
   <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" style="z-index:50;">
     <div class="max-w-6xl mx-auto px-4 py-3 grid grid-cols-[64px,1fr,auto] grid-rows-2 gap-2
                 sm:flex sm:items-center sm:gap-4 relative">
@@ -185,7 +185,7 @@
     </div>
   </div>
 
-  <!-- Bottom-Sheet: Queue & Optionen -->
+  <!-- Bottom-Sheet -->
   <div id="menuBackdrop" class="menu-backdrop"></div>
   <section id="menuSheet" class="menu-sheet" aria-label="Mehr">
     <div class="menu-head">
@@ -217,7 +217,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only.</span>
-      <span>v4.8.7</span>
+      <span>v4.9.0</span>
     </div>
   </footer>
 
@@ -292,8 +292,21 @@
     }
 
     function ensureQueueForVisible(){ let ids=getVisibleIds(); if(state.shuffle) ids=shuffleInPlace(ids.slice()); state.queue=ids; state.queueIndex=ids.length?0:-1; updateCounter(); }
-    function startQueueFromVisible(){ ensureQueueForVisible(); if(state.queueIndex===-1) return; const first=state.songs.find(x=>x.id===state.queue[0]); if(first) playSong(first); }
-    function startQueueForCategory(key){ let ids=songsByCategory(key).map(s=>s.id); if(!ids.length) return; if(state.shuffle) ids=shuffleInPlace(ids.slice()); state.queue=ids; state.queueIndex=0; const first=state.songs.find(x=>x.id===ids[0]); if(first) playSong(first); updateCounter(); }
+    function startQueueFromVisible(){
+      ensureQueueForVisible();
+      if (state.queueIndex === -1) return;
+      setRepeat('all'); // Wunsch: Playlists => Repeat Alle
+      const first=state.songs.find(x=>x.id===state.queue[0]); if (first) playSong(first);
+    }
+    function startQueueForCategory(key){
+      let ids=songsByCategory(key).map(s=>s.id);
+      if(!ids.length) return;
+      if(state.shuffle) ids=shuffleInPlace(ids.slice());
+      state.queue=ids; state.queueIndex=0;
+      setRepeat('all'); // Wunsch: Kategorien => Repeat Alle
+      const first=state.songs.find(x=>x.id===ids[0]); if(first) playSong(first);
+      updateCounter();
+    }
     function playSongById(id){ const s=state.songs.find(x=>x.id===id); if(s) playSong(s); }
 
     function renderCatBar(){
@@ -361,6 +374,8 @@
           </div>`;
         card.addEventListener('touchstart', ()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'), 220); }, {passive:true});
         card.querySelector('.play').onclick=()=>{
+          // Einzelsong: Repeat AUS
+          setRepeat('off');
           const ids=getVisibleIds(); const pos=ids.findIndex(id=>id===s.id);
           state.active=s.id; setQueueKeepingIndex(state.shuffle?shuffleInPlace(ids.slice()):ids, Math.max(0,pos));
           playSong(s);
@@ -394,7 +409,56 @@
       sizeOverlayToDock();
     }
 
+    /* ===== Media Session (Car/Lockscreen) ===== */
+    function bindMediaSessionHandlers(audio){
+      if (!('mediaSession' in navigator) || window.__ms_bound) return;
+      try {
+        navigator.mediaSession.setActionHandler('nexttrack',  ()=> playNext());
+        navigator.mediaSession.setActionHandler('previoustrack', ()=> playPrev());
+        navigator.mediaSession.setActionHandler('play',  ()=> audio.play().catch(()=>{}));
+        navigator.mediaSession.setActionHandler('pause', ()=> audio.pause());
+        navigator.mediaSession.setActionHandler('seekforward', (d)=> { audio.currentTime += (d.seekOffset||10); });
+        navigator.mediaSession.setActionHandler('seekbackward',(d)=> { audio.currentTime -= (d.seekOffset||10); });
+        navigator.mediaSession.setActionHandler('seekto', (d)=> { if (d.seekTime!=null) audio.currentTime = d.seekTime; });
+        window.__ms_bound = true;
+      } catch {}
+    }
+    function applyMediaSession(s, audio){
+      if (!('mediaSession' in navigator) || !s) return;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title:  s.title || 'Unbekannter Titel',
+          artist: s.artist || 'R.A.L.F.',
+          album:  'R.A.L.F. – Music Showcase',
+          artwork: [
+            { src: s.cover, sizes:'96x96',  type:'image/jpeg' },
+            { src: s.cover, sizes:'128x128', type:'image/jpeg' },
+            { src: s.cover, sizes:'192x192', type:'image/jpeg' },
+            { src: s.cover, sizes:'256x256', type:'image/jpeg' },
+            { src: s.cover, sizes:'384x384', type:'image/jpeg' },
+            { src: s.cover, sizes:'512x512', type:'image/jpeg' }
+          ]
+        });
+      } catch {}
+    }
+
     /* ===== Player ===== */
+    let __endGuard = null, __stallTimer = null, __lastTime = 0;
+
+    function safeClearTimers(){
+      if (__endGuard) { clearTimeout(__endGuard); __endGuard = null; }
+      if (__stallTimer){ clearTimeout(__stallTimer); __stallTimer=null; }
+    }
+
+    function armStallWatch(audio){
+      if (__stallTimer) clearTimeout(__stallTimer);
+      const t0 = audio.currentTime;
+      __stallTimer = setTimeout(()=>{
+        // keine Bewegung innerhalb 3s => weiter
+        if (Math.abs(audio.currentTime - t0) < 0.01) playNext();
+      }, 3000);
+    }
+
     function playSong(s){
       state.active = s.id;
       if (state.queue.length) { const idx=state.queue.indexOf(s.id); if(idx>=0) state.queueIndex=idx; }
@@ -406,22 +470,35 @@
       document.getElementById('playerArtist').textContent = s.artist||'';
 
       const audio=document.getElementById('audio');
+      bindMediaSessionHandlers(audio);
+      applyMediaSession(s, audio);
+      document.title = (s.title ? `${s.title} – R.A.L.F.` : 'R.A.L.F. – Music Showcase');
+
+      safeClearTimers();
       audio.src = s.src;
       audio.play().catch(()=>{});
+
       audio.ontimeupdate = ()=>{
         const base = s.duration || audio.duration || 1;
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
         document.getElementById('playerProgress').style.width = pct + '%';
-      };
-      audio.onended = ()=> {
-        if (state.repeatMode === 'one') {
-          audio.currentTime = 0; audio.play().catch(()=>{});
-        } else if (state.repeatMode === 'all') {
-          playNext();
-        } else { // 'off'
-          if (state.queueIndex < state.queue.length - 1) playNext();
+
+        // Watchdog: kurz vor Ende garantiert weiter
+        if (audio.duration && (audio.duration - audio.currentTime) <= 0.75 && !__endGuard){
+          __endGuard = setTimeout(()=>{ if (!audio.paused) playNext(); }, 800);
+        }
+
+        // Stall-Watch rearmen wenn Fortschritt
+        if (Math.abs(audio.currentTime - __lastTime) > 0.05) {
+          __lastTime = audio.currentTime;
+          armStallWatch(audio);
         }
       };
+
+      audio.onended = ()=> { safeClearTimers(); if (state.repeatMode === 'one') { audio.currentTime=0; audio.play().catch(()=>{}); } else if (state.repeatMode === 'all') { playNext(); } else { if (state.queueIndex < state.queue.length - 1) playNext(); } };
+      audio.onerror = ()=> { safeClearTimers(); playNext(); };
+      audio.onstalled = ()=> { armStallWatch(audio); };
+      audio.onabort = ()=> { safeClearTimers(); playNext(); };
 
       const p=new URLSearchParams(location.search); p.set('id', s.id); history.replaceState(null,'','?'+p.toString());
       updateCounter(); updatePlayIcon(); renderSongs(); refreshCoverOverlayIfOpen(); populateQueueMenu();
@@ -430,16 +507,19 @@
     function closePlayerHard(){
       const audio=document.getElementById('audio');
       try{ audio.pause(); audio.removeAttribute('src'); audio.load(); }catch{}
+      safeClearTimers();
       document.getElementById('playerDock').classList.add('hidden');
       document.getElementById('playerCover').src=''; document.getElementById('playerTitle').textContent=''; document.getElementById('playerArtist').textContent='';
       document.getElementById('playerProgress').style.width='0%';
       state.active=null; state.queue=[]; state.queueIndex=-1; updateCounter(); updatePlayIcon();
       const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString());
       closeCoverOverlay(); renderSongs(); populateQueueMenu();
+      document.title = 'R.A.L.F. – Music Showcase';
     }
 
     function playNext(){
-      if (!state.queue.length) {
+      const had = state.queue.length;
+      if (!had) {
         let ids=getVisibleIds(); ids=state.shuffle?shuffleInPlace(ids.slice()):ids; state.queue=ids;
         const idx=state.queue.indexOf(state.active); state.queueIndex=idx>=0?idx:0;
       }
@@ -465,7 +545,7 @@
     document.getElementById('moreBtn').addEventListener('click', openMenu);
     document.getElementById('menuClose').addEventListener('click', closeMenu);
     backdrop.addEventListener('click', closeMenu);
-    // simple swipe to close
+    // swipe to close
     let startY=null;
     sheet.addEventListener('touchstart',e=>{startY=e.touches[0].clientY},{passive:true});
     sheet.addEventListener('touchmove',e=>{ if(startY===null)return; const dy=e.touches[0].clientY-startY; if(dy>60) closeMenu(); },{passive:true});
@@ -574,6 +654,7 @@
 
     (function maybeLoadEditor(){ if(new URLSearchParams(location.search).get("edit")==="1"){ var s=document.createElement("script"); s.src="/editor.js?v=4.3"; document.body.appendChild(s); } })();
 
+    ensureDailyOrder();
     loadData();
   </script>
 </body>
