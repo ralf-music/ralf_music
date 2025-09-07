@@ -669,6 +669,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/You_Are_My_Home.mp3",
       "duration": 216,
       "addedAt": "2025-09-06T14:59:27.905Z"
+    },
+    {
+      "id": "light_up_the_night",
+      "title": "Light Up The Night",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://cdn2.suno.ai/007fbc99-f88b-46f2-94b1-33deee2401af.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Light_Up_the_Night.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-07T10:12:15.196Z"
+    },
+    {
+      "id": "shadows_fade",
+      "title": "Shadows Fade",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://cdn2.suno.ai/1226d4e0-8729-4424-aa2e-b4e97a8422ea.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Shadows_Fade.mp3",
+      "duration": 217,
+      "addedAt": "2025-09-07T10:12:37.422Z"
+    },
+    {
+      "id": "echoes_of_light",
+      "title": "Echoes Of Light",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://cdn2.suno.ai/1a8b0a31-48b8-4b79-bea4-d2f254063185.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Echoes_of_Light.mp3",
+      "duration": 317,
+      "addedAt": "2025-09-07T10:12:58.917Z"
     }
   ]
 }
