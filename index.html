@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v4.8.8 -->
+<!-- R.A.L.F. – Music Showcase | index.html v4.8.9 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -27,28 +27,46 @@
     @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
     .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
 
-    /* Karten-Glow – stärker, aber nur bei Hover/Touch/Playing */
-    .card {
-      position: relative;
-      border: 1px solid #ea580c;
-      border-radius: 1rem;
-      overflow: hidden;
-      background: rgba(23,23,23,0.7);
-      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    /* ====================== STARKER KARTEN-GLOW ====================== */
+    .card{
+      position:relative;
+      border:1px solid #ea580c;
+      border-radius:1rem;
+      overflow:hidden;
+      background:rgba(23,23,23,0.72);
+      transition:border-color .16s ease, box-shadow .16s ease, transform .16s ease;
     }
+    /* Innerer Glow: kräftige Radialfläche */
     .card::before{
       content:"";
       position:absolute; inset:0; pointer-events:none;
       background:
-        radial-gradient(120% 100% at 50% 40%,
-          rgba(234,88,12,0.45) 0%,
-          rgba(234,88,12,0.24) 34%,
-          rgba(234,88,12,0.00) 70%);
-      opacity:0; transition:opacity .18s ease;
+        radial-gradient(115% 95% at 50% 38%,
+          rgba(234,88,12,0.85) 0%,
+          rgba(234,88,12,0.55) 30%,
+          rgba(234,88,12,0.22) 55%,
+          rgba(234,88,12,0.00) 72%);
+      opacity:0; transition:opacity .14s ease;
+      mix-blend-mode:screen;
     }
-    .card:hover { box-shadow:0 0 34px rgba(234,88,12,.55); }
-    .card:hover::before, .card.touch-glow::before { opacity:1; }
-    .card.is-playing{ border-color:#fb923c; box-shadow:0 0 40px rgba(234,88,12,.6); }
+    /* Äußerer Halo: weicher Ring um die Karte herum */
+    .card::after{
+      content:"";
+      position:absolute; inset:-14px; pointer-events:none;
+      background:
+        radial-gradient(70% 60% at 50% 40%,
+          rgba(234,88,12,0.70) 0%,
+          rgba(234,88,12,0.35) 35%,
+          rgba(234,88,12,0.00) 70%);
+      filter:blur(18px);
+      opacity:0; transition:opacity .14s ease;
+    }
+    /* Zustände: Hover/Touch/Playing = volle Dröhnung */
+    .card:hover{ box-shadow:0 0 46px rgba(234,88,12,.75); transform:translateY(-1px); }
+    .card:hover::before, .card.touch-glow::before, .card.is-playing::before{ opacity:1; }
+    .card:hover::after, .card.touch-glow::after, .card.is-playing::after{ opacity:.95; }
+    .card.is-playing{ border-color:#fb923c; }
+
     .badge{ position:absolute; top:.5rem; padding:.2rem .5rem; border-radius:9999px; font-size:.65rem; font-weight:700; }
     .badge-new{ left:.5rem; background:rgba(234,88,12,.92); color:#fff; }
     .badge-now{ right:.5rem; background:#fff; color:#111; border:1px solid #ea580c; }
@@ -111,7 +129,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.8">
+  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.9">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -144,7 +162,7 @@
     </div>
   </div>
 
-  <!-- Bottom Sheet: Aktionen oben (ohne doppeltes Schließen), Queue unten -->
+  <!-- Bottom Sheet -->
   <div id="sheet" class="sheet" aria-hidden="true">
     <div class="sheet-header">
       <div class="text-sm font-semibold">Menü & Queue</div>
@@ -179,12 +197,12 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>v4.8.8</span>
+      <span>v4.8.9</span>
     </div>
   </footer>
 
   <script>
-    const VERSION='4.8.8';
+    const VERSION='4.8.9';
     const state={ songs:[], categories:[], cat:'all', query:'', active:null, queue:[], queueIndex:-1, shuffle:false, repeat:'none', userPaused:false };
 
     function loadLocalOverrides(){
@@ -213,7 +231,6 @@
     function getVisibleSongs(){ const q=state.query; let list=(state.songs||[]).filter(s=>(state.cat==='all'||s.category===state.cat)&&(!q||(s.title||'').toLowerCase().includes(q)||(s.artist||'').toLowerCase().includes(q))); if(state.cat==='all'&&!q) list=seededShuffle(list,todaySeed()); return list; }
     function getVisibleIds(){ return getVisibleSongs().map(s=>s.id); }
     function songsByCategory(key){ return (state.songs||[]).filter(s=>s.category===key); }
-
     function isNewSongMap(){ const withDate=state.songs.filter(s=>s.addedAt).slice().sort((a,b)=>(b.addedAt||'')<(a.addedAt||'')?-1:1); return new Set(withDate.slice(0,10).map(s=>s.id)); }
 
     function setQueueForVisibleKeep(keepIndex){
@@ -248,7 +265,7 @@
         const card=document.createElement('div'); card.className='card group';
         card.innerHTML=`
           <div class="aspect-[3/4] overflow-hidden relative">
-            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-[1.1] transition" />
             ${newest.has(s.id)?`<span class="badge badge-new">NEU</span>`:''}
             ${state.active===s.id?`<span class="badge badge-now">Now&nbsp;Playing</span>`:''}
           </div>
@@ -260,7 +277,7 @@
               <button class="play bg-orange-600 text-white text-sm font-semibold rounded-full px-3 py-1.5 hover:bg-orange-500">▶ Abspielen</button>
             </div>
           </div>`;
-        card.addEventListener('touchstart',()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'),180); },{passive:true});
+        card.addEventListener('touchstart',()=>{ card.classList.add('touch-glow'); setTimeout(()=>card.classList.remove('touch-glow'),160); },{passive:true});
         if(state.active===s.id) card.classList.add('is-playing');
         card.querySelector('.play').onclick=()=>{ setQueueForVisibleKeep(Math.max(0,state.queueIndex)); const pos=state.queue.findIndex(id=>id===s.id); state.queueIndex=pos>=0?pos:0; setRepeat('all'); playSong(s,{fromClick:true}); };
         grid.appendChild(card);
