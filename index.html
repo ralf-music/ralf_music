@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase v4.8.5 -->
+<!-- R.A.L.F. – Music Showcase v4.8.7 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>R.A.L.F. – Music Showcase</title>
-  <meta name="description" content="KI Musik von mir, für euch." />
+  <meta name="description" content="KI Musik von mir, für uns." />
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
   <meta property="og:title" content="R.A.L.F. – Music Showcase" />
-  <meta property="og:description" content="KI Musik von mir, für euch." />
+  <meta property="og:description" content="KI Musik von mir, für uns." />
   <meta property="og:image" content="/assets/logo-512.png" />
 
   <!-- Tailwind -->
@@ -29,7 +29,7 @@
     @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
     .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
 
-    /* Karten-Glow: außen kräftig + innerer Schein; Now Playing verstärkt */
+    /* Karten-Glow: außen + starker innerer Glow (nur Hover/Touch), verstärkt bei Now Playing */
     .card {
       position: relative;
       border: 1px solid #ea580c;
@@ -38,14 +38,15 @@
       background: rgba(23,23,23,0.7);
       transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
     }
+    /* Innerer Glow */
     .card::before {
       content: "";
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(120% 80% at 50% 0%,
-          rgba(234,88,12,0.20) 0%,
-          rgba(234,88,12,0.10) 28%,
-          rgba(234,88,12,0.00) 60%);
+        radial-gradient(120% 100% at 50% 40%,
+          rgba(234,88,12,0.30) 0%,
+          rgba(234,88,12,0.16) 35%,
+          rgba(234,88,12,0.00) 70%);
       opacity: 0;
       transition: opacity .18s ease;
     }
@@ -67,7 +68,7 @@
     audio::-internal-media-controls-download-button { display:none; }
     audio::-webkit-media-controls-enclosure { overflow:hidden; }
 
-    /* Bottom Sheet (Queue + Menü) */
+    /* Bottom Sheet (Menü + Queue) – jetzt: Aktionen OBEN, Queue unten */
     .sheet {
       position: fixed; left:0; right:0; bottom:0; z-index:60;
       background: #0a0a0a; border-top: 1px solid #262626;
@@ -100,7 +101,7 @@
   <div class="max-w-7xl mx-auto px-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div class="p-4 border border-orange-600 rounded-2xl">
       <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">R.A.L.F. – Music Showcase</h1>
-      <p class="text-neutral-400 text-sm">KI Musik von mir, für euch.</p>
+      <p class="text-neutral-400 text-sm">KI Musik von mir, für uns.</p>
     </div>
     <div class="shrink-0 w-full sm:w-72">
       <input id="search" type="text" placeholder="Suche Songs"
@@ -126,7 +127,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden">
+  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.7">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <!-- Cover (klickbar => Vollbild) -->
@@ -175,24 +176,32 @@
     </div>
   </div>
 
-  <!-- Bottom Sheet: Queue + Aktionen -->
+  <!-- Bottom Sheet: Aktionen OBEN, Queue unten -->
   <div id="sheet" class="sheet" aria-hidden="true">
     <div class="sheet-header">
-      <div class="text-sm font-semibold">Nächste Titel</div>
+      <div class="text-sm font-semibold">Menü & Queue</div>
       <div class="flex items-center gap-2">
         <button id="sheetClose" class="px-3 py-1.5 rounded-full border border-neutral-700 text-sm">Schließen</button>
       </div>
     </div>
     <div class="sheet-body">
-      <div id="queueList"></div>
-      <div class="mt-3 border-t border-neutral-800 pt-2">
+      <!-- Aktionen oben -->
+      <div class="mb-3">
         <div class="sheet-section-title">Aktionen</div>
         <div class="px-2 py-1">
           <button id="repeatBtn" class="w-full text-left px-3 py-2 rounded-lg border border-neutral-700 hover:border-neutral-500 text-sm"></button>
         </div>
         <div class="px-2 py-1">
+          <button id="menuCloseBtn" class="w-full text-left px-3 py-2 rounded-lg border border-neutral-700 hover:border-neutral-500 text-sm">Schließen</button>
+        </div>
+        <div class="px-2 py-1">
           <button id="playerCloseBtn" class="w-full text-left px-3 py-2 rounded-lg border border-red-700/60 hover:border-red-500 text-sm text-red-200">Player schließen</button>
         </div>
+      </div>
+      <!-- Queue unten -->
+      <div class="mt-2 border-t border-neutral-800 pt-2">
+        <div class="sheet-section-title">Nächste Titel</div>
+        <div id="queueList"></div>
       </div>
     </div>
   </div>
@@ -207,13 +216,13 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>v4.8.5</span>
+      <span>v4.8.7</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const VERSION = '4.8.5';
+    const VERSION = '4.8.7';
     const state = {
       songs: [], categories: [],
       cat: 'all', query: '',
@@ -486,6 +495,7 @@
       const i = order.indexOf(state.repeat);
       const next = order[(i+1)%order.length];
       setRepeat(next);
+      updateCounter();
     }
     function repeatLabel(){
       return state.repeat==='none' ? 'Wiederholen: Aus'
@@ -553,13 +563,14 @@
       sheet.addEventListener('click', (e)=>{ if (e.target===sheet) sheet.classList.remove('open'); });
     })();
 
-    /* Bottom Sheet (Queue + Menü) */
+    /* Bottom Sheet (Aktionen oben, Queue unten) */
     (function sheet(){
       const sheet = document.getElementById('sheet');
       const more = document.getElementById('moreBtn');
       const closeBtn = document.getElementById('sheetClose');
       const list = document.getElementById('queueList');
       const repeatBtn = document.getElementById('repeatBtn');
+      const menuCloseBtn = document.getElementById('menuCloseBtn');
       const playerCloseBtn = document.getElementById('playerCloseBtn');
 
       function renderQueue(){
@@ -584,7 +595,8 @@
 
       more.addEventListener('click', openSheet);
       closeBtn.addEventListener('click', closeSheet);
-      repeatBtn.addEventListener('click', ()=>{ cycleRepeat(); updateCounter(); });
+      menuCloseBtn.addEventListener('click', closeSheet);
+      repeatBtn.addEventListener('click', cycleRepeat);
       playerCloseBtn.addEventListener('click', ()=>{ hardClosePlayer(); closeSheet(); });
     })();
 
