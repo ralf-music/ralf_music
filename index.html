@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase v4.8.4 -->
+<!-- R.A.L.F. – Music Showcase v4.8.5 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -29,7 +29,7 @@
     @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
     .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
 
-    /* Karten-Glow: Rand + innerer Schein beim Hover/Tap + „Now Playing“ stärker */
+    /* Karten-Glow: außen kräftig + innerer Schein; Now Playing verstärkt */
     .card {
       position: relative;
       border: 1px solid #ea580c;
@@ -41,17 +41,22 @@
     .card::before {
       content: "";
       position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(120% 80% at 50% 0%, rgba(234,88,12,0.16) 0%, rgba(234,88,12,0.08) 28%, rgba(234,88,12,0.00) 60%);
+      background:
+        radial-gradient(120% 80% at 50% 0%,
+          rgba(234,88,12,0.20) 0%,
+          rgba(234,88,12,0.10) 28%,
+          rgba(234,88,12,0.00) 60%);
       opacity: 0;
       transition: opacity .18s ease;
     }
+    .card:hover { box-shadow: 0 0 28px rgba(234,88,12,.35); }
     .card:hover::before, .card.touch-glow::before { opacity: 1; }
-    .card.is-playing { border-color:#fb923c; box-shadow: 0 0 28px rgba(234,88,12,.45); }
+    .card.is-playing { border-color:#fb923c; box-shadow: 0 0 34px rgba(234,88,12,.50); }
     .badge {
-      position: absolute; top: .5rem; padding: .15rem .5rem; border-radius: 9999px;
+      position: absolute; top: .5rem; padding: .2rem .5rem; border-radius: 9999px;
       font-size: .65rem; font-weight: 700;
     }
-    .badge-new { left: .5rem; background: rgba(234,88,12,.85); color: #fff; }
+    .badge-new { left: .5rem; background: rgba(234,88,12,.9); color: #fff; }
     .badge-now { right: .5rem; background: #fff; color:#111; border: 1px solid #ea580c; }
 
     /* Player-Dock: zweizeilig, Safe-Area */
@@ -62,7 +67,7 @@
     audio::-internal-media-controls-download-button { display:none; }
     audio::-webkit-media-controls-enclosure { overflow:hidden; }
 
-    /* Bottom Sheet (Queue) */
+    /* Bottom Sheet (Queue + Menü) */
     .sheet {
       position: fixed; left:0; right:0; bottom:0; z-index:60;
       background: #0a0a0a; border-top: 1px solid #262626;
@@ -72,6 +77,7 @@
     .sheet.open { transform: translateY(0); }
     .sheet-header { padding: .75rem 1rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1f1f1f; }
     .sheet-body { overflow:auto; padding: .5rem .5rem 1rem; }
+    .sheet-section-title { font-size:.75rem; color:#a3a3a3; padding:.25rem .5rem; }
 
     /* Vollbild-Cover */
     .cover-full {
@@ -146,10 +152,9 @@
         </div>
       </div>
 
-      <!-- Controls -->
+      <!-- Controls: Shuffle, Prev, Play, Next • rechts: Mehr -->
       <div class="mt-2 flex items-center justify-between">
         <div class="flex items-center gap-8">
-          <!-- Reihenfolge: Shuffle, Prev, Play/Pause, Next -->
           <button id="shuffleBtn" class="btn-touch w-11 h-11 rounded-full border border-neutral-700 hover:border-neutral-500 flex items-center justify-center" title="Shuffle">
             🔀
           </button>
@@ -171,18 +176,29 @@
   </div>
 
   <!-- Bottom Sheet: Queue + Aktionen -->
-  <div id="sheet" class="sheet">
+  <div id="sheet" class="sheet" aria-hidden="true">
     <div class="sheet-header">
       <div class="text-sm font-semibold">Nächste Titel</div>
       <div class="flex items-center gap-2">
         <button id="sheetClose" class="px-3 py-1.5 rounded-full border border-neutral-700 text-sm">Schließen</button>
       </div>
     </div>
-    <div class="sheet-body" id="queueList"></div>
+    <div class="sheet-body">
+      <div id="queueList"></div>
+      <div class="mt-3 border-t border-neutral-800 pt-2">
+        <div class="sheet-section-title">Aktionen</div>
+        <div class="px-2 py-1">
+          <button id="repeatBtn" class="w-full text-left px-3 py-2 rounded-lg border border-neutral-700 hover:border-neutral-500 text-sm"></button>
+        </div>
+        <div class="px-2 py-1">
+          <button id="playerCloseBtn" class="w-full text-left px-3 py-2 rounded-lg border border-red-700/60 hover:border-red-500 text-sm text-red-200">Player schließen</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Vollbild-Cover -->
-  <div id="coverFull" class="cover-full">
+  <div id="coverFull" class="cover-full" aria-hidden="true">
     <button id="coverClose" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-neutral-800/80 border border-neutral-600 text-white">✕</button>
     <img id="coverFullImg" src="" alt="Cover groß">
   </div>
@@ -191,19 +207,20 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>v4.8.4</span>
+      <span>v4.8.5</span>
     </div>
   </footer>
 
   <!-- App-Logik -->
   <script>
-    const VERSION = '4.8.4';
+    const VERSION = '4.8.5';
     const state = {
       songs: [], categories: [],
       cat: 'all', query: '',
       active: null, queue: [], queueIndex: -1,
-      shuffle: false, repeat: 'none',        // 'none' | 'all' | 'one'
-      userPaused: false                      // merkt, ob Pause bewusst vom User kam
+      shuffle: false,
+      repeat: 'none',                 // 'none' | 'all' | 'one'
+      userPaused: false
     };
 
     /* ---------- Load / Overrides ---------- */
@@ -213,6 +230,7 @@
       if (s) { try { const js = JSON.parse(s); state.songs = Array.isArray(js)?js:(js.songs||[]); } catch{} }
       if (c) { try { const jc = JSON.parse(c); state.categories = Array.isArray(jc)?jc:(jc.categories||[]); } catch{} }
       try { state.shuffle = localStorage.getItem('ralf_shuffle') === '1'; } catch {}
+      try { const r = localStorage.getItem('ralf_repeat'); if (r==='all'||r==='one'||r==='none') state.repeat=r; } catch {}
     }
     async function loadData() {
       loadLocalOverrides();
@@ -262,14 +280,18 @@
         (state.cat === 'all' || s.category === state.cat) &&
         (!q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
       );
-      // "Alle" täglich mischen (stabile Rotation), nur wenn kein Suchbegriff
       if (state.cat==='all' && !q) list = seededShuffle(list, todaySeed());
       return list;
     }
     function getVisibleIds() { return getVisibleSongs().map(s=>s.id); }
     function songsByCategory(key) { return (state.songs||[]).filter(s => s.category === key); }
-
     function shuffleArray(a){ const arr=a.slice(); for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+
+    function isNewSongMap(){
+      const withDate = state.songs.filter(s=>s.addedAt).slice().sort((a,b)=> (b.addedAt||'') < (a.addedAt||'') ? -1 : 1);
+      const newest = new Set(withDate.slice(0,10).map(s=>s.id));
+      return newest;
+    }
 
     /* Queue bauen und aktuellen Index stabil halten */
     function setQueueForVisibleKeep(keepIndex) {
@@ -289,13 +311,14 @@
       updateCounter();
     }
     function ensureQueueForVisible(){ let ids=getVisibleIds(); ids = state.shuffle?shuffleArray(ids):ids; state.queue = ids; state.queueIndex = ids.length?0:-1; updateCounter(); }
-    function startQueueFromVisible(){ ensureQueueForVisible(); if (state.queueIndex===-1) return; playSongById(state.queue[0], {fromClick:true}); if (state.queue.length>1) state.repeat='all'; }
+
+    function startQueueFromVisible(){ ensureQueueForVisible(); if (state.queueIndex===-1) return; playSongById(state.queue[0], {fromClick:true}); if (state.queue.length>1) setRepeat('all'); }
 
     function startQueueForCategory(key){
       let ids = songsByCategory(key).map(s=>s.id);
       if (!ids.length) return;
       ids = state.shuffle ? shuffleArray(ids) : ids;
-      state.queue = ids; state.queueIndex = 0; state.repeat = 'all';
+      state.queue = ids; state.queueIndex = 0; setRepeat('all');
       playSongById(ids[0], {fromClick:true}); updateCounter();
     }
 
@@ -325,13 +348,6 @@
         const p=mkPlay((e)=>{ e.stopPropagation(); startQueueForCategory(c.key); });
         wrap.appendChild(p); bar.appendChild(wrap);
       });
-    }
-
-    function isNewSongMap(){
-      // Markiere die letzten 10 nach addedAt, falls vorhanden
-      const withDate = state.songs.filter(s=>s.addedAt).slice().sort((a,b)=> (b.addedAt||'') < (a.addedAt||'') ? -1 : 1);
-      const newest = new Set(withDate.slice(0,10).map(s=>s.id));
-      return newest;
     }
 
     function renderSongs(){
@@ -365,14 +381,14 @@
           setQueueForVisibleKeep(Math.max(0, state.queueIndex));
           const pos = state.queue.findIndex(id=>id===s.id);
           state.queueIndex = pos>=0 ? pos : 0;
-          state.repeat = 'all';
+          setRepeat('all');
           playSong(s,{fromClick:true});
         };
         grid.appendChild(card);
       });
     }
 
-    function render(){ renderCatBar(); renderSongs(); updateShuffleButton(); }
+    function render(){ renderCatBar(); renderSongs(); updateShuffleButton(); updateRepeatBtnLabel(); }
 
     /* ---------- Player ---------- */
     function playSongById(id, opts){ const s = state.songs.find(x=>x.id===id); if (s) playSong(s, opts||{}); }
@@ -397,10 +413,9 @@
 
       const auto = forceAutoplay || fromClick || prevSrc==='';
       if (auto && !state.userPaused){
-        audio.play().catch(()=>{ /* mobile policies, ignorieren */ });
+        audio.play().catch(()=>{});
       }
 
-      // Progress
       audio.ontimeupdate = ()=>{
         const base = s.duration || audio.duration || 1;
         const pct = Math.min(100, Math.round((audio.currentTime / base) * 100));
@@ -412,16 +427,13 @@
         playNext(true);
       };
 
-      // URL aktualisieren
       const p = new URLSearchParams(location.search); p.set('id', s.id);
       history.replaceState(null,'','?'+p.toString());
 
-      updateCounter(); updatePlayIcon(); refreshCardsBadges(); updateMediaSession(s);
+      updateCounter(); updatePlayIcon(); renderSongs(); updateMediaSession(s);
     }
 
-    function refreshCardsBadges(){ renderSongs(); }
-
-    function playNext(fromEnded=false){
+    function playNext(){
       if (!state.queue.length) return;
       if (state.repeat==='one'){ playSongById(state.queue[state.queueIndex], {forceAutoplay:true}); return; }
 
@@ -461,6 +473,29 @@
         ? 'border-orange-500 bg-orange-600/20 text-white'
         : 'border-neutral-700 hover:border-neutral-500');
       btn.title = state.shuffle ? 'Shuffle ist an' : 'Shuffle umschalten';
+    }
+
+    /* Repeat handling */
+    function setRepeat(mode){
+      state.repeat = mode;
+      try { localStorage.setItem('ralf_repeat', mode); } catch {}
+      updateRepeatBtnLabel();
+    }
+    function cycleRepeat(){
+      const order = ['none','all','one'];
+      const i = order.indexOf(state.repeat);
+      const next = order[(i+1)%order.length];
+      setRepeat(next);
+    }
+    function repeatLabel(){
+      return state.repeat==='none' ? 'Wiederholen: Aus'
+           : state.repeat==='all'  ? 'Wiederholen: Alle'
+           : 'Wiederholen: Titel';
+    }
+    function updateRepeatBtnLabel(){
+      const el=document.getElementById('repeatBtn');
+      if (!el) return;
+      el.textContent = repeatLabel();
     }
 
     /* Suche + Shortcuts */
@@ -504,7 +539,8 @@
       const el = document.getElementById('playerCounter');
       if (!el) return;
       if (!state.queue.length || state.queueIndex<0) { el.textContent=''; return; }
-      el.textContent = (state.queueIndex+1) + ' / ' + state.queue.length;
+      const rep = state.repeat==='all' ? ' ⟲' : state.repeat==='one' ? ' ⟲1' : '';
+      el.textContent = (state.queueIndex+1) + ' / ' + state.queue.length + rep;
     }
 
     /* Vollbild-Cover */
@@ -517,12 +553,14 @@
       sheet.addEventListener('click', (e)=>{ if (e.target===sheet) sheet.classList.remove('open'); });
     })();
 
-    /* Bottom Sheet (Queue) */
+    /* Bottom Sheet (Queue + Menü) */
     (function sheet(){
       const sheet = document.getElementById('sheet');
       const more = document.getElementById('moreBtn');
-      const close = document.getElementById('sheetClose');
+      const closeBtn = document.getElementById('sheetClose');
       const list = document.getElementById('queueList');
+      const repeatBtn = document.getElementById('repeatBtn');
+      const playerCloseBtn = document.getElementById('playerCloseBtn');
 
       function renderQueue(){
         list.innerHTML='';
@@ -541,9 +579,26 @@
           list.appendChild(row);
         }
       }
-      more.addEventListener('click', ()=>{ renderQueue(); sheet.classList.add('open'); });
-      close.addEventListener('click', ()=> sheet.classList.remove('open'));
+      function openSheet(){ renderQueue(); updateRepeatBtnLabel(); sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); }
+      function closeSheet(){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); }
+
+      more.addEventListener('click', openSheet);
+      closeBtn.addEventListener('click', closeSheet);
+      repeatBtn.addEventListener('click', ()=>{ cycleRepeat(); updateCounter(); });
+      playerCloseBtn.addEventListener('click', ()=>{ hardClosePlayer(); closeSheet(); });
     })();
+
+    function hardClosePlayer(){
+      const audio=document.getElementById('audio');
+      try { audio.pause(); } catch {}
+      state.userPaused = true;
+      state.active = null; state.queue = []; state.queueIndex = -1;
+      document.getElementById('playerDock').classList.add('hidden');
+      document.getElementById('coverFull').classList.remove('open');
+      updateCounter(); renderSongs();
+      const p = new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString());
+      try { if ('mediaSession' in navigator){ navigator.mediaSession.metadata = null; } } catch {}
+    }
 
     /* Media Session (BT/Auto) */
     function updateMediaSession(s){
