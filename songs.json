@@ -699,6 +699,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Echoes_of_Light.mp3",
       "duration": 317,
       "addedAt": "2025-09-07T10:12:58.917Z"
+    },
+    {
+      "id": "komet_f_r_die_ewigkeit",
+      "title": "Komet Für Die Ewigkeit",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/392f7c22-8837-4abf-a2bd-f1bc18d93101.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Komet_f%C3%BCr_die_Ewigkeit.mp3",
+      "duration": 250,
+      "addedAt": "2025-09-08T09:46:48.438Z"
+    },
+    {
+      "id": "kaempferherz",
+      "title": "Kämpferherz",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/ee24d5eb-f84c-48b4-8ed2-39ed6563f0e3.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Kaempferherz.mp3",
+      "duration": 188,
+      "addedAt": "2025-09-08T10:18:56.604Z"
     }
   ]
 }
