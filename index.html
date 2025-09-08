@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v4.8.10 -->
+<!-- R.A.L.F. – Music Showcase | index.html v4.8.11 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -30,31 +30,23 @@
     /* ====================== KARTEN-GLOW (unter dem Cover, flächig) ====================== */
     .card{
       position:relative;
+      z-index:1; /* niedrig halten – Player/Sheets drüber */
       border:1px solid #ea580c;
       border-radius:1rem;
       overflow:hidden;
       background:rgba(23,23,23,0.72);
       transition:border-color .16s ease, box-shadow .16s ease, transform .16s ease;
     }
-    /* Alle direkten Kinder liegen ÜBER den ::before/::after-Glows */
     .card > *{ position:relative; z-index:1; }
 
-    /* Gleichmäßiger innerer Glow (liegt UNTER dem Cover/Content) */
     .card::before{
-      content:"";
-      position:absolute; inset:0;
-      z-index:0; pointer-events:none;
-      /* flächige Füllung + weiches Inset-Glühen */
-      background: rgba(234,88,12,0.18);                 /* eine Stufe runter */
-      box-shadow: inset 0 0 90px rgba(234,88,12,0.42);  /* kräftiger, aber unter dem Cover */
-      opacity:0; transition:opacity .14s ease;
-      mix-blend-mode:normal; /* kein Überstrahlen des Covers */
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background: rgba(234,88,12,0.18);
+      box-shadow: inset 0 0 90px rgba(234,88,12,0.42);
+      opacity:0; transition:opacity .14s ease; mix-blend-mode:normal;
     }
-    /* Äußerer Halo (weicher Ring um die Karte herum) */
     .card::after{
-      content:"";
-      position:absolute; inset:-14px;
-      z-index:0; pointer-events:none;
+      content:""; position:absolute; inset:-14px; z-index:0; pointer-events:none;
       background:
         radial-gradient(70% 60% at 50% 40%,
           rgba(234,88,12,0.55) 0%,
@@ -63,7 +55,6 @@
       filter:blur(18px);
       opacity:0; transition:opacity .14s ease;
     }
-    /* Zustände: Hover/Touch/Playing */
     .card:hover{ box-shadow:0 0 40px rgba(234,88,12,.55); transform:translateY(-1px); }
     .card:hover::before, .card.touch-glow::before, .card.is-playing::before{ opacity:1; }
     .card:hover::after, .card.touch-glow::after, .card.is-playing::after{ opacity:.85; }
@@ -80,17 +71,22 @@
     audio::-webkit-media-controls-enclosure{ overflow:hidden; }
 
     /* Bottom Sheet */
-    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:60; background:#0a0a0a; border-top:1px solid #262626;
-      transform:translateY(100%); transition:transform .22s ease; max-height:65vh; display:flex; flex-direction:column; }
+    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:90; /* über Player */ 
+      background:#0a0a0a; border-top:1px solid #262626;
+      transform:translateY(100%); transition:transform .22s ease; max-height:65vh;
+      display:flex; flex-direction:column; }
     .sheet.open{ transform:translateY(0); }
     .sheet-header{ padding:.75rem 1rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1f1f1f; }
     .sheet-body{ overflow:auto; padding:.5rem .5rem 1rem; }
     .sheet-section-title{ font-size:.75rem; color:#a3a3a3; padding:.25rem .5rem; }
 
-    /* Vollbild-Cover */
+    /* Vollbild-Cover liegt UNTER dem Player */
     .cover-full{ position:fixed; inset:0; z-index:70; background:rgba(0,0,0,.96); display:none; align-items:center; justify-content:center; }
     .cover-full.open{ display:flex; }
     .cover-full img{ max-width:92vw; max-height:82vh; border-radius:1rem; box-shadow:0 0 30px rgba(234,88,12,.35); }
+
+    /* Player immer oben halten */
+    #playerDock{ z-index:80; position:fixed; left:0; right:0; bottom:0; }
   </style>
 </head>
 
@@ -131,7 +127,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe fixed left-0 right-0 bottom-0 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.10">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.11">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -189,7 +185,7 @@
     </div>
   </div>
 
-  <!-- Vollbild-Cover -->
+  <!-- Vollbild-Cover (unter Player) -->
   <div id="coverFull" class="cover-full" aria-hidden="true">
     <button id="coverClose" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-neutral-800/80 border border-neutral-600 text-white">✕</button>
     <img id="coverFullImg" src="" alt="Cover groß">
@@ -199,12 +195,12 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>v4.8.10</span>
+      <span>v4.8.11</span>
     </div>
   </footer>
 
   <script>
-    const VERSION='4.8.10';
+    const VERSION='4.8.11';
     const state={ songs:[], categories:[], cat:'all', query:'', active:null, queue:[], queueIndex:-1, shuffle:false, repeat:'none', userPaused:false };
 
     function loadLocalOverrides(){
