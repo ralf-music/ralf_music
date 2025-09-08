@@ -719,6 +719,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Kaempferherz.mp3",
       "duration": 188,
       "addedAt": "2025-09-08T10:18:56.604Z"
+    },
+    {
+      "id": "tausend_meilen_bis_zu_dir",
+      "title": "Tausend Meilen Bis Zu Dir",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/783a30f6-0827-4ed1-a220-fa89a4fe5862.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Tausend_Meilen_bis_zu_dir.mp3",
+      "duration": 219,
+      "addedAt": "2025-09-08T10:39:08.243Z"
     }
   ]
 }
