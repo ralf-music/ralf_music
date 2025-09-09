@@ -729,6 +729,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Tausend_Meilen_bis_zu_dir.mp3",
       "duration": 219,
       "addedAt": "2025-09-08T10:39:08.243Z"
+    },
+    {
+      "id": "irgendwo_in_meiner_zeit",
+      "title": "Irgendwo In Meiner Zeit",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/6b0e60e4-204d-4987-8379-6da3dba39ace.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Irgendwo_in_meiner_Zeit.mp3",
+      "duration": 219,
+      "addedAt": "2025-09-09T02:33:06.513Z"
+    },
+    {
+      "id": "dein_schloss_aus_sand",
+      "title": "Dein Schloss Aus Sand",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/59db54c3-bade-4ec0-80dc-5a6af01c210b.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Dein_Schloss_aus_Sand.mp3",
+      "duration": 205,
+      "addedAt": "2025-09-09T02:33:24.514Z"
     }
   ]
 }
