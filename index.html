@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v4.8.11 -->
+<!-- R.A.L.F. – Music Showcase | index.html v4.8.12 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -71,7 +71,7 @@
     audio::-webkit-media-controls-enclosure{ overflow:hidden; }
 
     /* Bottom Sheet */
-    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:90; /* über Player */ 
+    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:90; /* über Player */
       background:#0a0a0a; border-top:1px solid #262626;
       transform:translateY(100%); transition:transform .22s ease; max-height:65vh;
       display:flex; flex-direction:column; }
@@ -127,7 +127,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.11">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.12">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -141,6 +141,11 @@
           </div>
           <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
             <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
+          </div>
+          <!-- Zeit-Anzeige (neu, dezent) -->
+          <div id="timeRow" class="mt-1 flex items-center justify-between text-[11px] text-neutral-400 select-none">
+            <span id="timeCurrent">00:00</span>
+            <span id="timeTotal">--:--</span>
           </div>
         </div>
         <div class="hidden md:block">
@@ -195,12 +200,12 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-6xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>v4.8.11</span>
+      <span>v4.8.12</span>
     </div>
   </footer>
 
   <script>
-    const VERSION='4.8.11';
+    const VERSION='4.8.12';
     const state={ songs:[], categories:[], cat:'all', query:'', active:null, queue:[], queueIndex:-1, shuffle:false, repeat:'none', userPaused:false };
 
     function loadLocalOverrides(){
@@ -242,7 +247,19 @@
     function ensureQueueForVisible(){ let ids=getVisibleIds(); ids=state.shuffle?shuffleArray(ids):ids; state.queue=ids; state.queueIndex=ids.length?0:-1; updateCounter(); }
 
     function startQueueFromVisible(){ ensureQueueForVisible(); if(state.queueIndex===-1) return; playSongById(state.queue[0],{fromClick:true}); if(state.queue.length>1) setRepeat('all'); }
-    function startQueueForCategory(key){ let ids=songsByCategory(key).map(s=>s.id); if(!ids.length) return; ids=state.shuffle?shuffleArray(ids):ids; state.queue=ids; state.queueIndex=0; setRepeat('all'); playSongById(ids[0],{fromClick:true}); updateCounter(); }
+
+    // FIX: Shuffle bleibt in der geöffneten Kategorie
+    function startQueueForCategory(key){
+      setCat(key); // Kategorie aktiv setzen + URL aktualisieren + render()
+      let ids=songsByCategory(key).map(s=>s.id);
+      if(!ids.length) return;
+      ids=state.shuffle?shuffleArray(ids):ids;
+      state.queue=ids;
+      state.queueIndex=0;
+      setRepeat('all');
+      playSongById(ids[0],{fromClick:true});
+      updateCounter();
+    }
 
     function renderCatBar(){
       const bar=document.getElementById('catBar'); bar.innerHTML='';
@@ -284,14 +301,28 @@
 
     function render(){ renderCatBar(); renderSongs(); updateShuffleButton(); updateRepeatBtnLabel(); }
 
+    function fmtTime(sec){
+      if(!isFinite(sec) || sec<0) return '--:--';
+      const m=Math.floor(sec/60), s=Math.floor(sec%60);
+      return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+
     function playSongById(id,opts){ const s=state.songs.find(x=>x.id===id); if(s) playSong(s,opts||{}); }
     function playSong(s,opts={}){ const {fromClick=false,forceAutoplay=false}=opts; state.active=s.id;
       if(!state.queue.length){ state.queue=[s.id]; state.queueIndex=0; } else { const pos=state.queue.findIndex(id=>id===s.id); if(pos>=0) state.queueIndex=pos; }
       document.getElementById('playerDock').classList.remove('hidden');
       document.getElementById('playerCover').src=s.cover||''; document.getElementById('playerTitle').textContent=s.title||''; document.getElementById('playerArtist').textContent=s.artist||''; document.getElementById('coverFullImg').src=s.cover||'';
+
+      // Zeiten zurücksetzen / initial befüllen
+      const tCur=document.getElementById('timeCurrent');
+      const tTot=document.getElementById('timeTotal');
+      if(tCur) tCur.textContent='00:00';
+      if(tTot) tTot.textContent= s.duration ? fmtTime(s.duration) : '--:--';
+
       const audio=document.getElementById('audio'); const prevSrc=audio.src; audio.src=s.src;
       const auto=forceAutoplay||fromClick||prevSrc===''; if(auto&&!state.userPaused){ audio.play().catch(()=>{}); }
-      audio.ontimeupdate=()=>{ const base=s.duration||audio.duration||1; const pct=Math.min(100,Math.round((audio.currentTime/base)*100)); document.getElementById('playerProgress').style.width=pct+'%'; };
+      audio.ontimeupdate=()=>{ const base=s.duration||audio.duration||1; const pct=Math.min(100,Math.round((audio.currentTime/base)*100)); document.getElementById('playerProgress').style.width=pct+'%'; if(tCur) tCur.textContent=fmtTime(audio.currentTime||0); };
+      audio.onloadedmetadata=()=>{ if(tTot) tTot.textContent=fmtTime(audio.duration||s.duration||0); };
       audio.onended=()=>{ state.userPaused=false; if(state.repeat==='one'){ audio.currentTime=0; audio.play().catch(()=>{}); return; } playNext(true); };
       const p=new URLSearchParams(location.search); p.set('id',s.id); history.replaceState(null,'','?'+p.toString());
       updateCounter(); updatePlayIcon(); renderSongs(); updateMediaSession(s);
@@ -336,13 +367,41 @@
     (function coverFullscreen(){ const el=document.getElementById('playerCover'); const sheet=document.getElementById('coverFull'); const close=document.getElementById('coverClose'); el.addEventListener('click',()=>sheet.classList.add('open')); close.addEventListener('click',()=>sheet.classList.remove('open')); sheet.addEventListener('click',e=>{ if(e.target===sheet) sheet.classList.remove('open'); }); })();
 
     (function sheet(){ const sheet=document.getElementById('sheet'); const more=document.getElementById('moreBtn'); const closeBtn=document.getElementById('sheetClose'); const list=document.getElementById('queueList'); const repeatBtn=document.getElementById('repeatBtn'); const playerCloseBtn=document.getElementById('playerCloseBtn');
-      function renderQueue(){ list.innerHTML=''; if(!state.queue.length){ list.innerHTML='<div class="px-3 py-2 text-neutral-400 text-sm">Keine Queue.</div>'; return; } for(let i=0;i<state.queue.length;i++){ const id=state.queue[i]; const s=state.songs.find(x=>x.id===id); if(!s) continue; const row=document.createElement('div'); row.className='flex items-center gap-3 px-2 py-2 hover:bg-white/5 rounded-lg cursor-pointer'; row.innerHTML=`<img src="${s.cover}" class="w-8 h-8 rounded object-cover" alt=""><div class="flex-1 min-w-0"><div class="text-sm truncate">${s.title}</div><div class="text-xs text-neutral-400 truncate">${s.artist||''}</div></div><div class="text-xs text-neutral-500">${i+1}</div>`; row.onclick=()=>{ state.queueIndex=i; playSongById(id,{fromClick:true}); }; list.appendChild(row); } }
+      function renderQueue(){
+        list.innerHTML='';
+        if(!state.queue.length){
+          list.innerHTML='<div class="px-3 py-2 text-neutral-400 text-sm">Keine Titel.</div>'; /* wording fix */
+          return;
+        }
+        for(let i=0;i<state.queue.length;i++){
+          const id=state.queue[i];
+          const s=state.songs.find(x=>x.id===id);
+          if(!s) continue;
+          const row=document.createElement('div');
+          row.className='flex items-center gap-3 px-2 py-2 hover:bg-white/5 rounded-lg cursor-pointer';
+          row.innerHTML=`<img src="${s.cover}" class="w-8 h-8 rounded object-cover" alt=""><div class="flex-1 min-w-0"><div class="text-sm truncate">${s.title}</div><div class="text-xs text-neutral-400 truncate">${s.artist||''}</div></div><div class="text-xs text-neutral-500">${i+1}</div>`;
+          row.onclick=()=>{ state.queueIndex=i; playSongById(id,{fromClick:true}); };
+          list.appendChild(row);
+        }
+      }
       function openSheet(){ renderQueue(); updateRepeatBtnLabel(); sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); }
       function closeSheet(){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); }
       more.addEventListener('click',openSheet); closeBtn.addEventListener('click',closeSheet); repeatBtn.addEventListener('click',cycleRepeat); playerCloseBtn.addEventListener('click',()=>{ hardClosePlayer(); closeSheet(); });
     })();
 
-    function hardClosePlayer(){ const audio=document.getElementById('audio'); try{audio.pause();}catch{} state.userPaused=true; state.active=null; state.queue=[]; state.queueIndex=-1; document.getElementById('playerDock').classList.add('hidden'); document.getElementById('coverFull').classList.remove('open'); updateCounter(); renderSongs(); const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString()); try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=null; } }catch{} }
+    function hardClosePlayer(){
+      const audio=document.getElementById('audio');
+      try{audio.pause();}catch{}
+      state.userPaused=true; state.active=null; state.queue=[]; state.queueIndex=-1;
+      document.getElementById('playerDock').classList.add('hidden');
+      document.getElementById('coverFull').classList.remove('open');
+      const tCur=document.getElementById('timeCurrent'); const tTot=document.getElementById('timeTotal');
+      if(tCur) tCur.textContent='00:00';
+      if(tTot) tTot.textContent='--:--';
+      updateCounter(); renderSongs();
+      const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString());
+      try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=null; } }catch{}
+    }
 
     function updateMediaSession(s){ try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=new MediaMetadata({ title:s.title||'', artist:s.artist||'', album:'R.A.L.F. – Music Showcase', artwork:[ {src:s.cover,sizes:'96x96',type:'image/jpeg'}, {src:s.cover,sizes:'128x128',type:'image/jpeg'}, {src:s.cover,sizes:'192x192',type:'image/jpeg'}, {src:s.cover,sizes:'256x256',type:'image/jpeg'}, {src:s.cover,sizes:'384x384',type:'image/jpeg'}, {src:s.cover,sizes:'512x512',type:'image/jpeg'} ] }); navigator.mediaSession.setActionHandler('previoustrack',playPrev); navigator.mediaSession.setActionHandler('nexttrack',()=>playNext(false)); navigator.mediaSession.setActionHandler('play',()=>document.getElementById('audio').play().catch(()=>{})); navigator.mediaSession.setActionHandler('pause',()=>document.getElementById('audio').pause()); } }catch(e){} }
 
