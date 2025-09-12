@@ -1,13 +1,13 @@
-/* === R.A.L.F. Editor v4.3 ===
-   Neu:
-   - Sortieren für Songs & Kategorien (↑/↓ pro Zeile + Dropdown-Sortierung)
-   - addedAt wird bei neuen Songs automatisch gesetzt (Importer & "Neuer Song")
-   - Duplicate-Check unverändert, Draft-Save unverändert
+/* === R.A.L.F. Editor v4.3.1 ===
+   Neu in 4.3.1:
+   - URL-Expander: ▾-Icon in Cover-/Song-URL öffnet eine Detailzeile (volle URL, Kopieren, Öffnen, Cover-Preview)
+   - Breitere Spalten für URLs, Artist schmaler; URL-Inputs monospace + title-Hover
+   - Sonst unverändert zu 4.3 (Drafts, Sortierung, Duplicate-Check, addedAt-Auto)
 */
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.3";
+  const EDITOR_VERSION = "4.3.1";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
@@ -210,10 +210,12 @@
         const tdCover = document.createElement("td");
         tdCover.className = "py-2 pr-2";
         const inCover = document.createElement("input");
-        inCover.className = "w-full px-2 py-1 rounded bg-neutral-800";
+        inCover.className = "w-full px-2 py-1 rounded bg-neutral-800 font-mono text-[11px]";
         inCover.value = c.cover || STD_COVER;
         inCover.placeholder = "Cover-URL";
-        inCover.oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
+        inCover.spellcheck = false;
+        inCover.title = inCover.value;
+        inCover.oninput = e => { state.categories[i].cover = (e.target.value.trim() || STD_COVER); e.target.title = e.target.value; };
         tdCover.appendChild(inCover);
 
         const tdOrder = document.createElement("td");
@@ -265,7 +267,7 @@
     if (apply) apply.onclick = () => { saveDraftCats(); rerender(); alert("Kategorien übernommen (lokal gespeichert)."); };
   }
 
-  // ---------- Songs-Editor (mit Sortierung) ----------
+  // ---------- Songs-Editor (mit Sortierung + URL-Expander) ----------
   function openSongEditor() {
     const modal = makeModal("Songs verwalten", true);
     const content = modal.querySelector(".content");
@@ -296,13 +298,13 @@
     table.innerHTML = `
       <thead>
         <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 w-40">ID</th>
+          <th class="py-2 pr-2 w-36">ID</th>
           <th class="py-2 pr-2 w-56">Titel</th>
-          <th class="py-2 pr-2 w-40">Artist</th>
-          <th class="py-2 pr-2 w-48">Kategorie</th>
-          <th class="py-2 pr-2">Cover-URL</th>
-          <th class="py-2 pr-2">Song-URL</th>
-          <th class="py-2 pr-2 w-24">Dauer</th>
+          <th class="py-2 pr-2 w-28">Artist</th>
+          <th class="py-2 pr-2 w-44">Kategorie</th>
+          <th class="py-2 pr-2 w-[22rem]">Cover-URL</th>
+          <th class="py-2 pr-2 w-[24rem]">Song-URL</th>
+          <th class="py-2 pr-2 w-20">Dauer</th>
           <th class="py-2 pr-2 w-40">addedAt</th>
           <th class="py-2 pl-2 w-28">Reihenfolge</th>
           <th class="py-2 pl-2 w-28">Aktion</th>
@@ -312,6 +314,9 @@
     `;
     const tbody = $("tbody", table);
     content.appendChild(table);
+
+    // Expander-Status: maximal eine Zeile offen
+    let expanded = { index: -1, field: null }; // field: 'cover' | 'src'
 
     const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
 
@@ -353,6 +358,75 @@
       cell.appendChild(sel);
     }
 
+    function makeUrlCell(value, placeholder, onInput, onToggle, titleText) {
+      const wrap = document.createElement("div");
+      wrap.className = "flex items-center gap-1";
+      const input = document.createElement("input");
+      input.className = "w-full px-2 py-1 rounded bg-neutral-800 font-mono text-[11px]";
+      input.value = value || "";
+      input.placeholder = placeholder;
+      input.spellcheck = false;
+      input.title = titleText || (value || "");
+      input.oninput = (e) => { onInput(e); input.title = e.target.value; };
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700";
+      btn.textContent = "▾";
+      btn.onclick = onToggle;
+      wrap.append(input, btn);
+      return { wrap, input, btn };
+    }
+
+    function renderExpanderRow(i, field) {
+      const s = state.songs[i];
+      const tr = document.createElement("tr");
+      tr.className = "bg-neutral-950/70";
+      const td = document.createElement("td");
+      td.colSpan = 10;
+      td.className = "py-2 px-3 border-t border-white/10";
+      const url = (field === "cover" ? (s.cover || "") : (s.src || "")).trim();
+
+      const bar = document.createElement("div");
+      bar.className = "flex items-center gap-2";
+      const code = document.createElement("div");
+      code.className = "flex-1 overflow-x-auto whitespace-pre font-mono text-[11px] bg-neutral-900 rounded px-2 py-1 border border-white/10";
+      code.textContent = url || "(leer)";
+
+      const btnCopy = document.createElement("button");
+      btnCopy.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-xs";
+      btnCopy.textContent = "Kopieren";
+      btnCopy.onclick = async () => {
+        try { await navigator.clipboard.writeText(url); btnCopy.textContent = "Kopiert"; setTimeout(()=>btnCopy.textContent="Kopieren",1200); }
+        catch { alert("Kopieren nicht möglich."); }
+      };
+
+      const btnOpen = document.createElement("button");
+      btnOpen.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-xs";
+      btnOpen.textContent = "Öffnen";
+      btnOpen.onclick = () => { if (url) window.open(url, "_blank"); };
+
+      bar.append(code, btnCopy, btnOpen);
+
+      td.appendChild(bar);
+
+      if (field === "cover" && url) {
+        const pvWrap = document.createElement("div");
+        pvWrap.className = "mt-2 flex items-center gap-3";
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Cover-Preview";
+        img.className = "w-12 h-12 rounded object-cover ring-1 ring-white/10";
+        const note = document.createElement("div");
+        note.className = "text-xs text-neutral-400";
+        note.textContent = "Preview (48px) – nur zur schnellen Kontrolle.";
+        pvWrap.append(img, note);
+        td.appendChild(pvWrap);
+      }
+
+      tr.appendChild(td);
+      return tr;
+    }
+
     function rebuildRows() {
       tbody.innerHTML = "";
 
@@ -386,7 +460,7 @@
         inTitle.oninput = e => state.songs[i].title = e.target.value;
         tdTitle.appendChild(inTitle);
 
-        // Artist
+        // Artist (schmaler)
         const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2";
         const inArtist = document.createElement("input"); inArtist.className="w-full px-2 py-1 rounded bg-neutral-800";
         inArtist.value = s.artist || DEFAULT_ARTIST; inArtist.placeholder="Artist";
@@ -397,19 +471,36 @@
         const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2";
         rebuildCatSel(tdCat, s.category, i);
 
-        // Cover
+        // Cover-URL (breiter, monospace, ▾)
         const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2";
-        const inCover = document.createElement("input"); inCover.className="w-full px-2 py-1 rounded bg-neutral-800";
-        inCover.value = s.cover || ""; inCover.placeholder="Cover-URL";
-        inCover.oninput = e => state.songs[i].cover = e.target.value;
-        tdCover.appendChild(inCover);
+        const coverCell = makeUrlCell(
+          s.cover || "",
+          "Cover-URL",
+          (e)=>{ state.songs[i].cover = e.target.value; },
+          ()=>{
+            // Toggle Expander
+            if (expanded.index === i && expanded.field === "cover") { expanded = { index:-1, field:null }; }
+            else { expanded = { index:i, field:"cover" }; }
+            rebuildRows();
+          },
+          s.cover || ""
+        );
+        tdCover.appendChild(coverCell.wrap);
 
-        // Song-URL
+        // Song-URL (breit, monospace, ▾)
         const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2";
-        const inSrc = document.createElement("input"); inSrc.className="w-full px-2 py-1 rounded bg-neutral-800";
-        inSrc.value = s.src || ""; inSrc.placeholder="Song-URL (RAW)";
-        inSrc.oninput = e => state.songs[i].src = e.target.value;
-        tdSrc.appendChild(inSrc);
+        const srcCell = makeUrlCell(
+          s.src || "",
+          "Song-URL (RAW)",
+          (e)=>{ state.songs[i].src = e.target.value; },
+          ()=>{
+            if (expanded.index === i && expanded.field === "src") { expanded = { index:-1, field:null }; }
+            else { expanded = { index:i, field:"src" }; }
+            rebuildRows();
+          },
+          s.src || ""
+        );
+        tdSrc.appendChild(srcCell.wrap);
 
         // Dauer
         const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2";
@@ -448,11 +539,21 @@
         const del = document.createElement("button");
         del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
         del.textContent = "Löschen";
-        del.onclick = () => { state.songs.splice(i, 1); rebuildRows(); };
+        del.onclick = () => {
+          // Wenn die expandierte Zeile zu diesem Eintrag gehört, schließen
+          if (expanded.index === i) expanded = { index:-1, field:null };
+          state.songs.splice(i, 1);
+          rebuildRows();
+        };
         tdAct.appendChild(del);
 
         tr.append(tdId, tdTitle, tdArtist, tdCat, tdCover, tdSrc, tdDur, tdAdded, tdOrder, tdAct);
         tbody.appendChild(tr);
+
+        // Expander-Zeile (optional)
+        if (expanded.index === i && (expanded.field === "cover" || expanded.field === "src")) {
+          tbody.appendChild(renderExpanderRow(i, expanded.field));
+        }
       });
     }
     rebuildRows();
@@ -506,6 +607,8 @@
         cover: "", src: "", duration: 0,
         addedAt: nowISO()
       });
+      // Beim Hinzufügen schließt sich ggf. offener Expander
+      expanded = { index:-1, field:null };
       rebuildRows();
     };
 
@@ -514,6 +617,11 @@
       const dups = duplicateIds(state.songs);
       if (dups.length) {
         alert("Duplikate gefunden (IDs):\n\n" + dups.join("\n") + "\n\nBitte ID anpassen.");
+        return;
+      }
+      // Keine leeren IDs zulassen
+      if (state.songs.some(s => !String(s.id || "").trim())) {
+        alert("Es existiert mindestens eine leere ID. Bitte ausfüllen.");
         return;
       }
       saveDraftSongs(); rerender();
@@ -555,11 +663,11 @@
       </div>
       <div class="md:col-span-2">
         <label class="text-xs text-neutral-400">Cover-URL (leer = Kategorie/Standard)</label>
-        <input id="mp3cover" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="">
+        <input id="mp3cover" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800 font-mono text-[11px]" placeholder="">
       </div>
       <div class="md:col-span-2">
         <label class="text-xs text-neutral-400">Song-RAW-URL (GitHub)</label>
-        <input id="mp3src" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/DATEI.mp3">
+        <input id="mp3src" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800 font-mono text-[11px]" placeholder="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/DATEI.mp3">
       </div>
       <p class="md:col-span-2 text-xs text-neutral-400 mt-2">
         Hinweis: Upload zur GitHub-Repo weiterhin manuell (Datei nach <code>/assets/songs</code>).
