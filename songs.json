@@ -372,7 +372,7 @@
     },
     {
       "id": "meine_leber_sagt_nein_mein_glas_sagt_ja_remix",
-      "title": "Meine Leber Sagt Nein, mein Glas Sagt Ja (Remix)",
+      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja(Remix)",
       "artist": "R.A.L.F.",
       "category": "ballermann",
       "cover": "https://cdn2.suno.ai/2b2f0e37-9c7d-4244-a7ac-956e35ca873a.jpeg",
@@ -382,7 +382,7 @@
     },
     {
       "id": "meine_leber_sagt_nein_mein_glas_sagt_ja",
-      "title": "Meine Leber Sagt Nein, mein Glas Sagt Ja",
+      "title": "Meine Leber Sagt Nein,mein Glas Sagt Ja",
       "artist": "R.A.L.F.",
       "category": "ballermann",
       "cover": "https://cdn2.suno.ai/3aec2db5-2bb1-4a53-b7c3-8c956133d52a.jpeg",
@@ -746,9 +746,79 @@
       "artist": "R.A.L.F.",
       "category": "schlager",
       "cover": "https://cdn2.suno.ai/59db54c3-bade-4ec0-80dc-5a6af01c210b.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Dein_Schloss_aus_Sand.mp3",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Dein_Schloss_aus_Sand.mp3",
       "duration": 205,
       "addedAt": "2025-09-09T02:33:24.514Z"
+    },
+    {
+      "id": "dashni_e_re",
+      "title": "Dashni E Re",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/23cde179-fef1-41c3-9f83-3f4ab28b6ba1.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Dashni_e_Re.mp3",
+      "duration": 138,
+      "addedAt": "2025-09-15T18:38:58.276Z"
+    },
+    {
+      "id": "dashuri_nen_diell",
+      "title": "Dashuri Nën Diell",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/65fcc72c-cb06-4cbc-87e9-668aa55d992d.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Dashuri_nen_Diell.mp3",
+      "duration": 190,
+      "addedAt": "2025-09-15T18:39:44.558Z"
+    },
+    {
+      "id": "kur_je_me_mu",
+      "title": "Kur Je Me Mu",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/fdba9dcf-772a-4e25-a86a-c12a365082ff.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Kur_Je_Me_Mu.mp3",
+      "duration": 141,
+      "addedAt": "2025-09-15T18:40:01.342Z"
+    },
+    {
+      "id": "me_ty",
+      "title": "Me Ty",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/b442a397-334e-4f80-8f87-774be71b7c28.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Me_Ty.mp3",
+      "duration": 154,
+      "addedAt": "2025-09-15T18:40:33.215Z"
+    },
+    {
+      "id": "nata_pa_fund",
+      "title": "Nata Pa Fund",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/6e152724-27a1-4c0f-9f60-466b7ed910a4.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Nata_Pa_Fund.mp3",
+      "duration": 138,
+      "addedAt": "2025-09-15T18:41:04.977Z"
+    },
+    {
+      "id": "sonte_je_ti",
+      "title": "Sonte Je Ti",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/0bd97631-a678-4e29-b915-5595fa41e03d.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Sonte_Je_Ti.mp3",
+      "duration": 146,
+      "addedAt": "2025-09-15T18:41:34.454Z"
+    },
+    {
+      "id": "ti_je_festa",
+      "title": "Ti Je Festa",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/da70ff2a-b021-4692-8c39-76915875ec1b.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Ti_je_Festa.mp3",
+      "duration": 172,
+      "addedAt": "2025-09-15T18:42:15.696Z"
     }
   ]
 }
