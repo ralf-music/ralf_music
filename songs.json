@@ -819,6 +819,46 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Ti_je_Festa.mp3",
       "duration": 172,
       "addedAt": "2025-09-15T18:42:15.696Z"
+    },
+    {
+      "id": "Ne_Syte_e_Tu",
+      "title": "Në Sytë E Tu",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/930bfa11-4934-483a-b0bc-01463629bdec.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Ne_Syte_e_Tu.mp3",
+      "duration": 193,
+      "addedAt": "2025-09-15T21:14:51.774Z"
+    },
+    {
+      "id": "Rruga_te_Ti",
+      "title": "Rruga Te Ti",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/96b1a517-7dd2-41e6-97e1-b8030704b5a4.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Rruga_te_Ti.mp3",
+      "duration": 152,
+      "addedAt": "2025-09-15T21:16:17.896Z"
+    },
+    {
+      "id": "Si_Hera_e_Pare",
+      "title": "Si Hera e Parë",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/28008dfb-9095-4701-997d-acc5a79fc313.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Si_Hera_e_Pare.mp3",
+      "duration": 168,
+      "addedAt": "2025-09-15T21:23:28.950Z"
+    },
+    {
+      "id": "Humbem_Ne",
+      "title": "Humbëm Ne",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://cdn2.suno.ai/bca07389-4a5d-4408-b5ae-32b45076c876.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Humbem_Ne.mp3",
+      "duration": 163,
+      "addedAt": "2025-09-15T21:26:33.365Z"
     }
   ]
 }
