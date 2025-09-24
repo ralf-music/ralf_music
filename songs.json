@@ -746,7 +746,7 @@
       "artist": "R.A.L.F.",
       "category": "schlager",
       "cover": "https://cdn2.suno.ai/59db54c3-bade-4ec0-80dc-5a6af01c210b.jpeg",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/Dein_Schloss_aus_Sand.mp3",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Dein_Schloss_aus_Sand.mp3",
       "duration": 205,
       "addedAt": "2025-09-09T02:33:24.514Z"
     },
@@ -879,6 +879,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Weightless_Mind.mp3",
       "duration": 236,
       "addedAt": "2025-09-22T20:59:30.430Z"
+    },
+    {
+      "id": "herz_aus_flammen",
+      "title": "Herz Aus Flammen",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/068899cf-cd86-4944-ac50-db54f0904df8.jpeg?width=360",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Herz_aus_Flammen.mp3",
+      "duration": 187,
+      "addedAt": "2025-09-24T10:36:57.493Z"
     }
   ]
 }
