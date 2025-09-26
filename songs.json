@@ -939,6 +939,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Rise_Above.mp3",
       "duration": 264,
       "addedAt": "2025-09-26T10:13:03.457Z"
+    },
+    {
+      "id": "elevation",
+      "title": "Elevation",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/d3e2f92d-9727-4b63-9083-64d634801bef.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Elevation.mp3",
+      "duration": 393,
+      "addedAt": "2025-09-26T10:39:02.074Z"
+    },
+    {
+      "id": "soaring_waves",
+      "title": "Soaring Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/9547927d-83b3-4b19-94b0-929b1c5f2632.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Soaring_Waves.mp3",
+      "duration": 242,
+      "addedAt": "2025-09-26T10:50:22.386Z"
     }
   ]
 }
