@@ -909,6 +909,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Verraten%26vergessen.mp3",
       "duration": 171,
       "addedAt": "2025-09-26T00:14:55.944Z"
+    },
+    {
+      "id": "sternenklare_nacht",
+      "title": "Sternenklare Nacht",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/e54b111f-e3d2-4ac0-92f6-b2dd81e41a7d.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Sternenklare_Nacht.mp3",
+      "duration": 150,
+      "addedAt": "2025-09-26T10:02:47.546Z"
+    },
+    {
+      "id": "das_echo_der_blauen_berge",
+      "title": "Das Echo Der Blauen Berge",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://cdn2.suno.ai/4ec9c562-75b4-4172-b478-acce6c5624a4.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Das_Echo_der_blauen_Berge.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-26T10:09:14.843Z"
+    },
+    {
+      "id": "rise_above",
+      "title": "Rise Above",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/86cc2d66-c7f9-40ae-80d3-99713881d9d9.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Rise_Above.mp3",
+      "duration": 264,
+      "addedAt": "2025-09-26T10:13:03.457Z"
     }
   ]
 }
