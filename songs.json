@@ -969,6 +969,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Aurora%20Sky.mp3",
       "duration": 337,
       "addedAt": "2025-09-26T11:10:41.908Z"
+    },
+    {
+      "id": "break_the_silence",
+      "title": "Break The Silence",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://cdn2.suno.ai/052b38e7-fc79-4065-918e-95b1baac576a.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Break_the_Silence.mp3",
+      "duration": 191,
+      "addedAt": "2025-09-26T11:15:04.621Z"
     }
   ]
 }
