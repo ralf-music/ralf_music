@@ -959,6 +959,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Soaring_Waves.mp3",
       "duration": 242,
       "addedAt": "2025-09-26T10:50:22.386Z"
+    },
+    {
+      "id": "aurora_sky",
+      "title": "Aurora Sky",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/f2d9c70e-e6d2-4af4-8b0a-cb38adddc122.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Aurora%20Sky.mp3",
+      "duration": 337,
+      "addedAt": "2025-09-26T11:10:41.908Z"
     }
   ]
 }
