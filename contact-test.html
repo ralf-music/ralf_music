@@ -26,9 +26,7 @@
       <input type="hidden" name="_subject" value="[R.A.L.F. Kontakt] Neue Nachricht" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
-      <!-- Nach erfolgreichem Senden auf diese Seite zurück mit ?ok=1 -->
       <input type="hidden" name="_next" value="" id="nextUrl" />
-      <!-- Honeypot -->
       <div class="hidden-robot">
         <label>Bitte frei lassen: <input type="text" name="_honey" autocomplete="off"></label>
       </div>
@@ -42,12 +40,30 @@
         </select>
       </div>
 
+      <!-- SONG-AUSWAHL + PREVIEW -->
       <div>
-        <label class="block text-sm mb-1">Song (optional)</label>
+        <div class="flex items-center justify-between">
+          <label class="block text-sm mb-1">Song (optional)</label>
+          <button type="button" id="previewToggle"
+                  class="text-xs px-2 py-1 rounded border border-neutral-700 hover:border-neutral-500">
+            Vorschau
+          </button>
+        </div>
         <select name="song" id="song" class="w-full rounded-lg bg-neutral-900 border border-neutral-700 px-3 py-2">
           <option value="">— keiner —</option>
         </select>
-        <p class="hint text-neutral-400 mt-1">Wird aus deiner songs.json geladen.</p>
+        <p class="hint text-neutral-400 mt-1">Titel + Kategorie; Vorschau zeigt das Cover.</p>
+
+        <!-- Preview-Box -->
+        <div id="songPreview" class="hidden mt-2 p-2 rounded-lg border border-neutral-800 bg-neutral-900/60">
+          <div class="flex items-center gap-3">
+            <img id="songPreviewImg" src="" alt="Cover" class="w-12 h-12 rounded object-cover ring-1 ring-white/10">
+            <div class="min-w-0">
+              <div id="songPreviewTitle" class="text-sm font-medium truncate"></div>
+              <div id="songPreviewMeta" class="text-xs text-neutral-400 truncate"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div>
@@ -68,7 +84,7 @@
 
       <div>
         <label class="block text-sm mb-1">E-Mail für Antwort</label>
-        <input type="email" name="reply_to" id="reply_to" required
+        <input type="email" name="email" id="reply_to" required
                class="w-full rounded-lg bg-neutral-900 border border-neutral-700 px-3 py-2"
                placeholder="dein.name@example.com" />
       </div>
@@ -92,86 +108,113 @@
   </div>
 
   <script>
-    // Erfolgsmeldung bei Redirect (?ok=1)
+    // Erfolgsmeldung
     (function(){
       const p=new URLSearchParams(location.search);
-      const ok=p.get('ok');
-      if(ok==='1'){
+      if(p.get('ok')==='1'){
         const el=document.getElementById('status');
         el.className='mt-4 p-3 rounded-lg border border-green-700 bg-green-900/30 text-green-200';
         el.textContent='Danke! Deine Nachricht wurde gesendet.';
         el.classList.remove('hidden');
-        // Query säubern
         history.replaceState(null,'',location.pathname);
       }
     })();
 
-    // _next-URL setzen (zurück auf diese Seite mit ?ok=1)
+    // _next setzen
     (function(){
       const here = location.origin + location.pathname + '?ok=1';
       const next = document.getElementById('nextUrl');
       if(next) next.value = here;
     })();
 
-    // songs.json laden für Dropdown
-    (async function loadSongs(){
+    // Kategorien + Songs laden, Dropdown befüllen (Titel + Kategorie), Preview ermöglichen
+    const songSel = document.getElementById('song');
+    const preview = {
+      box:   document.getElementById('songPreview'),
+      img:   document.getElementById('songPreviewImg'),
+      title: document.getElementById('songPreviewTitle'),
+      meta:  document.getElementById('songPreviewMeta')
+    };
+    const previewToggle = document.getElementById('previewToggle');
+
+    const songById = new Map();
+
+    async function loadSongsAndCats(){
       try{
-        const res = await fetch('/songs.json');
-        const data = await res.json();
-        const songs = Array.isArray(data) ? data : (data.songs || []);
-        const sel = document.getElementById('song');
+        const [sRes, cRes] = await Promise.all([
+          fetch('/songs.json'),
+          fetch('/categories.json')
+        ]);
+        const sData = await sRes.json();
+        const cData = await cRes.json();
+
+        const songs = Array.isArray(sData) ? sData : (sData.songs || []);
+        const cats  = Array.isArray(cData) ? cData : (cData.categories || []);
+        const labelByKey = new Map(cats.map(c => [c.key, c.label || c.key]));
+
         songs.forEach(s=>{
+          songById.set(s.id, s);
           const opt=document.createElement('option');
+          const catLabel = labelByKey.get(s.category) || s.category || '';
           opt.value = s.id || '';
-          opt.textContent = s.title ? `${s.title} (${s.id})` : (s.id||'');
-          sel.appendChild(opt);
+          opt.textContent = s.title ? `${s.title} — ${catLabel}` : (catLabel || '');
+          songSel.appendChild(opt);
         });
+
+        updatePreview();
       }catch(_){}
-    })();
+    }
+
+    function updatePreview(){
+      const id = songSel.value;
+      if(!id){ preview.box.classList.add('hidden'); return; }
+      const s = songById.get(id);
+      if(!s){ preview.box.classList.add('hidden'); return; }
+      preview.img.src = s.cover || '';
+      preview.title.textContent = s.title || '';
+      preview.meta.textContent  = [s.artist || '', s.category ? `• ${s.category}` : ''].filter(Boolean).join(' ');
+      preview.box.classList.remove('hidden');
+    }
+
+    songSel.addEventListener('change', updatePreview);
+    previewToggle.addEventListener('click', ()=>{
+      if(preview.box.classList.contains('hidden')) updatePreview();
+      else preview.box.classList.add('hidden');
+    });
+
+    loadSongsAndCats();
 
     // Live-Counter & Validation
     const msg=document.getElementById('message');
     const cnt=document.getElementById('count');
     msg.addEventListener('input',()=>{ cnt.textContent = Math.min(4000, msg.value.length); });
-
     function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||''); }
 
     // Mailto-Fallback
     (function(){
       const fb=document.getElementById('mailtoFallback');
-      const to = (document.querySelector('form').action || '').split('https://formsubmit.co/')[1] || 'ralf_keul@gmx.de';
+      const to = 'ralf.music@web.de';
       fb.href = `mailto:${to}?subject=${encodeURIComponent('[R.A.L.F. Kontakt]')}`;
     })();
 
-    // Submit-Handling (Client-Checks, dann normales POST)
+    // Submit-Checks
     const form=document.getElementById('contactForm');
     const btn=document.getElementById('sendBtn');
-
-    // Strg/⌘+Enter sendet
-    form.addEventListener('keydown',(e)=>{
-      if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); btn.click(); }
-    });
-
+    form.addEventListener('keydown',(e)=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); btn.click(); }});
     form.addEventListener('submit',(e)=>{
-      // Wir lassen echtes POST laufen, aber brechen ab, wenn Checks failen
       const email = document.getElementById('reply_to').value.trim();
       const okLen = (msg.value.trim().length >= 20 && msg.value.length <= 4000);
       const okMail = isEmail(email);
       const okConsent = document.getElementById('consent').checked;
-
       if(!okLen || !okMail || !okConsent){
         e.preventDefault();
-        let err = [];
-        if(!okLen) err.push('Nachricht zu kurz (mind. 20 Zeichen).');
+        let err=[]; if(!okLen) err.push('Nachricht zu kurz (mind. 20 Zeichen).');
         if(!okMail) err.push('Bitte gültige E-Mail eingeben.');
         if(!okConsent) err.push('Bitte der Speicherung/Übermittlung zustimmen.');
-        alert(err.join('\n'));
-        return false;
+        alert(err.join('\n')); return false;
       }
-      // Optional: throttle (einfach)
-      btn.disabled = true;
-      btn.textContent = 'Sende…';
-      setTimeout(()=>{ btn.disabled=false; btn.textContent='Senden'; }, 6000);
+      btn.disabled=true; btn.textContent='Sende…';
+      setTimeout(()=>{ btn.disabled=false; btn.textContent='Senden'; },6000);
     });
   </script>
 </body>
