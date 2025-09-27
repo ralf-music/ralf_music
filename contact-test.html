@@ -139,7 +139,7 @@
     // Mailto-Fallback
     (function(){
       const fb=document.getElementById('mailtoFallback');
-      const to = (document.querySelector('form').action || '').split('https://formsubmit.co/')[1] || 'YOUR_EMAIL_HERE';
+      const to = (document.querySelector('form').action || '').split('https://formsubmit.co/')[1] || 'ralf_keul@gmx.de';
       fb.href = `mailto:${to}?subject=${encodeURIComponent('[R.A.L.F. Kontakt]')}`;
     })();
 
