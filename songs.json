@@ -989,6 +989,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Keine_Liebe.mp3",
       "duration": 176,
       "addedAt": "2025-09-27T12:26:41.028Z"
+    },
+    {
+      "id": "nu_vreau_sa_pleci",
+      "title": "Nu Vreau Să Pleci",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://cdn2.suno.ai/a85c6d62-5d08-4be8-af81-a20c475edc47.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Nu_vreau_s%C4%83_pleci.mp3",
+      "duration": 212,
+      "addedAt": "2025-09-28T01:48:25.220Z"
+    },
+    {
+      "id": "ritmul_noptii",
+      "title": "Ritmul nopții",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://cdn2.suno.ai/26a077f8-3e80-400f-8e83-286437d243a8.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Ritmul_nop%C8%9Bii.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-28T01:49:25.419Z"
+    },
+    {
+      "id": "satul_meu",
+      "title": "Satul Meu",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://cdn2.suno.ai/348ffcc8-050c-462a-a726-0d4eb7edd0b9.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Satul_meu.mp3",
+      "duration": 152,
+      "addedAt": "2025-09-28T01:49:53.718Z"
     }
   ]
 }
