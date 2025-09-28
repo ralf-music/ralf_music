@@ -20,7 +20,7 @@
     <div id="status" class="mt-4 hidden"></div>
 
     <form id="contactForm" class="card p-4 sm:p-6 mt-6 space-y-4"
-          action="https://formsubmit.co/ralf.music@web.de"
+          action="https://formsubmit.co/ralf_keul@gmx.de"
           method="POST" novalidate>
       <!-- FormSubmit Optionen -->
       <input type="hidden" name="_subject" value="[R.A.L.F. Kontakt] Neue Nachricht" />
@@ -127,7 +127,7 @@
       if(next) next.value = here;
     })();
 
-    // Kategorien + Songs laden, Dropdown befüllen (Titel + Kategorie), Preview ermöglichen
+    // Kategorien + Songs laden
     const songSel = document.getElementById('song');
     const preview = {
       box:   document.getElementById('songPreview'),
@@ -136,7 +136,6 @@
       meta:  document.getElementById('songPreviewMeta')
     };
     const previewToggle = document.getElementById('previewToggle');
-
     const songById = new Map();
 
     async function loadSongsAndCats(){
@@ -193,7 +192,7 @@
     // Mailto-Fallback
     (function(){
       const fb=document.getElementById('mailtoFallback');
-      const to = 'ralf.music@web.de';
+      const to = 'ralf_keul@gmx.de';
       fb.href = `mailto:${to}?subject=${encodeURIComponent('[R.A.L.F. Kontakt]')}`;
     })();
 
