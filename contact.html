@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Contact | contact.html v2.1 -->
+<!-- R.A.L.F. – Contact | contact.html v2.2 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -21,6 +21,16 @@
     <h1 class="text-3xl font-extrabold">✉️ Kontakt</h1>
     <div class="orange-sep mt-4"></div>
   </header>
+
+  <!-- Intro-Text -->
+  <section class="max-w-3xl mx-auto px-6 mt-6 text-center text-neutral-300 text-sm sm:text-base">
+    <p>
+      Gerne könnt ihr mir hier Feedback zu Songs oder zur Webseite mitteilen –  
+      auch wenn ihr Fehler entdeckt oder Probleme habt.  
+      Über <strong>Anfragen</strong> ist es außerdem möglich, mit mir in Kontakt zu treten,  
+      falls jemand einen Song oder Text kommerziell nutzen möchte.
+    </p>
+  </section>
 
   <!-- Formular -->
   <main class="flex-1 max-w-3xl mx-auto px-6 py-8 w-full">
@@ -104,11 +114,11 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten.</span>
-      <span>contact.html v2.1</span>
+      <span>contact.html v2.2</span>
     </div>
   </footer>
 
-  <!-- Logic: Erfolg, Songs laden, Dropdown füllen, Cover-Vorschau, Subject setzen -->
+  <!-- Logic -->
   <script>
     (function successBanner(){
       if (new URLSearchParams(location.search).get('success') === '1') {
