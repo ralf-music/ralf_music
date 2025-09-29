@@ -122,7 +122,7 @@
   </footer>
 
   <script>
-    // Erfolgsmeldung über ?ok=1
+    // Erfolgsmeldung mit ?ok=1
     (function(){
       const p=new URLSearchParams(location.search);
       if(p.get('ok')==='1'){
@@ -133,7 +133,7 @@
       }
     })();
 
-    // _next auf sich selbst setzen
+    // _next auf sich selbst
     (function(){
       const here = location.origin + location.pathname + '?ok=1';
       const next = document.getElementById('nextUrl');
