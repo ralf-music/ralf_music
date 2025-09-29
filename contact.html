@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Contact | contact.html v1.4 -->
+<!-- R.A.L.F. – Contact | contact.html v2.0 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -9,6 +9,9 @@
   <style>
     body{background:#0a0a0a;color:#f5f5f5}
     .orange-sep{height:4px;background:#ea580c}
+    .card{background:#131313;border:1px solid #262626;border-radius:1rem}
+    .hint{font-size:.8rem;color:#a3a3a3}
+    img, video{ -webkit-user-drag:none; user-select:none; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -20,49 +23,74 @@
   </header>
 
   <!-- Formular -->
-  <main class="flex-1 max-w-xl mx-auto px-6 py-8">
+  <main class="flex-1 max-w-3xl mx-auto px-6 py-8 w-full">
     <form
       action="https://formsubmit.co/92bdccb093ce67e1c363400b90f37511"
       method="POST"
-      class="space-y-4 bg-neutral-900/60 border border-neutral-800 rounded-2xl p-5"
+      class="card p-5 space-y-5"
     >
-      <!-- Reply-To -->
-      <label class="block text-sm">
-        Deine E-Mail (Antwortadresse)
+      <!-- Erfolgsmeldung -->
+      <div id="ok" class="hidden rounded-lg border border-green-700/40 bg-green-900/20 px-3 py-2 text-green-300 text-sm">
+        Danke, deine Nachricht wurde gesendet.
+      </div>
+
+      <!-- E-Mail -->
+      <div>
+        <label class="block text-sm mb-1">Deine E-Mail (Antwortadresse)</label>
         <input type="email" name="email" required
-               class="mt-1 w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
+               class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
                placeholder="dein.name@mail.de">
-      </label>
+        <p class="hint mt-1">Wird als Reply-To gesetzt, damit ich dir direkt antworten kann.</p>
+      </div>
 
-      <label class="block text-sm">
-        Betreff
+      <!-- Betreff -->
+      <div>
+        <label class="block text-sm mb-1">Betreff</label>
         <input type="text" name="subject" required
-               class="mt-1 w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
+               class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
                placeholder="Feedback / Fehler / Anfrage">
-      </label>
+      </div>
 
-      <label class="block text-sm">
-        Nachricht
-        <textarea name="message" rows="6" required
-                  class="mt-1 w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
-                  placeholder="Schreib mir hier dein Feedback oder deine Anfrage …"></textarea>
-      </label>
+      <!-- Song-Auswahl + Preview -->
+      <div id="songBlock" class="grid md:grid-cols-3 gap-4 items-start">
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-1">Bezug auf einen Titel (optional)</label>
+          <select id="songSelect" name="song"
+                  class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2">
+            <option value="">— Kein Titel —</option>
+            <!-- wird per JS gefüllt: "Titel — Kategorie" -->
+          </select>
+          <p class="hint mt-1">Die Auswahl hilft mir, dein Feedback schneller zuzuordnen.</p>
+        </div>
+        <div class="md:col-span-1">
+          <div class="rounded-lg border border-neutral-700 p-2 bg-neutral-900/60 flex items-center justify-center aspect-square">
+            <img id="songCover" src="" alt="Cover-Vorschau" class="max-h-[220px] rounded shadow hidden">
+            <div id="noCover" class="text-neutral-500 text-xs">Keine Auswahl</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nachricht -->
+      <div>
+        <label class="block text-sm mb-1">Nachricht</label>
+        <textarea name="message" rows="7" required
+                  class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
+                  placeholder="Schreib mir hier dein Feedback, eine Fehlermeldung oder deine Anfrage …"></textarea>
+      </div>
 
       <!-- FormSubmit Optionen -->
       <input type="hidden" name="_subject" value="Neue Nachricht über ralf-music.de">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
-      <!-- nach dem Senden zurück auf Contact-Seite -->
       <input type="hidden" name="_next" value="https://ralf-music.netlify.app/contact.html?success=1">
 
-      <button type="submit"
-        class="w-full sm:w-auto rounded-full bg-orange-600 hover:bg-orange-500 px-5 py-2 font-semibold">
-        Senden
-      </button>
-
-      <!-- Erfolgsmeldung -->
-      <div id="ok" class="mt-2 text-sm text-green-400 hidden">
-        Danke, deine Nachricht wurde gesendet.
+      <!-- Senden -->
+      <div class="flex items-center gap-3">
+        <button type="submit"
+          class="rounded-full bg-orange-600 hover:bg-orange-500 px-5 py-2 font-semibold">
+          Senden
+        </button>
+        <span class="hint">Ich lese jede Nachricht.</span>
       </div>
     </form>
   </main>
@@ -71,15 +99,91 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten.</span>
-      <span>contact.html v1.4</span>
+      <span>contact.html v2.0</span>
     </div>
   </footer>
 
+  <!-- Logic: Songs laden, Dropdown füllen, Cover-Vorschau -->
   <script>
-    if (new URLSearchParams(location.search).get('success') === '1') {
-      const el = document.getElementById('ok'); 
-      if (el) el.classList.remove('hidden');
+    (function successBanner(){
+      if (new URLSearchParams(location.search).get('success') === '1') {
+        const el = document.getElementById('ok'); if (el) el.classList.remove('hidden');
+      }
+    })();
+
+    async function loadSongsAndCategories(){
+      try{
+        const [songsRes, catsRes] = await Promise.all([
+          fetch('/songs.json').then(r=>r.json()).catch(()=>({songs:[]})),
+          fetch('/categories.json').then(r=>r.json()).catch(()=>({categories:[]}))
+        ]);
+        const songs = Array.isArray(songsRes)?songsRes:(songsRes.songs||[]);
+        const categories = Array.isArray(catsRes)?catsRes:(catsRes.categories||[]);
+        const labelByKey = new Map(categories.map(c=>[c.key, c.label || c.key]));
+        return { songs, labelByKey };
+      }catch(e){
+        return { songs:[], labelByKey:new Map() };
+      }
     }
+
+    function buildSongOptions(select, songs, labelByKey){
+      // Gruppierung nach Kategorie-Label
+      const groups = new Map();
+      for (const s of songs){
+        const lab = labelByKey.get(s.category) || s.category || 'Andere';
+        if (!groups.has(lab)) groups.set(lab, []);
+        groups.get(lab).push(s);
+      }
+      // alphabetisch nach Kategorie
+      const sortedCats = [...groups.keys()].sort((a,b)=>a.localeCompare(b,'de'));
+      for (const catLabel of sortedCats){
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = catLabel;
+        const list = groups.get(catLabel).slice().sort((a,b)=>(a.title||'').localeCompare((b.title||''),'de'));
+        for (const s of list){
+          const opt = document.createElement('option');
+          opt.value = `${s.title || ''} — ${catLabel}`;
+          opt.textContent = `${s.title || ''} — ${catLabel}`;
+          opt.dataset.cover = s.cover || '';
+          optgroup.appendChild(opt);
+        }
+        select.appendChild(optgroup);
+      }
+    }
+
+    function wirePreview(select, imgEl, noCoverEl){
+      function update(){
+        const opt = select.options[select.selectedIndex];
+        const cover = opt?.dataset?.cover || '';
+        if (cover){
+          imgEl.src = cover;
+          imgEl.classList.remove('hidden');
+          noCoverEl.classList.add('hidden');
+        } else {
+          imgEl.src = '';
+          imgEl.classList.add('hidden');
+          noCoverEl.classList.remove('hidden');
+        }
+      }
+      select.addEventListener('change', update);
+      update();
+    }
+
+    (async function initSongBlock(){
+      const block = document.getElementById('songBlock');
+      const select = document.getElementById('songSelect');
+      const coverImg = document.getElementById('songCover');
+      const noCover = document.getElementById('noCover');
+
+      const { songs, labelByKey } = await loadSongsAndCategories();
+      if (!songs.length){
+        // Fallback: Block ausblenden, wenn nichts ladbar
+        block.style.display = 'none';
+        return;
+      }
+      buildSongOptions(select, songs, labelByKey);
+      wirePreview(select, coverImg, noCover);
+    })();
   </script>
 </body>
 </html>
