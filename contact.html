@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Contact | contact.html v2.0 -->
+<!-- R.A.L.F. – Contact | contact.html v2.1 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -25,6 +25,7 @@
   <!-- Formular -->
   <main class="flex-1 max-w-3xl mx-auto px-6 py-8 w-full">
     <form
+      id="contactForm"
       action="https://formsubmit.co/92bdccb093ce67e1c363400b90f37511"
       method="POST"
       class="card p-5 space-y-5"
@@ -43,19 +44,23 @@
         <p class="hint mt-1">Wird als Reply-To gesetzt, damit ich dir direkt antworten kann.</p>
       </div>
 
-      <!-- Betreff -->
+      <!-- Betreff (Auswahl) -->
       <div>
         <label class="block text-sm mb-1">Betreff</label>
-        <input type="text" name="subject" required
-               class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
-               placeholder="Feedback / Fehler / Anfrage">
+        <select id="subjectSelect" name="Betreff"
+                class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2">
+          <option value="Feedback">Feedback</option>
+          <option value="Bug">Bug</option>
+          <option value="Anfrage">Anfrage</option>
+        </select>
+        <p class="hint mt-1">Hilft mir beim Sortieren.</p>
       </div>
 
       <!-- Song-Auswahl + Preview -->
       <div id="songBlock" class="grid md:grid-cols-3 gap-4 items-start">
         <div class="md:col-span-2">
           <label class="block text-sm mb-1">Bezug auf einen Titel (optional)</label>
-          <select id="songSelect" name="song"
+          <select id="songSelect" name="Titel"
                   class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2">
             <option value="">— Kein Titel —</option>
             <!-- wird per JS gefüllt: "Titel — Kategorie" -->
@@ -73,13 +78,13 @@
       <!-- Nachricht -->
       <div>
         <label class="block text-sm mb-1">Nachricht</label>
-        <textarea name="message" rows="7" required
+        <textarea name="Nachricht" rows="7" required
                   class="w-full rounded-md bg-neutral-800 border border-neutral-700 px-3 py-2"
                   placeholder="Schreib mir hier dein Feedback, eine Fehlermeldung oder deine Anfrage …"></textarea>
       </div>
 
       <!-- FormSubmit Optionen -->
-      <input type="hidden" name="_subject" value="Neue Nachricht über ralf-music.de">
+      <input type="hidden" id="_subject" name="_subject" value="Kontakt: Feedback">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://ralf-music.netlify.app/contact.html?success=1">
@@ -99,11 +104,11 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten.</span>
-      <span>contact.html v2.0</span>
+      <span>contact.html v2.1</span>
     </div>
   </footer>
 
-  <!-- Logic: Songs laden, Dropdown füllen, Cover-Vorschau -->
+  <!-- Logic: Erfolg, Songs laden, Dropdown füllen, Cover-Vorschau, Subject setzen -->
   <script>
     (function successBanner(){
       if (new URLSearchParams(location.search).get('success') === '1') {
@@ -127,14 +132,12 @@
     }
 
     function buildSongOptions(select, songs, labelByKey){
-      // Gruppierung nach Kategorie-Label
       const groups = new Map();
       for (const s of songs){
         const lab = labelByKey.get(s.category) || s.category || 'Andere';
         if (!groups.has(lab)) groups.set(lab, []);
         groups.get(lab).push(s);
       }
-      // alphabetisch nach Kategorie
       const sortedCats = [...groups.keys()].sort((a,b)=>a.localeCompare(b,'de'));
       for (const catLabel of sortedCats){
         const optgroup = document.createElement('optgroup');
@@ -169,6 +172,14 @@
       update();
     }
 
+    // Subject in _subject spiegeln (für E-Mail-Betreff)
+    (function wireSubject(){
+      const sel = document.getElementById('subjectSelect');
+      const hidden = document.getElementById('_subject');
+      function sync(){ hidden.value = 'Kontakt: ' + (sel.value || 'Feedback'); }
+      sel.addEventListener('change', sync); sync();
+    })();
+
     (async function initSongBlock(){
       const block = document.getElementById('songBlock');
       const select = document.getElementById('songSelect');
@@ -177,7 +188,6 @@
 
       const { songs, labelByKey } = await loadSongsAndCategories();
       if (!songs.length){
-        // Fallback: Block ausblenden, wenn nichts ladbar
         block.style.display = 'none';
         return;
       }
