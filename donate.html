@@ -1,47 +1,63 @@
-<!-- R.A.L.F. – Donate | donate.html v1.4 -->
+<!-- R.A.L.F. – Donate Page | donate.html v1.5 -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unterstütze mich – R.A.L.F.</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color:#0a0a0a; color:#f5f5f5; }
-    .orange-sep { height:4px; background:#ea580c; }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col">
 
-  <header class="p-6 text-center">
-    <h1 class="text-3xl font-extrabold">☕ Unterstütze mich</h1>
-    <div class="orange-sep mt-4"></div>
+  <title>Unterstütze R.A.L.F.</title>
+  <meta name="description" content="Unterstütze das Musikprojekt R.A.L.F. mit einer kleinen Spende." />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col">
+  <!-- Header -->
+  <header class="relative w-full h-[160px] bg-black">
+    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
   </header>
 
-  <main class="flex-1 max-w-2xl mx-auto px-6 py-10 text-center space-y-6">
-    <p class="text-lg leading-relaxed">
-      Gefällt euch die Musik, die Webseite oder das ganze Projekt?<br>
-      Wollt ihr mich supporten und helfen, das Projekt am Leben zu halten?<br><br>
-      Wenn euch gefällt, was ihr hört, würde ich mich über jede Unterstützung sehr freuen.  
-      Jeder Euro hilft mir, das Projekt einen Schritt weiter zu bringen und stetig zu verbessern.<br><br>
-      <strong>Ich bedanke mich schonmal sehr herzlich für jede Unterstützung!</strong>
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-extrabold mb-6 text-center text-orange-500">Unterstütze mich</h1>
+
+    <p class="text-neutral-300 leading-relaxed mb-4 text-center">
+      Gefällt euch die Musik, die Webseite, das Projekt?<br>
+      Wollt ihr mich supporten und das Projekt am Leben halten?<br>
+      Wenn euch gefällt, was ihr hört, würde ich mich über jegliche Unterstützung freuen.
+    </p>
+    <p class="text-neutral-300 leading-relaxed mb-4 text-center">
+      Jeder Euro hilft mir, das Projekt einen Schritt weiter zu bringen und zu verbessern.
+    </p>
+    <p class="text-neutral-200 font-semibold text-center mb-8">
+      Ich bedanke mich schonmal sehr herzlich für die Unterstützung!
     </p>
 
-    <div class="flex justify-center">
+    <!-- Ko-fi Button -->
+    <div class="flex justify-center mb-10">
       <a href="https://ko-fi.com/ralf_music" target="_blank">
-        <img src="/assets/ko-fi-support.png"
-             alt="Support me on Ko-fi"
-             class="h-14">
+        <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=3"
+             alt="Unterstütze mich auf Ko-fi"
+             class="h-12">
       </a>
+    </div>
+
+    <!-- Ko-fi Widget -->
+    <div class="mt-8">
+      <iframe id='kofiframe'
+        src='https://ko-fi.com/ralf_music/?hidefeed=true&widget=true&embed=true&preview=true'
+        style='border:none;width:100%;padding:4px;background:#f9f9f9;'
+        height='712'
+        title='ralf_music'>
+      </iframe>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="border-t border-neutral-800">
-    <div class="max-w-4xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
+    <div class="max-w-3xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten.</span>
-      <span>donate.html v1.4</span>
+      <span>donate.html v1.5</span>
     </div>
   </footer>
-
 </body>
 </html>
