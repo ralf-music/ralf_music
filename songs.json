@@ -1019,6 +1019,66 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/Satul_meu.mp3",
       "duration": 152,
       "addedAt": "2025-09-28T01:49:53.718Z"
+    },
+    {
+      "id": "wir_stehn_bereit",
+      "title": "Wir Steh´n Bereit",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://cdn2.suno.ai/e987b72c-09d0-4d17-b720-51ed716aebe3.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Wir_stehn_bereit.mp3",
+      "duration": 184,
+      "addedAt": "2025-10-05T20:15:15.600Z"
+    },
+    {
+      "id": "eternal_flow",
+      "title": "Eternal Flow",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/768b2a9e-f4e2-4b88-9748-3e790da344bd.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Eternal_Flow.mp3",
+      "duration": 185,
+      "addedAt": "2025-10-05T20:17:07.831Z"
+    },
+    {
+      "id": "forever_tonight",
+      "title": "Forever Tonight",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/e921b17b-f6e7-44af-a00f-167e06f0e770.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Forever_Tonight.mp3",
+      "duration": 232,
+      "addedAt": "2025-10-05T20:17:52.997Z"
+    },
+    {
+      "id": "melodic_surge",
+      "title": "Melodic Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/9c6adbd9-938f-43db-b3db-7cb01e95149a.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Melodic_Surge.mp3",
+      "duration": 230,
+      "addedAt": "2025-10-05T20:19:24.454Z"
+    },
+    {
+      "id": "mein_blut_mein_wort",
+      "title": "Mein Blut, Mein Wort",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/b653f3e1-a99b-4be7-b3a2-15b590ce0662.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Mein_Blut_mein_Wort.mp3",
+      "duration": 171,
+      "addedAt": "2025-10-05T20:20:27.093Z"
+    },
+    {
+      "id": "hypnotic_drive",
+      "title": "Hypnotic Drive",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/1e7a8bca-d77c-45b0-8d96-81785a077e27.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/Hypnotic_Drive.mp3",
+      "duration": 260,
+      "addedAt": "2025-10-05T20:21:12.676Z"
     }
   ]
 }
