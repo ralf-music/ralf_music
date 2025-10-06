@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.3 -->
+<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.5 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -70,7 +70,12 @@
         Springe mit <strong>Leertaste</strong> oder <strong>Tippen</strong>. Weiche Hindernissen aus. Viel Spaß! 🐶
       </p>
 
-      <div class="mt-4">
+      <!-- Musik-Toggle -->
+      <div class="mt-4 flex items-center justify-center">
+        <button id="musicBtn" class="btn btn-ghost">🔊 Musik an</button>
+      </div>
+
+      <div class="mt-3">
         <canvas id="runner" width="720" height="220"></canvas>
       </div>
 
@@ -79,6 +84,9 @@
         <span id="score" class="text-sm text-neutral-300">Score: 0</span>
         <span id="best" class="text-sm text-neutral-500">Best: 0</span>
       </div>
+
+      <!-- Hidden Audio (ohne Autoplay) -->
+      <audio id="bgm" src="/assets/puppy_adventure_theme.mp3" preload="auto" loop></audio>
     </section>
 
     <p class="mt-6 text-center text-sm text-neutral-500">
@@ -90,7 +98,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>index.html vMAINT-2025-10-06.3</span>
+      <span>index.html vMAINT-2025-10-06.5</span>
     </div>
   </footer>
 
@@ -100,53 +108,66 @@
       const canvas = document.getElementById('runner');
       const ctx = canvas.getContext('2d');
 
-      // Responsive Breite (max 720)
+      // Responsive Darstellung (CSS-Scale), Canvas-Auflösung bleibt
       function fitCanvas(){
-        const max = 720;
-        const w = Math.min(max, Math.floor(window.innerWidth * 0.95));
-        const ratio = w / canvas.width;
+        const maxW = 720;
+        const w = Math.min(maxW, Math.floor(window.innerWidth * 0.95));
+        const scale = w / canvas.width;
         canvas.style.width = w + 'px';
-        canvas.style.height = (canvas.height * ratio) + 'px';
+        canvas.style.height = (canvas.height * scale) + 'px';
       }
       fitCanvas(); window.addEventListener('resize', fitCanvas);
 
-      // World
-      const GROUND_Y = canvas.height - 40; // Bodenlinie
+      // Welt
+      const GROUND_Y = canvas.height - 40;
       let obstacles = [];
       let running = false, gameOver = false;
-      let lastTime = 0;
-      let spawnTimer = 0;
+      let lastTime = 0, spawnTimer = 0;
       let score = 0, best = Number(localStorage.getItem('bolonka_best') || 0);
       const scoreEl = document.getElementById('score');
       const bestEl  = document.getElementById('best'); bestEl.textContent = 'Best: ' + best;
 
-      // Player (Bolonka – stilisiert)
+      // Text-Rendering fix
+      ctx.textBaseline = 'top';
+
+      // Bolonka-Sprite
+      const sprite = new Image();
+      sprite.src = '/assets/bolonka.png';
+
       const dog = {
-        x: 60, y: GROUND_Y - 30,
-        w: 42, h: 30,
+        x: 60,
+        y: GROUND_Y - 30,
+        w: 42,  // Logik-Hitbox (nicht Zeichenbreite)
+        h: 30,
         vy: 0,
-        onGround: true,
-        blink: 0
+        onGround: true
       };
 
       function jump(){
         if (!running || gameOver) return;
         if (dog.onGround){
-          dog.vy = -9.6;      // Sprungkraft
+          dog.vy = -9.6;
           dog.onGround = false;
         }
       }
 
       // Input
-      window.addEventListener('keydown', (e)=>{ if(e.code==='Space'){ e.preventDefault(); jump(); } });
-      canvas.addEventListener('pointerdown', jump);
+      window.addEventListener('keydown', (e)=>{
+        if(e.code==='Space'){
+          e.preventDefault();
+          if(!running||gameOver){ start(); } else { jump(); }
+        }
+      });
+      canvas.addEventListener('pointerdown', ()=>{
+        if(!running||gameOver){ start(); } else { jump(); }
+      });
 
       // Start/Restart
       document.getElementById('startBtn').addEventListener('click', start);
       function start(){
         running = true; gameOver = false;
         obstacles = [];
-        dog.y = GROUND_Y - dog.h; dog.vy = 0; dog.onGround = true; dog.blink = 0;
+        dog.y = GROUND_Y - dog.h; dog.vy = 0; dog.onGround = true;
         score = 0; scoreEl.textContent = 'Score: 0';
         spawnTimer = 0; lastTime = performance.now();
         requestAnimationFrame(loop);
@@ -154,70 +175,28 @@
 
       // Hindernisse
       function spawnObstacle(){
-        // zufällige Breite/Höhe im „Block“-Stil
         const w = 18 + Math.random()*22;
         const h = 18 + Math.random()*30;
-        obstacles.push({
-          x: canvas.width + 10,
-          y: GROUND_Y - h,
-          w, h,
-          passed:false
-        });
+        obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w, h, passed:false });
       }
 
-      // Zeichnen Bolonka (einfacher, süßer Stil)
       function drawDog(){
-        const {x,y,w,h} = dog;
-        // Körper
-        ctx.fillStyle = '#e5e7eb'; // Fell hell
-        roundRect(ctx, x, y, w, h, 6);
+        const bounce = Math.sin(performance.now()/160) * (dog.onGround ? 1.2 : 0);
+        const drawW = 40, drawH = 30; // ~40×30 wie gewünscht (klein)
+        const dx = dog.x, dy = dog.y + bounce;
+        if (sprite.complete && sprite.naturalWidth){
+          ctx.drawImage(sprite, dx, dy, drawW, drawH);
+        } else {
+          // Fallback
+          ctx.fillStyle = '#e5e7eb';
+          ctx.fillRect(dx, dy, drawW, drawH);
+        }
+      }
+
+      function drawObstacle(o){
+        ctx.fillStyle = '#ea580c';
+        roundRect(ctx, o.x, o.y, o.w, o.h, 4);
         ctx.fill();
-
-        // Kopf
-        const kh = h*0.7, kw = w*0.55;
-        ctx.fillStyle = '#f3f4f6';
-        roundRect(ctx, x - kw*0.4, y + h*0.1, kw, kh, 6);
-        ctx.fill();
-
-        // Ohren
-        ctx.fillStyle = '#d1d5db';
-        ctx.beginPath(); // linkes Ohr
-        ctx.moveTo(x - kw*0.3, y + h*0.1);
-        ctx.lineTo(x - kw*0.05, y - h*0.15);
-        ctx.lineTo(x + kw*0.05, y + h*0.1);
-        ctx.closePath(); ctx.fill();
-        ctx.beginPath(); // rechtes Ohr
-        ctx.moveTo(x + kw*0.05, y + h*0.1);
-        ctx.lineTo(x + kw*0.3, y - h*0.15);
-        ctx.lineTo(x + kw*0.35, y + h*0.1);
-        ctx.closePath(); ctx.fill();
-
-        // Auge (blinkt leicht)
-        ctx.fillStyle = '#111827';
-        const blink = (Math.sin(performance.now()/250) > 0.92) ? 0.2 : 1;
-        ctx.beginPath();
-        ctx.ellipse(x - kw*0.05, y + h*0.35, 2.2, 2.2*blink, 0, 0, Math.PI*2);
-        ctx.fill();
-
-        // Nase
-        ctx.fillStyle = '#374151';
-        ctx.beginPath();
-        ctx.arc(x + kw*0.22, y + h*0.5, 2, 0, Math.PI*2); ctx.fill();
-
-        // Schwänzchen
-        ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(x + w - 4, y + h*0.4);
-        ctx.quadraticCurveTo(x + w + 8, y + h*0.2, x + w - 2, y + h*0.05);
-        ctx.stroke();
-
-        // Pfötchen „Trappel-Effekt“
-        const t = performance.now()/120;
-        const step = Math.sin(t)*1.8;
-        ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(x+8, y+h); ctx.lineTo(x+8, y+h-5+step); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(x+18, y+h); ctx.lineTo(x+18, y+h-5-step); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(x+28, y+h); ctx.lineTo(x+28, y+h-5+step); ctx.stroke();
       }
 
       function roundRect(ctx, x, y, w, h, r){
@@ -231,24 +210,13 @@
         ctx.closePath();
       }
 
-      function drawObstacle(o){
-        ctx.fillStyle = '#ea580c';
-        roundRect(ctx, o.x, o.y, o.w, o.h, 4);
-        ctx.fill();
-        // Glow
-        ctx.shadowColor = 'rgba(234,88,12,0.35)';
-        ctx.shadowBlur = 16;
-        ctx.fillRect(-100,-100,1,1); // Trick, damit Shadow resetbar bleibt
-        ctx.shadowBlur = 0;
-      }
-
       function rectsCollide(a,b){
         return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
       }
 
       function loop(ts){
         if (!running) return;
-        const dt = Math.min(32, ts - lastTime); // ms clamp
+        const dt = Math.min(32, ts - lastTime);
         lastTime = ts;
 
         // Clear
@@ -259,7 +227,7 @@
         ctx.beginPath(); ctx.moveTo(0, GROUND_Y+0.5); ctx.lineTo(canvas.width, GROUND_Y+0.5); ctx.stroke();
 
         // Physik Hund
-        dog.vy += 0.45; // Gravitation
+        dog.vy += 0.45;
         dog.y += dog.vy;
         if (dog.y + dog.h >= GROUND_Y){
           dog.y = GROUND_Y - dog.h;
@@ -267,67 +235,83 @@
           dog.onGround = true;
         }
 
-        // Hindernisse bewegen/spawnen
-        const speed = 3.8 + Math.min(3, score/80); // leicht schneller mit Score
+        // Hindernisse
+        const speed = 3.8 + Math.min(3, score/80);
         obstacles.forEach(o => o.x -= speed);
         obstacles = obstacles.filter(o => o.x + o.w > -10);
 
         spawnTimer -= dt;
         if (spawnTimer <= 0){
           spawnObstacle();
-          // Abstand zufällig, mit Mindestwert
-          spawnTimer = 650 + Math.random()*650; // ms
+          spawnTimer = 650 + Math.random()*650;
         }
 
         // Score & Kollision
-        obstacles.forEach(o=>{
+        for (const o of obstacles){
           if (!o.passed && o.x + o.w < dog.x){
             o.passed = true;
             score++; scoreEl.textContent = 'Score: ' + score;
           }
-          if (rectsCollide(dog, o) && !gameOver){
-            gameOver = true; running = false;
+          if (rectsCollide(dog, o)){
+            running = false; gameOver = true;
             best = Math.max(best, score);
             localStorage.setItem('bolonka_best', String(best));
             bestEl.textContent = 'Best: ' + best;
             drawGameOver();
             return;
           }
-        });
+        }
 
-        // Draw entities
+        // Draw
         obstacles.forEach(drawObstacle);
         drawDog();
 
         // HUD
         ctx.fillStyle = '#9ca3af';
         ctx.font = 'bold 14px system-ui, -apple-system, Segoe UI, Roboto';
-        ctx.fillText('Score: ' + score, 10, 20);
+        ctx.fillText('Score: ' + score, 12, 8);
 
-        if (running) requestAnimationFrame(loop);
+        requestAnimationFrame(loop);
       }
 
       function drawGameOver(){
-        // Overlay
         ctx.fillStyle = 'rgba(0,0,0,0.55)';
         ctx.fillRect(0,0,canvas.width,canvas.height);
         ctx.fillStyle = '#f3f4f6';
         ctx.font = 'bold 24px system-ui, -apple-system, Segoe UI, Roboto';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
         ctx.fillText('Game Over', canvas.width/2, canvas.height/2 - 8);
         ctx.font = '14px system-ui, -apple-system, Segoe UI, Roboto';
         ctx.fillStyle = '#d1d5db';
         ctx.fillText('Klick / Tippen / Leertaste für Neustart', canvas.width/2, canvas.height/2 + 18);
-
-        // Click-to-restart
-        const once = () => { canvas.removeEventListener('pointerdown', once); start(); };
-        canvas.addEventListener('pointerdown', once);
-        const keyOnce = (e)=>{ if(e.code==='Space'){ window.removeEventListener('keydown', keyOnce); start(); } };
-        window.addEventListener('keydown', keyOnce);
+        ctx.textAlign = 'start'; ctx.textBaseline = 'top';
       }
 
-      // Auto-Start dezent verzögert
-      setTimeout(()=>{ start(); }, 400);
+      // === Musik-Toggle ===
+      const bgm = document.getElementById('bgm');
+      const musicBtn = document.getElementById('musicBtn');
+      bgm.volume = 0.25;
+
+      let wantMusic = (localStorage.getItem('bolonka_bgm') || '0') === '1'; // Standard: aus
+      updateMusicBtn();
+
+      musicBtn.addEventListener('click', async ()=>{
+        wantMusic = !wantMusic;
+        localStorage.setItem('bolonka_bgm', wantMusic ? '1' : '0');
+        updateMusicBtn();
+        if (wantMusic){
+          try { await bgm.play(); } catch(e) {/* Browser blockt bis User-Geste; Button-Klick ist Geste */}
+        } else {
+          try { bgm.pause(); } catch(e){}
+        }
+      });
+
+      function updateMusicBtn(){
+        musicBtn.textContent = wantMusic ? '🔈 Musik aus' : '🔊 Musik an';
+      }
+
+      // Autostart des Spiels, aber ohne Musik
+      setTimeout(()=>{ start(); }, 350);
     })();
   </script>
 </body>
