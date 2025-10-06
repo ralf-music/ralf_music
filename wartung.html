@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Wartungsmodus | index.html vMAINT-2025-10-06.2 -->
+<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.5 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -22,6 +22,10 @@
     .orange-sep{height:4px;background:#ea580c;animation:pulseLine 3.2s ease-in-out infinite;}
     .card{position:relative;border:1px solid #ea580c;border-radius:1rem;overflow:hidden;
       background:rgba(23,23,23,0.72);box-shadow:0 0 40px rgba(234,88,12,.3) inset;}
+    .btn{border-radius:9999px;padding:.6rem 1.2rem;font-weight:600}
+    .btn-primary{background:#ea580c} .btn-primary:hover{background:#f97316}
+    .btn-ghost{border:1px solid #ea580c} .btn-ghost:hover{background:rgba(234,88,12,.08)}
+    canvas{ display:block; margin:0 auto; border-radius:12px; background:#0b0b0b; }
   </style>
 </head>
 
@@ -47,15 +51,8 @@
       </p>
 
       <div class="mt-8 flex items-center justify-center gap-3 flex-wrap">
-        <button
-          onclick="location.reload()"
-          class="rounded-full bg-orange-600 hover:bg-orange-500 px-6 py-2 font-semibold">
-          Seite neu laden
-        </button>
-        <a href="mailto:ralf.music68@gmail.com"
-           class="rounded-full border border-orange-600 hover:bg-orange-600/10 px-6 py-2 font-semibold">
-          Kontakt per E-Mail
-        </a>
+        <button onclick="location.reload()" class="btn btn-primary">Seite neu laden</button>
+        <a href="mailto:ralf.music68@gmail.com" class="btn btn-ghost">Kontakt per E-Mail</a>
       </div>
 
       <!-- Spendenbutton -->
@@ -64,6 +61,32 @@
           <img src="/assets/ko-fi-support.png" alt="Unterstütze mich auf Ko-fi" class="h-12">
         </a>
       </div>
+    </section>
+
+    <!-- Mini-Game: Bolonka Runner -->
+    <section class="mt-10 card p-6">
+      <h2 class="text-xl font-bold text-orange-500 text-center">Mini-Game: Bolonka Runner</h2>
+      <p class="text-sm text-neutral-400 text-center mt-1">
+        Springe mit <strong>Leertaste</strong> oder <strong>Tippen</strong>. Weiche Hindernissen aus. Viel Spaß! 🐶
+      </p>
+
+      <!-- Musik-Toggle -->
+      <div class="mt-4 flex items-center justify-center">
+        <button id="musicBtn" class="btn btn-ghost">🔊 Musik an</button>
+      </div>
+
+      <div class="mt-3">
+        <canvas id="runner" width="720" height="220"></canvas>
+      </div>
+
+      <div class="mt-3 flex items-center justify-center gap-3">
+        <button id="startBtn" class="btn btn-primary">Start / Neustart</button>
+        <span id="score" class="text-sm text-neutral-300">Score: 0</span>
+        <span id="best" class="text-sm text-neutral-500">Best: 0</span>
+      </div>
+
+      <!-- Hidden Audio (ohne Autoplay) -->
+      <audio id="bgm" src="/assets/puppy_adventure_theme.mp3" preload="auto" loop></audio>
     </section>
 
     <p class="mt-6 text-center text-sm text-neutral-500">
@@ -75,8 +98,221 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>index.html vMAINT-2025-10-06.2</span>
+      <span>index.html vMAINT-2025-10-06.5</span>
     </div>
   </footer>
+
+  <!-- Game Logic -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('runner');
+      const ctx = canvas.getContext('2d');
+
+      // Responsive Darstellung (CSS-Scale), Canvas-Auflösung bleibt
+      function fitCanvas(){
+        const maxW = 720;
+        const w = Math.min(maxW, Math.floor(window.innerWidth * 0.95));
+        const scale = w / canvas.width;
+        canvas.style.width = w + 'px';
+        canvas.style.height = (canvas.height * scale) + 'px';
+      }
+      fitCanvas(); window.addEventListener('resize', fitCanvas);
+
+      // Welt
+      const GROUND_Y = canvas.height - 40;
+      let obstacles = [];
+      let running = false, gameOver = false;
+      let lastTime = 0, spawnTimer = 0;
+      let score = 0, best = Number(localStorage.getItem('bolonka_best') || 0);
+      const scoreEl = document.getElementById('score');
+      const bestEl  = document.getElementById('best'); bestEl.textContent = 'Best: ' + best;
+
+      // Text-Rendering fix
+      ctx.textBaseline = 'top';
+
+      // Bolonka-Sprite
+      const sprite = new Image();
+      sprite.src = '/assets/bolonka.png';
+
+      const dog = {
+        x: 60,
+        y: GROUND_Y - 30,
+        w: 42,  // Logik-Hitbox (nicht Zeichenbreite)
+        h: 30,
+        vy: 0,
+        onGround: true
+      };
+
+      function jump(){
+        if (!running || gameOver) return;
+        if (dog.onGround){
+          dog.vy = -9.6;
+          dog.onGround = false;
+        }
+      }
+
+      // Input
+      window.addEventListener('keydown', (e)=>{
+        if(e.code==='Space'){
+          e.preventDefault();
+          if(!running||gameOver){ start(); } else { jump(); }
+        }
+      });
+      canvas.addEventListener('pointerdown', ()=>{
+        if(!running||gameOver){ start(); } else { jump(); }
+      });
+
+      // Start/Restart
+      document.getElementById('startBtn').addEventListener('click', start);
+      function start(){
+        running = true; gameOver = false;
+        obstacles = [];
+        dog.y = GROUND_Y - dog.h; dog.vy = 0; dog.onGround = true;
+        score = 0; scoreEl.textContent = 'Score: 0';
+        spawnTimer = 0; lastTime = performance.now();
+        requestAnimationFrame(loop);
+      }
+
+      // Hindernisse
+      function spawnObstacle(){
+        const w = 18 + Math.random()*22;
+        const h = 18 + Math.random()*30;
+        obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w, h, passed:false });
+      }
+
+      function drawDog(){
+        const bounce = Math.sin(performance.now()/160) * (dog.onGround ? 1.2 : 0);
+        const drawW = 40, drawH = 30; // ~40×30 wie gewünscht (klein)
+        const dx = dog.x, dy = dog.y + bounce;
+        if (sprite.complete && sprite.naturalWidth){
+          ctx.drawImage(sprite, dx, dy, drawW, drawH);
+        } else {
+          // Fallback
+          ctx.fillStyle = '#e5e7eb';
+          ctx.fillRect(dx, dy, drawW, drawH);
+        }
+      }
+
+      function drawObstacle(o){
+        ctx.fillStyle = '#ea580c';
+        roundRect(ctx, o.x, o.y, o.w, o.h, 4);
+        ctx.fill();
+      }
+
+      function roundRect(ctx, x, y, w, h, r){
+        const rr = Math.min(r, w/2, h/2);
+        ctx.beginPath();
+        ctx.moveTo(x+rr, y);
+        ctx.arcTo(x+w, y, x+w, y+h, rr);
+        ctx.arcTo(x+w, y+h, x, y+h, rr);
+        ctx.arcTo(x, y+h, x, y, rr);
+        ctx.arcTo(x, y, x+w, y, rr);
+        ctx.closePath();
+      }
+
+      function rectsCollide(a,b){
+        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+      }
+
+      function loop(ts){
+        if (!running) return;
+        const dt = Math.min(32, ts - lastTime);
+        lastTime = ts;
+
+        // Clear
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+
+        // Bodenlinie
+        ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(0, GROUND_Y+0.5); ctx.lineTo(canvas.width, GROUND_Y+0.5); ctx.stroke();
+
+        // Physik Hund
+        dog.vy += 0.45;
+        dog.y += dog.vy;
+        if (dog.y + dog.h >= GROUND_Y){
+          dog.y = GROUND_Y - dog.h;
+          dog.vy = 0;
+          dog.onGround = true;
+        }
+
+        // Hindernisse
+        const speed = 3.8 + Math.min(3, score/80);
+        obstacles.forEach(o => o.x -= speed);
+        obstacles = obstacles.filter(o => o.x + o.w > -10);
+
+        spawnTimer -= dt;
+        if (spawnTimer <= 0){
+          spawnObstacle();
+          spawnTimer = 650 + Math.random()*650;
+        }
+
+        // Score & Kollision
+        for (const o of obstacles){
+          if (!o.passed && o.x + o.w < dog.x){
+            o.passed = true;
+            score++; scoreEl.textContent = 'Score: ' + score;
+          }
+          if (rectsCollide(dog, o)){
+            running = false; gameOver = true;
+            best = Math.max(best, score);
+            localStorage.setItem('bolonka_best', String(best));
+            bestEl.textContent = 'Best: ' + best;
+            drawGameOver();
+            return;
+          }
+        }
+
+        // Draw
+        obstacles.forEach(drawObstacle);
+        drawDog();
+
+        // HUD
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = 'bold 14px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.fillText('Score: ' + score, 12, 8);
+
+        requestAnimationFrame(loop);
+      }
+
+      function drawGameOver(){
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#f3f4f6';
+        ctx.font = 'bold 24px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        ctx.fillText('Game Over', canvas.width/2, canvas.height/2 - 8);
+        ctx.font = '14px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.fillStyle = '#d1d5db';
+        ctx.fillText('Klick / Tippen / Leertaste für Neustart', canvas.width/2, canvas.height/2 + 18);
+        ctx.textAlign = 'start'; ctx.textBaseline = 'top';
+      }
+
+      // === Musik-Toggle ===
+      const bgm = document.getElementById('bgm');
+      const musicBtn = document.getElementById('musicBtn');
+      bgm.volume = 0.25;
+
+      let wantMusic = (localStorage.getItem('bolonka_bgm') || '0') === '1'; // Standard: aus
+      updateMusicBtn();
+
+      musicBtn.addEventListener('click', async ()=>{
+        wantMusic = !wantMusic;
+        localStorage.setItem('bolonka_bgm', wantMusic ? '1' : '0');
+        updateMusicBtn();
+        if (wantMusic){
+          try { await bgm.play(); } catch(e) {/* Browser blockt bis User-Geste; Button-Klick ist Geste */}
+        } else {
+          try { bgm.pause(); } catch(e){}
+        }
+      });
+
+      function updateMusicBtn(){
+        musicBtn.textContent = wantMusic ? '🔈 Musik aus' : '🔊 Musik an';
+      }
+
+      // Autostart des Spiels, aber ohne Musik
+      setTimeout(()=>{ start(); }, 350);
+    })();
+  </script>
 </body>
 </html>
