@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.7 -->
+<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.8 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -73,7 +73,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>index.html vMAINT-2025-10-06.7</span>
+      <span>index.html vMAINT-2025-10-06.8</span>
     </div>
   </footer>
 
@@ -81,9 +81,40 @@
 (function(){
   const canvas=document.getElementById('runner'),ctx=canvas.getContext('2d');
   const GROUND_Y=canvas.height-40;
-  const sprite=new Image(); sprite.src='/assets/bolonka.png';
+
+  // === Sprite + Weiß-Maske (Chroma-Key) ===
+  const rawSprite=new Image(); rawSprite.src='/assets/bolonka.png';
+  let maskedSprite=null; // Offscreen-Canvas mit entfernten Weißflächen
+
+  rawSprite.onload = () => {
+    maskedSprite = makeMaskedSprite(rawSprite, {r:255,g:255,b:255}, 22); // Toleranz 22
+  };
+
+  // Erzeugt ein Canvas, in dem (nahezu) weiße Pixel transparent gesetzt sind
+  function makeMaskedSprite(img, key, tol){
+    const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    const off = document.createElement('canvas'); off.width=w; off.height=h;
+    const octx = off.getContext('2d');
+    octx.drawImage(img,0,0);
+    const data = octx.getImageData(0,0,w,h);
+    const px = data.data;
+    const t = tol|0;
+
+    for(let i=0;i<px.length;i+=4){
+      const r=px[i], g=px[i+1], b=px[i+2];
+      // nahe Weiß? -> Alpha auf 0
+      if (r>=key.r-t && g>=key.g-t && b>=key.b-t){
+        px[i+3]=0;
+      }
+    }
+    octx.putImageData(data,0,0);
+    return off;
+  }
+
+  // Zeichengröße & Hitbox
   const DRAW_W=52,DRAW_H=38,HIT_W=44,HIT_H=28;
   let dog={x:60,y:GROUND_Y-HIT_H,w:HIT_W,h:HIT_H,vy:0,onGround:true};
+
   let obstacles=[],running=false,gameOver=false,last=0,spawn=0,score=0,best=Number(localStorage.getItem('bolonka_best')||0);
   const scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'); bestEl.textContent='Best: '+best;
 
@@ -104,9 +135,14 @@
     const bounce=Math.sin(performance.now()/160)*(dog.onGround?1.2:0);
     const dx=dog.x-(DRAW_W-dog.w)/2,dy=dog.y-(DRAW_H-dog.h)+bounce;
     ctx.save();
-    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=8;
-    if(sprite.complete&&sprite.naturalWidth){ctx.drawImage(sprite,dx,dy,DRAW_W,DRAW_H);}
-    else{ctx.fillStyle='#e5e7eb';ctx.fillRect(dx,dy,DRAW_W,DRAW_H);}
+    ctx.shadowColor='rgba(0,0,0,0.45)';ctx.shadowBlur=8;
+    const src = maskedSprite || rawSprite; // wenn Maske noch nicht fertig, nimm Original
+    if(src && (src.naturalWidth || src.width)){
+      ctx.drawImage(src,dx,dy,DRAW_W,DRAW_H);
+    } else {
+      ctx.fillStyle='#e5e7eb';
+      ctx.fillRect(dx,dy,DRAW_W,DRAW_H);
+    }
     ctx.restore();
   }
 
@@ -150,11 +186,13 @@
     ctx.textAlign='start';
   }
 
+  // Musik-Toggle
   const bgm=document.getElementById('bgm'),btn=document.getElementById('musicBtn');
   bgm.volume=.25;let music=(localStorage.getItem('bolonka_bgm')||'0')==='1';
   updBtn();btn.onclick=async()=>{music=!music;localStorage.setItem('bolonka_bgm',music?'1':'0');updBtn();
     if(music){try{await bgm.play();}catch{}}else{bgm.pause();}};
   function updBtn(){btn.textContent=music?'🔈 Musik aus':'🔊 Musik an';}
+
   setTimeout(()=>start(),350);
 })();
 </script>
