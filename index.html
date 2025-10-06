@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Wartungsmodus | index.html vMAINT-2025-10-06.1 -->
+<!-- R.A.L.F. – Wartungsmodus | index.html vMAINT-2025-10-06.2 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -18,12 +18,10 @@
   <style>
     body{ background:#0a0a0a; color:#f5f5f5; }
     img{ -webkit-user-drag:none; user-select:none; }
-    @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
-    .orange-sep{ height:4px; background:#ea580c; animation:pulseLine 3.2s ease-in-out infinite; }
-    .card{
-      position:relative; border:1px solid #ea580c; border-radius:1rem; overflow:hidden;
-      background:rgba(23,23,23,0.72); box-shadow:0 0 40px rgba(234,88,12,.3) inset;
-    }
+    @keyframes pulseLine {0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)}50%{box-shadow:0 0 16px rgba(234,88,12,.35)}}
+    .orange-sep{height:4px;background:#ea580c;animation:pulseLine 3.2s ease-in-out infinite;}
+    .card{position:relative;border:1px solid #ea580c;border-radius:1rem;overflow:hidden;
+      background:rgba(23,23,23,0.72);box-shadow:0 0 40px rgba(234,88,12,.3) inset;}
   </style>
 </head>
 
@@ -48,7 +46,7 @@
         Danke für euer Verständnis.
       </p>
 
-      <div class="mt-8 flex items-center justify-center gap-3">
+      <div class="mt-8 flex items-center justify-center gap-3 flex-wrap">
         <button
           onclick="location.reload()"
           class="rounded-full bg-orange-600 hover:bg-orange-500 px-6 py-2 font-semibold">
@@ -57,6 +55,13 @@
         <a href="mailto:ralf.music68@gmail.com"
            class="rounded-full border border-orange-600 hover:bg-orange-600/10 px-6 py-2 font-semibold">
           Kontakt per E-Mail
+        </a>
+      </div>
+
+      <!-- Spendenbutton -->
+      <div class="mt-10 flex justify-center">
+        <a href="https://ko-fi.com/ralf_music" target="_blank" rel="noopener">
+          <img src="/assets/ko-fi-support.png" alt="Unterstütze mich auf Ko-fi" class="h-12">
         </a>
       </div>
     </section>
@@ -70,7 +75,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>index.html vMAINT-2025-10-06.1</span>
+      <span>index.html vMAINT-2025-10-06.2</span>
     </div>
   </footer>
 </body>
