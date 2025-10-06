@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.5 -->
+<!-- R.A.L.F. – Wartungsmodus + Mini-Runner | index.html vMAINT-2025-10-06.6 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -98,7 +98,7 @@
   <footer class="border-t border-neutral-800">
     <div class="max-w-4xl mx-auto px-4 py-8 text-xs text-neutral-500 flex justify-between">
       <span>© R.A.L.F. – Alle Rechte vorbehalten. Streaming-only. Download und Verwendung für kommerzielle Zwecke verboten.</span>
-      <span>index.html vMAINT-2025-10-06.5</span>
+      <span>index.html vMAINT-2025-10-06.6</span>
     </div>
   </footer>
 
@@ -134,11 +134,14 @@
       const sprite = new Image();
       sprite.src = '/assets/bolonka.png';
 
+      // Zeichengröße (sichtbar) & Hitbox (etwas kleiner = fairer)
+      const DRAW_W = 52, DRAW_H = 38;     // größer & besser sichtbar
+      const HIT_W  = 44, HIT_H  = 28;     // Hitbox bewusst kleiner als Sprite
+
       const dog = {
         x: 60,
-        y: GROUND_Y - 30,
-        w: 42,  // Logik-Hitbox (nicht Zeichenbreite)
-        h: 30,
+        y: GROUND_Y - HIT_H,
+        w: HIT_W, h: HIT_H,
         vy: 0,
         onGround: true
       };
@@ -173,24 +176,29 @@
         requestAnimationFrame(loop);
       }
 
-      // Hindernisse
+      // Hindernisse (kleiner gemacht)
       function spawnObstacle(){
-        const w = 18 + Math.random()*22;
-        const h = 18 + Math.random()*30;
+        const w = 12 + Math.random()*8;   // vorher ~18–40
+        const h = 14 + Math.random()*12;  // vorher ~18–48
         obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w, h, passed:false });
       }
 
       function drawDog(){
         const bounce = Math.sin(performance.now()/160) * (dog.onGround ? 1.2 : 0);
-        const drawW = 40, drawH = 30; // ~40×30 wie gewünscht (klein)
-        const dx = dog.x, dy = dog.y + bounce;
+        const dx = dog.x - (DRAW_W - dog.w)/2;         // Sprite mittig über Hitbox
+        const dy = dog.y - (DRAW_H - dog.h) + bounce;  // Sprite etwas „tiefer“ für Pfoten-Look
+
+        // weicher Schatten für bessere Erkennbarkeit
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = 10;
         if (sprite.complete && sprite.naturalWidth){
-          ctx.drawImage(sprite, dx, dy, drawW, drawH);
+          ctx.drawImage(sprite, dx, dy, DRAW_W, DRAW_H);
         } else {
-          // Fallback
           ctx.fillStyle = '#e5e7eb';
-          ctx.fillRect(dx, dy, drawW, drawH);
+          ctx.fillRect(dx, dy, DRAW_W, DRAW_H);
         }
+        ctx.restore();
       }
 
       function drawObstacle(o){
@@ -300,7 +308,7 @@
         localStorage.setItem('bolonka_bgm', wantMusic ? '1' : '0');
         updateMusicBtn();
         if (wantMusic){
-          try { await bgm.play(); } catch(e) {/* Browser blockt bis User-Geste; Button-Klick ist Geste */}
+          try { await bgm.play(); } catch(e) {}
         } else {
           try { bgm.pause(); } catch(e){}
         }
