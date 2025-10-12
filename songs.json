@@ -1089,6 +1089,56 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fading_into_you.mp3",
       "duration": 261,
       "addedAt": "2025-10-05T20:34:49.606Z"
+    },
+    {
+      "id": "letzter_brief",
+      "title": "Letzter Brief",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/1b27efdc-b353-4c15-b7a7-17253863abc4.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/letzter_brief.mp3",
+      "duration": 178,
+      "addedAt": "2025-10-12T08:51:47.353Z"
+    },
+    {
+      "id": "spiegelbild",
+      "title": "Spiegelbild",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/f5531632-4001-46ff-9906-61efd182cc5b.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/spiegelbild.mp3",
+      "duration": 182,
+      "addedAt": "2025-10-12T08:52:28.803Z"
+    },
+    {
+      "id": "time_to_believe",
+      "title": "Time To Believe",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/639bafbb-4450-4339-a53d-9fdf3ff12676.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/time_to_believe.mp3",
+      "duration": 255,
+      "addedAt": "2025-10-12T08:53:03.850Z"
+    },
+    {
+      "id": "was_von_dir_bleibt",
+      "title": "Was Von Dir Bleibt",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://cdn2.suno.ai/c2807772-17a6-4b80-99af-3541ee17dbda.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/was_von_dir_bleibt.mp3",
+      "duration": 134,
+      "addedAt": "2025-10-12T08:53:50.299Z"
+    },
+    {
+      "id": "wings_of_light",
+      "title": "Wings Of Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://cdn2.suno.ai/3797b863-6ae1-407d-b068-0312e60d65a2.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wings_of_light.mp3",
+      "duration": 273,
+      "addedAt": "2025-10-12T08:54:21.225Z"
     }
   ]
 }
