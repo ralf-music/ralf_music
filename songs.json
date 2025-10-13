@@ -821,7 +821,7 @@
       "addedAt": "2025-09-15T18:42:15.696Z"
     },
     {
-      "id": "Ne_Syte_e_Tu",
+      "id": "ne_syte_e_tu",
       "title": "Në Sytë E Tu",
       "artist": "R.A.L.F.",
       "category": "albania",
@@ -831,7 +831,7 @@
       "addedAt": "2025-09-15T21:14:51.774Z"
     },
     {
-      "id": "Rruga_te_Ti",
+      "id": "rruga_te_ti",
       "title": "Rruga Te Ti",
       "artist": "R.A.L.F.",
       "category": "albania",
@@ -841,7 +841,7 @@
       "addedAt": "2025-09-15T21:16:17.896Z"
     },
     {
-      "id": "Si_Hera_e_Pare",
+      "id": "si_hera_e_pare",
       "title": "Si Hera e Parë",
       "artist": "R.A.L.F.",
       "category": "albania",
@@ -851,7 +851,7 @@
       "addedAt": "2025-09-15T21:23:28.950Z"
     },
     {
-      "id": "Humbem_Ne",
+      "id": "humbem_ne",
       "title": "Humbëm Ne",
       "artist": "R.A.L.F.",
       "category": "albania",
@@ -1145,7 +1145,7 @@
       "title": "Neon Reign",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_reign.jpg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_reign.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_reign.mp3",
       "duration": 214,
       "addedAt": "2025-10-13T08:35:54.537Z"
@@ -1155,7 +1155,7 @@
       "title": "Voltage Realm",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/voltage_realm.jpg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/voltage_realm.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/voltage_realm.mp3",
       "duration": 228,
       "addedAt": "2025-10-13T08:37:40.809Z"
@@ -1165,7 +1165,7 @@
       "title": "Rise Of Energy",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_of_energy.jpg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_of_energy.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_of_energy.mp3",
       "duration": 253,
       "addedAt": "2025-10-13T08:38:17.136Z"
