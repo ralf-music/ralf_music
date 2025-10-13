@@ -1,11 +1,13 @@
 /* === R.A.L.F. Editor v4.5 ===
    Neu in 4.5:
-   - MP3-Importer setzt automatisch eine Cover-RAW-URL auf GitHub:
-     https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/<id>.jpg
-     (nur, wenn das Cover-Feld leer ist; MP3-URL/ID-Logik unverändert)
-   - Breitere Spalten für Cover-URL und Song-URL im Song-Editor
-   - Dropdown-Menü (▾) an Cover-/Song-URL mit: Anzeigen / Bearbeiten / Kopieren
-   - Änderungen bleiben Drafts bis „Übernehmen“ geklickt wird
+   - MP3-Importer setzt Cover-URL automatisch auf GitHub RAW (/assets/covers/<id>.jpeg).
+   - URL-Felder (Cover-URL, Song-URL) mit kompakten, lesbaren Inputs und Dropdown (▾):
+       • Anzeigen (neuer Tab)
+       • Bearbeiten (Read-only ↔ Editierbar)
+       • Kopieren (in Zwischenablage)
+       • Voller Link im Menü sichtbar
+   - Spaltenbreite für URL-Felder vergrößert, aber nicht full-width. Rest bleibt lesbar.
+   - Entwürfe bleiben lokal, bis „Übernehmen“ geklickt wird.
 */
 
 (function () {
@@ -84,6 +86,45 @@
     return isNaN(d.getTime()) ? null : d;
   }
 
+  // ---------- Styles (kompakte URL-Zellen + Dropdown) ----------
+  (function injectStyles(){
+    if (document.getElementById("ralf-editor-v45-css")) return;
+    const css = `
+    .re-urlcell{ position:relative; display:flex; align-items:center; gap:.35rem; }
+    .re-urlcell input[type="text"]{
+      width: 360px; max-width: 360px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      background:#262626; border:1px solid #3f3f3f; color:#fff; border-radius:.5rem;
+      padding:.4rem .6rem; font-size:.85rem;
+    }
+    .re-urlcell button.re-dd{
+      width: 28px; height: 28px; line-height: 1;
+      border:1px solid #3f3f3f; border-radius:.5rem; background:#262626; color:#fff;
+    }
+    .re-menu{
+      position:absolute; top:100%; right:0; z-index:1000;
+      background:#0f0f0f; border:1px solid #2a2a2a; border-radius:.6rem;
+      min-width: 420px; padding:.35rem; margin-top:.25rem; box-shadow:0 6px 24px rgba(0,0,0,.45);
+    }
+    .re-menu .re-url-full{
+      font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:.8rem; color:#e5e5e5; background:#171717; border:1px solid #2a2a2a;
+      padding:.5rem .6rem; border-radius:.4rem; overflow:auto; max-height:120px;
+      word-break: break-all;
+    }
+    .re-menu .re-actions{ display:flex; gap:.4rem; margin-top:.4rem; }
+    .re-menu .re-actions button{
+      border:1px solid #3f3f3f; background:#1f1f1f; color:#e5e5e5;
+      border-radius:.5rem; padding:.35rem .6rem; font-size:.8rem;
+    }
+    .re-badge{ display:inline-block; font-size:.65rem; padding:.05rem .35rem; border:1px solid #3f3f3f; border-radius:.5rem; color:#a3a3a3; }
+    `;
+    const el = document.createElement("style");
+    el.id = "ralf-editor-v45-css";
+    el.textContent = css;
+    document.head.appendChild(el);
+  })();
+
   // ---------- Toolbar ----------
   const panel = document.createElement("div");
   panel.className = "fixed top-4 right-4 bg-neutral-900 text-white p-4 rounded-lg shadow-xl z-50 flex flex-col gap-2 ring-1 ring-white/10";
@@ -147,7 +188,103 @@
     return wrap;
   }
 
-  // ---------- Kategorien-Editor (mit Sortierung) ----------
+  // ---------- URL-Zellen (kompakt + Dropdown) ----------
+  function makeUrlCell({ value, placeholder, onChange }) {
+    const cell = document.createElement("div");
+    cell.className = "re-urlcell";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = value || "";
+    input.placeholder = placeholder || "";
+    input.readOnly = true;
+    input.addEventListener("input", e => onChange && onChange(e.target.value));
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "re-dd";
+    btn.title = "Mehr";
+    btn.textContent = "▾";
+
+    let menuOpen = false;
+    let menu;
+
+    function closeMenu() {
+      if (menuOpen && menu) {
+        menu.remove();
+        menuOpen = false;
+        document.removeEventListener("click", onDocClick, true);
+      }
+    }
+    function onDocClick(e) {
+      if (!menu) return;
+      if (e.target === btn || e.target === input) return;
+      if (!menu.contains(e.target)) closeMenu();
+    }
+    function openMenu() {
+      if (menuOpen) { closeMenu(); return; }
+      menu = document.createElement("div");
+      menu.className = "re-menu";
+
+      const full = document.createElement("div");
+      full.className = "re-url-full";
+      full.textContent = input.value || "";
+
+      const actions = document.createElement("div");
+      actions.className = "re-actions";
+
+      const bOpen = document.createElement("button");
+      bOpen.textContent = "🔗 Anzeigen";
+      bOpen.onclick = () => { if (input.value) window.open(input.value, "_blank"); };
+
+      const bEdit = document.createElement("button");
+      const setEditLabel = () => bEdit.textContent = input.readOnly ? "✏️ Bearbeiten" : "✅ Fertig";
+      setEditLabel();
+      bEdit.onclick = () => {
+        input.readOnly = !input.readOnly;
+        setEditLabel();
+        if (!input.readOnly) input.focus();
+        // Write-through on toggle end
+        if (input.readOnly && onChange) onChange(input.value);
+        // auch Volltext aktualisieren
+        full.textContent = input.value || "";
+      };
+
+      const bCopy = document.createElement("button");
+      bCopy.textContent = "📋 Kopieren";
+      bCopy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(input.value || "");
+          bCopy.textContent = "✅ Kopiert";
+          setTimeout(() => bCopy.textContent = "📋 Kopieren", 1200);
+        } catch {
+          alert("Kopieren fehlgeschlagen.");
+        }
+      };
+
+      actions.append(bOpen, bEdit, bCopy);
+      menu.append(full, actions);
+      cell.appendChild(menu);
+      menuOpen = true;
+      setTimeout(() => document.addEventListener("click", onDocClick, true), 0);
+    }
+
+    btn.addEventListener("click", openMenu);
+    input.addEventListener("blur", () => {
+      if (onChange) onChange(input.value);
+    });
+
+    cell.append(input, btn);
+    // API
+    return {
+      el: cell,
+      set(v) { input.value = v || ""; },
+      get() { return input.value || ""; },
+      close() { closeMenu(); }
+    };
+  }
+
+  // ---------- Kategorien-Editor ----------
   function openCategoryEditor() {
     const modal = makeModal("Kategorien verwalten", true);
     const content = modal.querySelector(".content");
@@ -268,76 +405,7 @@
     if (apply) apply.onclick = () => { saveDraftCats(); rerender(); alert("Kategorien übernommen (lokal gespeichert)."); };
   }
 
-  // ---------- URL-Zelle mit Dropdown (Anzeigen / Bearbeiten / Kopieren) ----------
-  function makeUrlCell(initialValue, placeholder, onChange) {
-    const wrap = document.createElement("div");
-    wrap.className = "relative flex items-center gap-2";
-
-    const input = document.createElement("input");
-    // Breiter Eingabebereich
-    input.className = "w-[44rem] max-w-full px-2 py-1 rounded bg-neutral-800 text-xs md:text-sm";
-    input.value = initialValue || "";
-    input.placeholder = placeholder || "";
-    input.readOnly = true; // v4.5: initial gesperrt, „Bearbeiten“ schaltet frei
-
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700";
-    btn.textContent = "▾";
-    btn.title = "Aktionen";
-
-    const menu = document.createElement("div");
-    menu.className = "absolute right-0 top-full mt-1 min-w-[14rem] bg-neutral-900 border border-white/10 rounded shadow-xl hidden z-50";
-    menu.innerHTML = `
-      <button data-act="view"     class="w-full text-left px-3 py-2 hover:bg-white/5 text-sm">🔗 Anzeigen</button>
-      <button data-act="edit"     class="w-full text-left px-3 py-2 hover:bg-white/5 text-sm">✏️ Bearbeiten</button>
-      <button data-act="copy"     class="w-full text-left px-3 py-2 hover:bg-white/5 text-sm">📋 Kopieren</button>
-    `;
-
-    function toggleMenu(force) {
-      const show = typeof force === "boolean" ? force : menu.classList.contains("hidden");
-      if (show) menu.classList.remove("hidden");
-      else menu.classList.add("hidden");
-    }
-
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      toggleMenu();
-    };
-    document.addEventListener("click", () => toggleMenu(false));
-
-    menu.querySelectorAll("button").forEach(b => {
-      b.onclick = async () => {
-        const act = b.getAttribute("data-act");
-        const url = input.value.trim();
-        switch (act) {
-          case "view":
-            if (url) window.open(url, "_blank", "noopener,noreferrer");
-            break;
-          case "edit":
-            input.readOnly = false;
-            input.focus();
-            input.setSelectionRange(0, input.value.length);
-            break;
-          case "copy":
-            try {
-              await navigator.clipboard.writeText(url);
-              alert("URL kopiert.");
-            } catch {
-              alert("Kopieren nicht möglich.");
-            }
-            break;
-        }
-        toggleMenu(false);
-      };
-    });
-
-    input.oninput = () => onChange(input.value);
-    wrap.append(input, btn, menu);
-    return { root: wrap, input };
-  }
-
-  // ---------- Songs-Editor (mit Sortierung) ----------
+  // ---------- Songs-Editor ----------
   function openSongEditor() {
     const modal = makeModal("Songs verwalten", true);
     const content = modal.querySelector(".content");
@@ -359,6 +427,7 @@
       </select>
       <button id="songSortApply" class="px-3 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700">Anwenden</button>
       <div class="flex-1"></div>
+      <span class="re-badge">URL-Felder kompakt • Menü: ▾</span>
       <button id="songAdd" class="px-3 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700">+ Neuer Song</button>
     `;
     content.appendChild(topBar);
@@ -372,10 +441,10 @@
           <th class="py-2 pr-2 w-56">Titel</th>
           <th class="py-2 pr-2 w-40">Artist</th>
           <th class="py-2 pr-2 w-48">Kategorie</th>
-          <th class="py-2 pr-2 w-[28rem]">Cover-URL</th>
-          <th class="py-2 pr-2 w-[32rem]">Song-URL</th>
+          <th class="py-2 pr-2 w-[420px]">Cover-URL</th>
+          <th class="py-2 pr-2 w-[420px]">Song-URL</th>
           <th class="py-2 pr-2 w-24">Dauer</th>
-          <th class="py-2 pr-2 w-40">addedAt</th>
+          <th class="py-2 pr-2 w-44">addedAt</th>
           <th class="py-2 pl-2 w-28">Reihenfolge</th>
           <th class="py-2 pl-2 w-28">Aktion</th>
         </tr>
@@ -384,8 +453,6 @@
     `;
     const tbody = $("tbody", table);
     content.appendChild(table);
-
-    const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
 
     function buildCatSelect(currentKey, onChange) {
       const sel = document.createElement("select");
@@ -469,15 +536,23 @@
         const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2";
         rebuildCatSel(tdCat, s.category, i);
 
-        // Cover-URL (breit + Dropdown)
+        // Cover-URL (kompakt + Dropdown)
         const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2";
-        const coverCell = makeUrlCell(s.cover || "", "Cover-URL", (val) => { state.songs[i].cover = val; });
-        tdCover.appendChild(coverCell.root);
+        const coverCell = makeUrlCell({
+          value: s.cover || "",
+          placeholder: "Cover-URL",
+          onChange: (v) => { state.songs[i].cover = v; }
+        });
+        tdCover.appendChild(coverCell.el);
 
-        // Song-URL (breit + Dropdown)
+        // Song-URL (kompakt + Dropdown)
         const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2";
-        const srcCell = makeUrlCell(s.src || "", "Song-URL (RAW)", (val) => { state.songs[i].src = val; });
-        tdSrc.appendChild(srcCell.root);
+        const srcCell = makeUrlCell({
+          value: s.src || "",
+          placeholder: "Song-RAW-URL",
+          onChange: (v) => { state.songs[i].src = v; }
+        });
+        tdSrc.appendChild(srcCell.el);
 
         // Dauer
         const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2";
@@ -583,7 +658,7 @@
     };
   }
 
-  // ---------- MP3-Importer (setzt addedAt automatisch, Cover-RAW-URL v4.5) ----------
+  // ---------- MP3-Importer (inkl. Cover-URL .jpeg auf GitHub) ----------
   function openMp3Importer() {
     const modal = makeModal("MP3 importieren", true);
     const content = modal.querySelector(".content");
@@ -646,7 +721,7 @@
       const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       sel.onchange = (e) => {
         if (e.target.value === "__new__") {
-          const label = prompt("Name der neuen Kategorie:");
+          const label = prompt("Name der neuen Kategorie:"); 
           if (!label) { rebuild(); return; }
           const key = idFromTitle(label) || "neu";
           if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
@@ -659,29 +734,26 @@
 
     const fi = $("#mp3file", form);
 
-    // v4.5: Hilfsfunktion für Cover-RAW-URL
-    const coverRaw = (id) =>
-      `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/${id}.jpg`;
-
-    // === v4.4/4.5: Datei-Import -> ID/URL strikt aus bereinigtem Dateinamen ===
+    // Datei-Import -> ID/URL strikt aus bereinigtem Dateinamen
     fi.onchange = () => {
       const file = fi.files?.[0];
       if (!file) return;
 
-      const basename = stripExt(file.name);         // z.B. "Mein Song des Tages"
-      const cleanId  = idFromFilename(basename);    // -> "mein_song_des_tages"
-      const cleanFile = cleanId + ".mp3";           // -> "mein_song_des_tages.mp3"
+      const basename = stripExt(file.name);
+      const cleanId  = idFromFilename(basename);
+      const cleanFile = cleanId + ".mp3";
 
-      $("#mp3id", form).value    = cleanId;                     // ID festlegen (klein + _)
-      $("#mp3title", form).value = titleFromFilename(basename); // Lesbarer Titel
+      // ID + Titel
+      $("#mp3id", form).value    = cleanId;
+      $("#mp3title", form).value = titleFromFilename(basename);
+
+      // Song-RAW-URL (GitHub)
       $("#mp3src", form).value   =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${cleanFile}`;
 
-      // v4.5: Falls Cover-Feld leer ist, mit GitHub-RAW auf /assets/covers/<id>.jpg befüllen
-      const coverEl = $("#mp3cover", form);
-      if (!String(coverEl.value || "").trim()) {
-        coverEl.value = coverRaw(cleanId);
-      }
+      // Cover-RAW-URL (GitHub) – .jpeg (exakt)
+      $("#mp3cover", form).value =
+        `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/${cleanId}.jpeg`;
 
       // Dauer automatisch bestimmen
       const objURL = URL.createObjectURL(file);
@@ -716,7 +788,7 @@
       }
 
       const catObj = state.categories.find(c => c.key === cat);
-      const finalCover = cover || catObj?.cover || STD_COVER;
+      const finalCover = (cover || "").trim() || catObj?.cover || STD_COVER;
 
       const rest = state.songs.filter(x => x.id !== id);
       state.songs = [...rest, {
@@ -726,7 +798,7 @@
       }];
 
       saveDraftSongs(); rerender();
-      alert("Song angelegt (lokal). Lade MP3 nach /assets/songs und Cover nach /assets/covers hoch.");
+      alert("Song angelegt (lokal). MP3 nach /assets/songs und Cover (.jpeg) nach /assets/covers hochladen.");
     };
   }
 
