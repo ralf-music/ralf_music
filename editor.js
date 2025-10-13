@@ -1,13 +1,16 @@
-/* === R.A.L.F. Editor v4.8 ===
-   Änderungen ggü. 4.7:
-   - Tabellenlayout: linke Spalten mit sinnvollen Mindestbreiten, nicht mehr gequetscht.
-   - Cover-URL und Song-URL kompakt; voller Link per Dropdown-Menü (Anzeigen / Bearbeiten / Kopieren).
-   - MP3-Importer: Cover-RAW-URL automatisch mit .jpeg.
+/* === R.A.L.F. Editor v4.9 ===
+   Änderungen ggü. 4.8:
+   - Spaltenbreiten justiert: ID breiter, Artist/Kategorie schmaler.
+   - Cover-URL & Song-URL kompakt (ca. 10–15 sichtbare Zeichen), klar getrennt.
+   - addedAt: kompaktes Feld mit Dropdown (Anzeigen/Bearbeiten/↻ jetzt/Leeren).
+   - Tabellentitel "Reihenfolge" -> "Sortieren".
+   - Header/Cells nowrap, keine Überlappungen.
+   - MP3-Importer: Cover weiterhin .jpeg.
 */
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.8";
+  const EDITOR_VERSION = "4.9";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
@@ -80,66 +83,59 @@
     const d = new Date(v);
     return isNaN(d.getTime()) ? null : d;
   }
-  function copyToClipboard(text) {
-    try { navigator.clipboard.writeText(text); } catch {}
-  }
+  function copyToClipboard(text) { try { navigator.clipboard.writeText(text); } catch {} }
 
-  // ---------- kompakte URL-Felder Styles injizieren ----------
+  // ---------- Styles (kompakte Zellen, feste Minimum-Breiten) ----------
   (function injectStyles(){
     const css = `
-      .ralf-table { table-layout: fixed; width: 100%; }
-      .col-id      { min-width: 120px; width: 120px; }
-      .col-title   { min-width: 220px; width: 220px; }
-      .col-artist  { min-width: 140px; width: 140px; }
-      .col-cat     { min-width: 170px; width: 170px; }
-      .col-url     { min-width: 320px; }  /* kompakt, nicht bildschirmfüllend */
-      .col-dur     { min-width: 70px;  width: 70px;  }
-      .col-added   { min-width: 220px; width: 220px; }
-      .col-order   { min-width: 90px;  width: 90px;  }
-      .col-act     { min-width: 100px; width: 100px; }
+      .ralf-table { table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; }
+      .ralf-table thead th { white-space: nowrap; }
+      .ralf-table td { vertical-align: middle; }
 
-      .url-compact { display:flex; align-items:center; gap:6px; }
-      .url-compact input {
-        flex: 1 1 auto;
-        min-width: 0;
-        padding: .4rem .6rem;
-        border-radius: .5rem;
-        background: rgb(38 38 38);
-        border: 1px solid rgb(64 64 64);
-        color: #fff;
-        font-size: .875rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .col-id     { min-width: 160px; width: 160px; }
+      .col-title  { min-width: 240px; width: 240px; }
+      .col-artist { min-width: 110px; width: 110px; } /* "R.A.L.F." passt exakt */
+      .col-cat    { min-width: 150px; width: 150px; }
+      .col-url    { min-width: 280px; width: 280px; } /* ~10–15 sichtbare Zeichen + Menü */
+      .col-dur    { min-width: 72px;  width: 72px;  }
+      .col-added  { min-width: 190px; width: 190px; }
+      .col-order  { min-width: 90px;  width: 90px;  }
+      .col-act    { min-width: 100px; width: 100px; }
+
+      .url-compact, .added-compact { display:flex; align-items:center; gap:6px; }
+      .url-compact input, .added-compact input {
+        flex: 1 1 auto; min-width: 0;
+        padding: .4rem .6rem; border-radius: .5rem;
+        background: rgb(38 38 38); border: 1px solid rgb(64 64 64);
+        color: #fff; font-size: .875rem;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
-      .url-compact button.menu {
-        width: 32px; height: 32px;
-        border-radius: .5rem;
-        border: 1px solid rgb(64 64 64);
-        background: rgb(38 38 38);
+      .url-compact button.menu, .added-compact button.menu {
+        width: 32px; height: 32px; flex: 0 0 32px;
+        border-radius: .5rem; border: 1px solid rgb(64 64 64);
+        background: rgb(38 38 38); color:#fff;
       }
-      .url-pop {
-        position: absolute;
-        z-index: 1000;
-        right: 0;
+      .pop {
+        position: absolute; z-index: 1000; right: 0;
         margin-top: .25rem;
         background: rgb(23 23 23);
         border: 1px solid rgb(64 64 64);
         border-radius: .5rem;
-        min-width: 280px;
+        min-width: 280px; max-width: 520px;
         box-shadow: 0 10px 30px rgba(0,0,0,.35);
         padding: .25rem;
       }
-      .url-pop .row {
+      .pop .row {
         display:flex; align-items:center; gap:.5rem;
-        padding:.4rem .5rem; border-radius:.4rem; cursor:pointer;
+        padding:.45rem .55rem; border-radius:.4rem; cursor:pointer;
+        white-space: nowrap;
       }
-      .url-pop .row:hover { background: rgba(255,255,255,.05); }
-      .url-pop .url-full {
+      .pop .row:hover { background: rgba(255,255,255,.05); }
+      .pop .full {
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: .75rem; line-height: 1.2; color:#d4d4d4;
+        font-size: .75rem; line-height: 1.25; color:#d4d4d4;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        padding: .4rem .5rem;
+        padding: .4rem .55rem;
       }
     `;
     const style = document.createElement("style");
@@ -240,7 +236,7 @@
           <th class="py-2 pr-2 col-id">Key</th>
           <th class="py-2 pr-2 col-title">Label</th>
           <th class="py-2 pr-2">Cover-URL</th>
-          <th class="py-2 pl-2 col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 col-order">Sortieren</th>
           <th class="py-2 pl-2 col-act">Aktion</th>
         </tr>
       </thead>
@@ -373,7 +369,7 @@
           <th class="py-2 pr-2 col-url">Song-URL</th>
           <th class="py-2 pr-2 col-dur">Dauer</th>
           <th class="py-2 pr-2 col-added">addedAt</th>
-          <th class="py-2 pl-2 col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 col-order">Sortieren</th>
           <th class="py-2 pl-2 col-act">Aktion</th>
         </tr>
       </thead>
@@ -381,8 +377,6 @@
     `;
     const tbody = $("tbody", table);
     content.appendChild(table);
-
-    const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
 
     function buildCatSelect(currentKey, onChange) {
       const sel = document.createElement("select");
@@ -422,49 +416,72 @@
       cell.appendChild(sel);
     }
 
+    // Gemeinsamer Dropdown-Baustein (URL/addedAt)
+    function buildMenu(wrap, items) {
+      let pop = null;
+      function closePop(){ if(pop){ pop.remove(); pop=null; } }
+      function openPop() {
+        if (pop) { closePop(); return; }
+        pop = document.createElement("div");
+        pop.className = "pop";
+        pop.innerHTML = items.map(it =>
+          it.type === "sep" ? `<div class="row" style="cursor:default;opacity:.4">────────</div>`
+                            : `<div class="row" data-key="${it.key}">${it.label}</div>`
+        ).join("");
+        wrap.appendChild(pop);
+        pop.querySelectorAll(".row[data-key]").forEach(r => {
+          r.onclick = (e)=>{ const key = e.currentTarget.dataset.key; const i = items.find(x=>x.key===key); if(i&&i.onClick) i.onClick(); closePop(); };
+        });
+        document.addEventListener("click", closePop, { capture:true, once:true });
+      }
+      return { openPop };
+    }
+
     function urlCell(value, onChange) {
       const wrap = document.createElement("div");
       wrap.className = "url-compact relative";
       const inp = document.createElement("input");
       inp.value = value || "";
-      inp.readOnly = true; // standard: nicht versehentlich editieren
+      inp.readOnly = true;
       inp.oninput = e => onChange(e.target.value);
       const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "menu";
-      btn.textContent = "▾";
+      btn.type = "button"; btn.className = "menu"; btn.textContent = "▾";
 
-      let pop = null;
-      function closePop(){ if(pop){ pop.remove(); pop=null; } }
+      const menu = buildMenu(wrap, [
+        { key:"open",  label:"🔗 Anzeigen", onClick:()=>{ if (inp.value) window.open(inp.value, "_blank"); } },
+        { key:"edit",  label:"✏️ Bearbeiten / Sperren", onClick:()=>{ inp.readOnly = !inp.readOnly; if(!inp.readOnly) inp.focus(); } },
+        { key:"copy",  label:"📋 Kopieren", onClick:()=> copyToClipboard(inp.value || "") }
+      ]);
+      btn.addEventListener("click", (e)=>{ e.stopPropagation(); menu.openPop(); });
 
-      btn.addEventListener("click", (e)=>{
-        e.stopPropagation();
-        if (pop) { closePop(); return; }
-        pop = document.createElement("div");
-        pop.className = "url-pop";
-        pop.innerHTML = `
-          <div class="url-full">${inp.value || "<leer>"}</div>
-          <div class="row act-open">🔗 Anzeigen</div>
-          <div class="row act-edit">${inp.readOnly ? "✏️ Bearbeiten" : "🔒 Sperren"}</div>
-          <div class="row act-copy">📋 Kopieren</div>
-        `;
-        wrap.appendChild(pop);
+      wrap.append(inp, btn);
+      return {wrap, input: inp};
+    }
 
-        $(".act-open", pop).onclick = ()=>{ if (inp.value) window.open(inp.value, "_blank"); };
-        $(".act-edit", pop).onclick = ()=>{
-          inp.readOnly = !inp.readOnly;
-          pop.querySelector(".act-edit").textContent = inp.readOnly ? "✏️ Bearbeiten" : "🔒 Sperren";
-          if (!inp.readOnly) inp.focus();
-        };
-        $(".act-copy", pop).onclick = ()=> copyToClipboard(inp.value || "");
-      });
+    function addedAtCell(value, onChange) {
+      const wrap = document.createElement("div");
+      wrap.className = "added-compact relative";
+      const inp = document.createElement("input");
+      inp.value = value || "";
+      inp.readOnly = true;
+      inp.oninput = e => onChange(e.target.value.trim());
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "menu"; btn.textContent = "▾";
 
-      document.addEventListener("click", closePop, { capture:true });
+      const menu = buildMenu(wrap, [
+        { key:"view",  label:"👁️ Anzeigen (voll)", onClick:()=> alert(inp.value || "— leer —") },
+        { key:"edit",  label:"✏️ Bearbeiten / Sperren", onClick:()=>{ inp.readOnly = !inp.readOnly; if(!inp.readOnly) inp.focus(); } },
+        { key:"now",   label:"↻ jetzt setzen", onClick:()=>{ const v = nowISO(); inp.value = v; onChange(v); } },
+        { key:"clear", label:"🗑️ Leeren",      onClick:()=>{ inp.value = ""; onChange(""); } }
+      ]);
+      btn.addEventListener("click", (e)=>{ e.stopPropagation(); menu.openPop(); });
+
       wrap.append(inp, btn);
       return {wrap, input: inp};
     }
 
     function rebuildRows() {
+      const tbody = content.querySelector("tbody");
       tbody.innerHTML = "";
 
       if (!state.songs.length) {
@@ -525,20 +542,12 @@
         inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0;
         tdDur.appendChild(inDur);
 
-        // addedAt
+        // addedAt (kompakt + Menü)
         const tdAdded = document.createElement("td"); tdAdded.className="py-2 pr-2 col-added";
-        const wrap = document.createElement("div"); wrap.className="flex items-center gap-2";
-        const inAdded = document.createElement("input"); inAdded.className="w-full px-2 py-1 rounded bg-neutral-800";
-        inAdded.value = s.addedAt || ""; inAdded.placeholder="YYYY-MM-DDTHH:MM:SSZ";
-        inAdded.oninput = e => state.songs[i].addedAt = e.target.value.trim();
-        const btnNow = document.createElement("button");
-        btnNow.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 text-xs whitespace-nowrap";
-        btnNow.textContent = "↻ jetzt";
-        btnNow.onclick = () => { state.songs[i].addedAt = nowISO(); inAdded.value = state.songs[i].addedAt; };
-        wrap.append(inAdded, btnNow);
-        tdAdded.appendChild(wrap);
+        const addedUI = addedAtCell(s.addedAt || "", v => state.songs[i].addedAt = v);
+        tdAdded.appendChild(addedUI.wrap);
 
-        // Reihenfolge
+        // Sortieren
         const tdOrder = document.createElement("td"); tdOrder.className="py-2 pl-2 col-order";
         const up = document.createElement("button");
         up.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 mr-1";
@@ -604,7 +613,7 @@
     };
   }
 
-  // ---------- MP3-Importer (Dateiname -> ID; Cover .jpeg) ----------
+  // ---------- MP3-Importer ----------
   function openMp3Importer() {
     const modal = makeModal("MP3 importieren", true);
     const content = modal.querySelector(".content");
@@ -680,7 +689,7 @@
 
     const fi = $("#mp3file", form);
 
-    // Datei-Import -> ID/URL strikt aus bereinigtem Dateinamen; Cover .jpeg
+    // Datei-Import -> ID/URL strikt aus Dateinamen; Cover .jpeg
     fi.onchange = () => {
       const file = fi.files?.[0];
       if (!file) return;
