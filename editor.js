@@ -1,18 +1,14 @@
-/* === R.A.L.F. Editor v4.6 ===
-   Neu in 4.6:
-   - MP3-Importer setzt Cover-URL automatisch auf GitHub RAW (/assets/covers/<id>.jpeg).
-   - URL-Felder (Cover-URL, Song-URL) mit kompakten, lesbaren Inputs und Dropdown (▾):
-       • Anzeigen (neuer Tab)
-       • Bearbeiten (Read-only ↔ Editierbar)
-       • Kopieren (in Zwischenablage)
-       • Voller Link im Menü sichtbar
-   - Spaltenbreite für URL-Felder vergrößert, aber nicht full-width. Rest bleibt lesbar.
-   - Entwürfe bleiben lokal, bis „Übernehmen“ geklickt wird.
+/* === R.A.L.F. Editor v4.7 ===
+   Änderungen ggü. v4.5:
+   - Spalten-Fix: URL-Felder (Cover/Song) sind kompakt (≈280px) und überdecken keine Nachbarspalten.
+   - Dropdown-Menü bleibt erhalten (Anzeigen / Bearbeiten / Kopieren + voller Link).
+   - MP3-Importer setzt Cover-URL automatisch auf /assets/covers/<id>.jpeg (exakt .jpeg).
+   - Entwürfe bleiben lokal bis „Übernehmen“.
 */
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.6";
+  const EDITOR_VERSION = "4.7";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
@@ -88,23 +84,24 @@
 
   // ---------- Styles (kompakte URL-Zellen + Dropdown) ----------
   (function injectStyles(){
-    if (document.getElementById("ralf-editor-v45-css")) return;
+    if (document.getElementById("ralf-editor-v47-css")) return;
     const css = `
-    .re-urlcell{ position:relative; display:flex; align-items:center; gap:.35rem; }
+    .re-urlcell{ position:relative; display:flex; align-items:center; gap:.35rem; max-width:300px; }
     .re-urlcell input[type="text"]{
-      width: 360px; max-width: 360px;
+      width: 280px; max-width: 280px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       background:#262626; border:1px solid #3f3f3f; color:#fff; border-radius:.5rem;
       padding:.4rem .6rem; font-size:.85rem;
     }
     .re-urlcell button.re-dd{
+      flex:0 0 auto;
       width: 28px; height: 28px; line-height: 1;
       border:1px solid #3f3f3f; border-radius:.5rem; background:#262626; color:#fff;
     }
     .re-menu{
       position:absolute; top:100%; right:0; z-index:1000;
       background:#0f0f0f; border:1px solid #2a2a2a; border-radius:.6rem;
-      min-width: 420px; padding:.35rem; margin-top:.25rem; box-shadow:0 6px 24px rgba(0,0,0,.45);
+      min-width: 360px; padding:.35rem; margin-top:.25rem; box-shadow:0 6px 24px rgba(0,0,0,.45);
     }
     .re-menu .re-url-full{
       font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -118,9 +115,19 @@
       border-radius:.5rem; padding:.35rem .6rem; font-size:.8rem;
     }
     .re-badge{ display:inline-block; font-size:.65rem; padding:.05rem .35rem; border:1px solid #3f3f3f; border-radius:.5rem; color:#a3a3a3; }
+    /* Tabellenbreiten: URL-Spalten schlank halten, andere Spalten lesbar lassen */
+    .re-col-id{ width: 10rem; }
+    .re-col-title{ width: 14rem; }
+    .re-col-artist{ width: 10rem; }
+    .re-col-cat{ width: 12rem; }
+    .re-col-url{ width: 20rem; } /* Header-Breite, tatsächliches Input ist 280px */
+    .re-col-dur{ width: 6rem; }
+    .re-col-added{ width: 12rem; }
+    .re-col-order{ width: 7rem; }
+    .re-col-act{ width: 7rem; }
     `;
     const el = document.createElement("style");
-    el.id = "ralf-editor-v45-css";
+    el.id = "ralf-editor-v47-css";
     el.textContent = css;
     document.head.appendChild(el);
   })();
@@ -244,9 +251,7 @@
         input.readOnly = !input.readOnly;
         setEditLabel();
         if (!input.readOnly) input.focus();
-        // Write-through on toggle end
         if (input.readOnly && onChange) onChange(input.value);
-        // auch Volltext aktualisieren
         full.textContent = input.value || "";
       };
 
@@ -270,12 +275,9 @@
     }
 
     btn.addEventListener("click", openMenu);
-    input.addEventListener("blur", () => {
-      if (onChange) onChange(input.value);
-    });
+    input.addEventListener("blur", () => { if (onChange) onChange(input.value); });
 
     cell.append(input, btn);
-    // API
     return {
       el: cell,
       set(v) { input.value = v || ""; },
@@ -311,11 +313,11 @@
     table.innerHTML = `
       <thead>
         <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 w-40">Key</th>
-          <th class="py-2 pr-2 w-48">Label</th>
-          <th class="py-2 pr-2">Cover-URL</th>
-          <th class="py-2 pl-2 w-32">Reihenfolge</th>
-          <th class="py-2 pl-2 w-28">Aktion</th>
+          <th class="py-2 pr-2 re-col-id">Key</th>
+          <th class="py-2 pr-2 re-col-title">Label</th>
+          <th class="py-2 pr-2 re-col-url">Cover-URL</th>
+          <th class="py-2 pl-2 re-col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 re-col-act">Aktion</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -349,12 +351,12 @@
 
         const tdCover = document.createElement("td");
         tdCover.className = "py-2 pr-2";
-        const inCover = document.createElement("input");
-        inCover.className = "w-full px-2 py-1 rounded bg-neutral-800";
-        inCover.value = c.cover || STD_COVER;
-        inCover.placeholder = "Cover-URL";
-        inCover.oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
-        tdCover.appendChild(inCover);
+        const coverCell = makeUrlCell({
+          value: c.cover || STD_COVER,
+          placeholder: "Cover-URL",
+          onChange: (v) => { state.categories[i].cover = v || STD_COVER; }
+        });
+        tdCover.appendChild(coverCell.el);
 
         const tdOrder = document.createElement("td");
         tdOrder.className = "py-2 pl-2";
@@ -437,16 +439,16 @@
     table.innerHTML = `
       <thead>
         <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 w-40">ID</th>
-          <th class="py-2 pr-2 w-56">Titel</th>
-          <th class="py-2 pr-2 w-40">Artist</th>
-          <th class="py-2 pr-2 w-48">Kategorie</th>
-          <th class="py-2 pr-2 w-[420px]">Cover-URL</th>
-          <th class="py-2 pr-2 w-[420px]">Song-URL</th>
-          <th class="py-2 pr-2 w-24">Dauer</th>
-          <th class="py-2 pr-2 w-44">addedAt</th>
-          <th class="py-2 pl-2 w-28">Reihenfolge</th>
-          <th class="py-2 pl-2 w-28">Aktion</th>
+          <th class="py-2 pr-2 re-col-id">ID</th>
+          <th class="py-2 pr-2 re-col-title">Titel</th>
+          <th class="py-2 pr-2 re-col-artist">Artist</th>
+          <th class="py-2 pr-2 re-col-cat">Kategorie</th>
+          <th class="py-2 pr-2 re-col-url">Cover-URL</th>
+          <th class="py-2 pr-2 re-col-url">Song-URL</th>
+          <th class="py-2 pr-2 re-col-dur">Dauer</th>
+          <th class="py-2 pr-2 re-col-added">addedAt</th>
+          <th class="py-2 pl-2 re-col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 re-col-act">Aktion</th>
         </tr>
       </thead>
       <tbody></tbody>
