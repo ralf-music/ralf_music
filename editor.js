@@ -1,5 +1,5 @@
-/* === R.A.L.F. Editor v4.5 ===
-   Neu in 4.5:
+/* === R.A.L.F. Editor v4.6 ===
+   Neu in 4.6:
    - MP3-Importer setzt Cover-URL automatisch auf GitHub RAW (/assets/covers/<id>.jpeg).
    - URL-Felder (Cover-URL, Song-URL) mit kompakten, lesbaren Inputs und Dropdown (▾):
        • Anzeigen (neuer Tab)
@@ -12,7 +12,7 @@
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.5";
+  const EDITOR_VERSION = "4.6";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
