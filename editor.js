@@ -1,14 +1,13 @@
-/* === R.A.L.F. Editor v4.7 ===
-   Änderungen ggü. v4.5:
-   - Spalten-Fix: URL-Felder (Cover/Song) sind kompakt (≈280px) und überdecken keine Nachbarspalten.
-   - Dropdown-Menü bleibt erhalten (Anzeigen / Bearbeiten / Kopieren + voller Link).
-   - MP3-Importer setzt Cover-URL automatisch auf /assets/covers/<id>.jpeg (exakt .jpeg).
-   - Entwürfe bleiben lokal bis „Übernehmen“.
+/* === R.A.L.F. Editor v4.8 ===
+   Änderungen ggü. 4.7:
+   - Tabellenlayout: linke Spalten mit sinnvollen Mindestbreiten, nicht mehr gequetscht.
+   - Cover-URL und Song-URL kompakt; voller Link per Dropdown-Menü (Anzeigen / Bearbeiten / Kopieren).
+   - MP3-Importer: Cover-RAW-URL automatisch mit .jpeg.
 */
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.7";
+  const EDITOR_VERSION = "4.8";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
@@ -81,55 +80,71 @@
     const d = new Date(v);
     return isNaN(d.getTime()) ? null : d;
   }
+  function copyToClipboard(text) {
+    try { navigator.clipboard.writeText(text); } catch {}
+  }
 
-  // ---------- Styles (kompakte URL-Zellen + Dropdown) ----------
+  // ---------- kompakte URL-Felder Styles injizieren ----------
   (function injectStyles(){
-    if (document.getElementById("ralf-editor-v47-css")) return;
     const css = `
-    .re-urlcell{ position:relative; display:flex; align-items:center; gap:.35rem; max-width:300px; }
-    .re-urlcell input[type="text"]{
-      width: 280px; max-width: 280px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      background:#262626; border:1px solid #3f3f3f; color:#fff; border-radius:.5rem;
-      padding:.4rem .6rem; font-size:.85rem;
-    }
-    .re-urlcell button.re-dd{
-      flex:0 0 auto;
-      width: 28px; height: 28px; line-height: 1;
-      border:1px solid #3f3f3f; border-radius:.5rem; background:#262626; color:#fff;
-    }
-    .re-menu{
-      position:absolute; top:100%; right:0; z-index:1000;
-      background:#0f0f0f; border:1px solid #2a2a2a; border-radius:.6rem;
-      min-width: 360px; padding:.35rem; margin-top:.25rem; box-shadow:0 6px 24px rgba(0,0,0,.45);
-    }
-    .re-menu .re-url-full{
-      font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
-      font-size:.8rem; color:#e5e5e5; background:#171717; border:1px solid #2a2a2a;
-      padding:.5rem .6rem; border-radius:.4rem; overflow:auto; max-height:120px;
-      word-break: break-all;
-    }
-    .re-menu .re-actions{ display:flex; gap:.4rem; margin-top:.4rem; }
-    .re-menu .re-actions button{
-      border:1px solid #3f3f3f; background:#1f1f1f; color:#e5e5e5;
-      border-radius:.5rem; padding:.35rem .6rem; font-size:.8rem;
-    }
-    .re-badge{ display:inline-block; font-size:.65rem; padding:.05rem .35rem; border:1px solid #3f3f3f; border-radius:.5rem; color:#a3a3a3; }
-    /* Tabellenbreiten: URL-Spalten schlank halten, andere Spalten lesbar lassen */
-    .re-col-id{ width: 10rem; }
-    .re-col-title{ width: 14rem; }
-    .re-col-artist{ width: 10rem; }
-    .re-col-cat{ width: 12rem; }
-    .re-col-url{ width: 20rem; } /* Header-Breite, tatsächliches Input ist 280px */
-    .re-col-dur{ width: 6rem; }
-    .re-col-added{ width: 12rem; }
-    .re-col-order{ width: 7rem; }
-    .re-col-act{ width: 7rem; }
+      .ralf-table { table-layout: fixed; width: 100%; }
+      .col-id      { min-width: 120px; width: 120px; }
+      .col-title   { min-width: 220px; width: 220px; }
+      .col-artist  { min-width: 140px; width: 140px; }
+      .col-cat     { min-width: 170px; width: 170px; }
+      .col-url     { min-width: 320px; }  /* kompakt, nicht bildschirmfüllend */
+      .col-dur     { min-width: 70px;  width: 70px;  }
+      .col-added   { min-width: 220px; width: 220px; }
+      .col-order   { min-width: 90px;  width: 90px;  }
+      .col-act     { min-width: 100px; width: 100px; }
+
+      .url-compact { display:flex; align-items:center; gap:6px; }
+      .url-compact input {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: .4rem .6rem;
+        border-radius: .5rem;
+        background: rgb(38 38 38);
+        border: 1px solid rgb(64 64 64);
+        color: #fff;
+        font-size: .875rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .url-compact button.menu {
+        width: 32px; height: 32px;
+        border-radius: .5rem;
+        border: 1px solid rgb(64 64 64);
+        background: rgb(38 38 38);
+      }
+      .url-pop {
+        position: absolute;
+        z-index: 1000;
+        right: 0;
+        margin-top: .25rem;
+        background: rgb(23 23 23);
+        border: 1px solid rgb(64 64 64);
+        border-radius: .5rem;
+        min-width: 280px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        padding: .25rem;
+      }
+      .url-pop .row {
+        display:flex; align-items:center; gap:.5rem;
+        padding:.4rem .5rem; border-radius:.4rem; cursor:pointer;
+      }
+      .url-pop .row:hover { background: rgba(255,255,255,.05); }
+      .url-pop .url-full {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: .75rem; line-height: 1.2; color:#d4d4d4;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        padding: .4rem .5rem;
+      }
     `;
-    const el = document.createElement("style");
-    el.id = "ralf-editor-v47-css";
-    el.textContent = css;
-    document.head.appendChild(el);
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.appendChild(style);
   })();
 
   // ---------- Toolbar ----------
@@ -180,7 +195,7 @@
     const wrap = document.createElement("div");
     wrap.className = "fixed inset-0 bg-black/70 flex items-center justify-center z-50";
     wrap.innerHTML = `
-      <div class="bg-neutral-900 p-6 rounded-lg w-[96%] max-w-6xl ring-1 ring-white/10">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[96%] max-w-6xl ring-1 ring-white/10 relative">
         <div class="flex items-center justify-between gap-3">
           <h3 class="font-bold">${title}</h3>
           <div class="flex items-center gap-2">
@@ -193,97 +208,6 @@
     wrap.querySelectorAll(".close").forEach(b => b.onclick = () => wrap.remove());
     document.body.appendChild(wrap);
     return wrap;
-  }
-
-  // ---------- URL-Zellen (kompakt + Dropdown) ----------
-  function makeUrlCell({ value, placeholder, onChange }) {
-    const cell = document.createElement("div");
-    cell.className = "re-urlcell";
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = value || "";
-    input.placeholder = placeholder || "";
-    input.readOnly = true;
-    input.addEventListener("input", e => onChange && onChange(e.target.value));
-
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "re-dd";
-    btn.title = "Mehr";
-    btn.textContent = "▾";
-
-    let menuOpen = false;
-    let menu;
-
-    function closeMenu() {
-      if (menuOpen && menu) {
-        menu.remove();
-        menuOpen = false;
-        document.removeEventListener("click", onDocClick, true);
-      }
-    }
-    function onDocClick(e) {
-      if (!menu) return;
-      if (e.target === btn || e.target === input) return;
-      if (!menu.contains(e.target)) closeMenu();
-    }
-    function openMenu() {
-      if (menuOpen) { closeMenu(); return; }
-      menu = document.createElement("div");
-      menu.className = "re-menu";
-
-      const full = document.createElement("div");
-      full.className = "re-url-full";
-      full.textContent = input.value || "";
-
-      const actions = document.createElement("div");
-      actions.className = "re-actions";
-
-      const bOpen = document.createElement("button");
-      bOpen.textContent = "🔗 Anzeigen";
-      bOpen.onclick = () => { if (input.value) window.open(input.value, "_blank"); };
-
-      const bEdit = document.createElement("button");
-      const setEditLabel = () => bEdit.textContent = input.readOnly ? "✏️ Bearbeiten" : "✅ Fertig";
-      setEditLabel();
-      bEdit.onclick = () => {
-        input.readOnly = !input.readOnly;
-        setEditLabel();
-        if (!input.readOnly) input.focus();
-        if (input.readOnly && onChange) onChange(input.value);
-        full.textContent = input.value || "";
-      };
-
-      const bCopy = document.createElement("button");
-      bCopy.textContent = "📋 Kopieren";
-      bCopy.onclick = async () => {
-        try {
-          await navigator.clipboard.writeText(input.value || "");
-          bCopy.textContent = "✅ Kopiert";
-          setTimeout(() => bCopy.textContent = "📋 Kopieren", 1200);
-        } catch {
-          alert("Kopieren fehlgeschlagen.");
-        }
-      };
-
-      actions.append(bOpen, bEdit, bCopy);
-      menu.append(full, actions);
-      cell.appendChild(menu);
-      menuOpen = true;
-      setTimeout(() => document.addEventListener("click", onDocClick, true), 0);
-    }
-
-    btn.addEventListener("click", openMenu);
-    input.addEventListener("blur", () => { if (onChange) onChange(input.value); });
-
-    cell.append(input, btn);
-    return {
-      el: cell,
-      set(v) { input.value = v || ""; },
-      get() { return input.value || ""; },
-      close() { closeMenu(); }
-    };
   }
 
   // ---------- Kategorien-Editor ----------
@@ -309,15 +233,15 @@
     content.appendChild(topBar);
 
     const table = document.createElement("table");
-    table.className = "w-full text-sm";
+    table.className = "w-full text-sm ralf-table";
     table.innerHTML = `
       <thead>
         <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 re-col-id">Key</th>
-          <th class="py-2 pr-2 re-col-title">Label</th>
-          <th class="py-2 pr-2 re-col-url">Cover-URL</th>
-          <th class="py-2 pl-2 re-col-order">Reihenfolge</th>
-          <th class="py-2 pl-2 re-col-act">Aktion</th>
+          <th class="py-2 pr-2 col-id">Key</th>
+          <th class="py-2 pr-2 col-title">Label</th>
+          <th class="py-2 pr-2">Cover-URL</th>
+          <th class="py-2 pl-2 col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 col-act">Aktion</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -332,7 +256,7 @@
         tr.className = "border-t border-white/10";
 
         const tdKey = document.createElement("td");
-        tdKey.className = "py-2 pr-2";
+        tdKey.className = "py-2 pr-2 col-id";
         const inKey = document.createElement("input");
         inKey.className = "w-full px-2 py-1 rounded bg-neutral-800";
         inKey.value = c.key || "";
@@ -341,7 +265,7 @@
         tdKey.appendChild(inKey);
 
         const tdLabel = document.createElement("td");
-        tdLabel.className = "py-2 pr-2";
+        tdLabel.className = "py-2 pr-2 col-title";
         const inLabel = document.createElement("input");
         inLabel.className = "w-full px-2 py-1 rounded bg-neutral-800";
         inLabel.value = c.label || "";
@@ -351,15 +275,15 @@
 
         const tdCover = document.createElement("td");
         tdCover.className = "py-2 pr-2";
-        const coverCell = makeUrlCell({
-          value: c.cover || STD_COVER,
-          placeholder: "Cover-URL",
-          onChange: (v) => { state.categories[i].cover = v || STD_COVER; }
-        });
-        tdCover.appendChild(coverCell.el);
+        const inCover = document.createElement("input");
+        inCover.className = "w-full px-2 py-1 rounded bg-neutral-800";
+        inCover.value = c.cover || STD_COVER;
+        inCover.placeholder = "Cover-URL";
+        inCover.oninput = e => state.categories[i].cover = (e.target.value.trim() || STD_COVER);
+        tdCover.appendChild(inCover);
 
         const tdOrder = document.createElement("td");
-        tdOrder.className = "py-2 pl-2";
+        tdOrder.className = "py-2 pl-2 col-order";
         const up = document.createElement("button");
         up.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 mr-1";
         up.textContent = "↑";
@@ -371,7 +295,7 @@
         tdOrder.append(up, dn);
 
         const tdAct = document.createElement("td");
-        tdAct.className = "py-2 pl-2";
+        tdAct.className = "py-2 pl-2 col-act";
         const del = document.createElement("button");
         del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
         del.textContent = "Löschen";
@@ -429,32 +353,36 @@
       </select>
       <button id="songSortApply" class="px-3 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700">Anwenden</button>
       <div class="flex-1"></div>
-      <span class="re-badge">URL-Felder kompakt • Menü: ▾</span>
       <button id="songAdd" class="px-3 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700">+ Neuer Song</button>
+      <div class="flex items-center gap-2">
+        <span class="text-xs px-2 py-1 rounded bg-neutral-800 border border-neutral-700">URL-Felder kompakt + Menü</span>
+      </div>
     `;
     content.appendChild(topBar);
 
     const table = document.createElement("table");
-    table.className = "w-full text-sm";
+    table.className = "w-full text-sm ralf-table";
     table.innerHTML = `
       <thead>
         <tr class="text-left text-neutral-400">
-          <th class="py-2 pr-2 re-col-id">ID</th>
-          <th class="py-2 pr-2 re-col-title">Titel</th>
-          <th class="py-2 pr-2 re-col-artist">Artist</th>
-          <th class="py-2 pr-2 re-col-cat">Kategorie</th>
-          <th class="py-2 pr-2 re-col-url">Cover-URL</th>
-          <th class="py-2 pr-2 re-col-url">Song-URL</th>
-          <th class="py-2 pr-2 re-col-dur">Dauer</th>
-          <th class="py-2 pr-2 re-col-added">addedAt</th>
-          <th class="py-2 pl-2 re-col-order">Reihenfolge</th>
-          <th class="py-2 pl-2 re-col-act">Aktion</th>
+          <th class="py-2 pr-2 col-id">ID</th>
+          <th class="py-2 pr-2 col-title">Titel</th>
+          <th class="py-2 pr-2 col-artist">Artist</th>
+          <th class="py-2 pr-2 col-cat">Kategorie</th>
+          <th class="py-2 pr-2 col-url">Cover-URL</th>
+          <th class="py-2 pr-2 col-url">Song-URL</th>
+          <th class="py-2 pr-2 col-dur">Dauer</th>
+          <th class="py-2 pr-2 col-added">addedAt</th>
+          <th class="py-2 pl-2 col-order">Reihenfolge</th>
+          <th class="py-2 pl-2 col-act">Aktion</th>
         </tr>
       </thead>
       <tbody></tbody>
     `;
     const tbody = $("tbody", table);
     content.appendChild(table);
+
+    const labelByKey = new Map((state.categories || []).map(c => [c.key, c.label || c.key]));
 
     function buildCatSelect(currentKey, onChange) {
       const sel = document.createElement("select");
@@ -494,6 +422,48 @@
       cell.appendChild(sel);
     }
 
+    function urlCell(value, onChange) {
+      const wrap = document.createElement("div");
+      wrap.className = "url-compact relative";
+      const inp = document.createElement("input");
+      inp.value = value || "";
+      inp.readOnly = true; // standard: nicht versehentlich editieren
+      inp.oninput = e => onChange(e.target.value);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "menu";
+      btn.textContent = "▾";
+
+      let pop = null;
+      function closePop(){ if(pop){ pop.remove(); pop=null; } }
+
+      btn.addEventListener("click", (e)=>{
+        e.stopPropagation();
+        if (pop) { closePop(); return; }
+        pop = document.createElement("div");
+        pop.className = "url-pop";
+        pop.innerHTML = `
+          <div class="url-full">${inp.value || "<leer>"}</div>
+          <div class="row act-open">🔗 Anzeigen</div>
+          <div class="row act-edit">${inp.readOnly ? "✏️ Bearbeiten" : "🔒 Sperren"}</div>
+          <div class="row act-copy">📋 Kopieren</div>
+        `;
+        wrap.appendChild(pop);
+
+        $(".act-open", pop).onclick = ()=>{ if (inp.value) window.open(inp.value, "_blank"); };
+        $(".act-edit", pop).onclick = ()=>{
+          inp.readOnly = !inp.readOnly;
+          pop.querySelector(".act-edit").textContent = inp.readOnly ? "✏️ Bearbeiten" : "🔒 Sperren";
+          if (!inp.readOnly) inp.focus();
+        };
+        $(".act-copy", pop).onclick = ()=> copyToClipboard(inp.value || "");
+      });
+
+      document.addEventListener("click", closePop, { capture:true });
+      wrap.append(inp, btn);
+      return {wrap, input: inp};
+    }
+
     function rebuildRows() {
       tbody.innerHTML = "";
 
@@ -513,14 +483,14 @@
         tr.className = "border-t border-white/10";
 
         // ID
-        const tdId = document.createElement("td"); tdId.className="py-2 pr-2";
+        const tdId = document.createElement("td"); tdId.className="py-2 pr-2 col-id";
         const inId = document.createElement("input"); inId.className="w-full px-2 py-1 rounded bg-neutral-800";
         inId.value = s.id || ""; inId.placeholder="id";
         inId.oninput = e => state.songs[i].id = e.target.value;
         tdId.appendChild(inId);
 
         // Titel
-        const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2";
+        const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2 col-title";
         const inTitle = document.createElement("input"); inTitle.className="w-full px-2 py-1 rounded bg-neutral-800";
         inTitle.value = s.title || ""; inTitle.placeholder="Titel";
         inTitle.onblur = () => { if (!inId.value.trim()) { inId.value = idFromTitle(inTitle.value); state.songs[i].id = inId.value; } };
@@ -528,43 +498,35 @@
         tdTitle.appendChild(inTitle);
 
         // Artist
-        const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2";
+        const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2 col-artist";
         const inArtist = document.createElement("input"); inArtist.className="w-full px-2 py-1 rounded bg-neutral-800";
         inArtist.value = s.artist || DEFAULT_ARTIST; inArtist.placeholder="Artist";
         inArtist.oninput = e => state.songs[i].artist = e.target.value;
         tdArtist.appendChild(inArtist);
 
         // Kategorie
-        const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2";
+        const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2 col-cat";
         rebuildCatSel(tdCat, s.category, i);
 
-        // Cover-URL (kompakt + Dropdown)
-        const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2";
-        const coverCell = makeUrlCell({
-          value: s.cover || "",
-          placeholder: "Cover-URL",
-          onChange: (v) => { state.songs[i].cover = v; }
-        });
-        tdCover.appendChild(coverCell.el);
+        // Cover-URL
+        const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2 col-url";
+        const coverUI = urlCell(s.cover || "", v => state.songs[i].cover = v);
+        tdCover.appendChild(coverUI.wrap);
 
-        // Song-URL (kompakt + Dropdown)
-        const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2";
-        const srcCell = makeUrlCell({
-          value: s.src || "",
-          placeholder: "Song-RAW-URL",
-          onChange: (v) => { state.songs[i].src = v; }
-        });
-        tdSrc.appendChild(srcCell.el);
+        // Song-URL
+        const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2 col-url";
+        const srcUI = urlCell(s.src || "", v => state.songs[i].src = v);
+        tdSrc.appendChild(srcUI.wrap);
 
         // Dauer
-        const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2";
+        const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2 col-dur";
         const inDur = document.createElement("input"); inDur.className="w-full px-2 py-1 rounded bg-neutral-800";
         inDur.value = String(s.duration || 0); inDur.placeholder="Sek.";
         inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0;
         tdDur.appendChild(inDur);
 
         // addedAt
-        const tdAdded = document.createElement("td"); tdAdded.className="py-2 pr-2";
+        const tdAdded = document.createElement("td"); tdAdded.className="py-2 pr-2 col-added";
         const wrap = document.createElement("div"); wrap.className="flex items-center gap-2";
         const inAdded = document.createElement("input"); inAdded.className="w-full px-2 py-1 rounded bg-neutral-800";
         inAdded.value = s.addedAt || ""; inAdded.placeholder="YYYY-MM-DDTHH:MM:SSZ";
@@ -577,7 +539,7 @@
         tdAdded.appendChild(wrap);
 
         // Reihenfolge
-        const tdOrder = document.createElement("td"); tdOrder.className="py-2 pl-2";
+        const tdOrder = document.createElement("td"); tdOrder.className="py-2 pl-2 col-order";
         const up = document.createElement("button");
         up.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 mr-1";
         up.textContent = "↑";
@@ -589,7 +551,7 @@
         tdOrder.append(up, dn);
 
         // Aktion
-        const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2";
+        const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2 col-act";
         const del = document.createElement("button");
         del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
         del.textContent = "Löschen";
@@ -611,28 +573,10 @@
         case "title_za": a.sort((x,y)=>cmp((y.title||"").toLowerCase(), (x.title||"").toLowerCase())); break;
         case "artist_az": a.sort((x,y)=>cmp((x.artist||"").toLowerCase(), (y.artist||"").toLowerCase())); break;
         case "artist_za": a.sort((x,y)=>cmp((y.artist||"").toLowerCase(), (x.artist||"").toLowerCase())); break;
-        case "cat_az":   a.sort((x,y)=>cmp((lbk.get(x.category)||"").toLowerCase(), (lbk.get(y.category)||"").toLowerCase())); break;
-        case "cat_za":   a.sort((x,y)=>cmp((lbk.get(y.category)||"").toLowerCase(), (lbk.get(x.category)||"").toLowerCase())); break;
-        case "newest": {
-          a.sort((x,y)=>{
-            const dx = parseDateSafe(x.addedAt); const dy = parseDateSafe(y.addedAt);
-            if (dx && dy) return dy - dx;
-            if (dx && !dy) return -1;
-            if (!dx && dy) return 1;
-            return 0;
-          });
-          break;
-        }
-        case "oldest": {
-          a.sort((x,y)=>{
-            const dx = parseDateSafe(x.addedAt); const dy = parseDateSafe(y.addedAt);
-            if (dx && dy) return dx - dy;
-            if (dx && !dy) return -1;
-            if (!dx && dy) return 1;
-            return 0;
-          });
-          break;
-        }
+        case "cat_az":  a.sort((x,y)=>cmp((lbk.get(x.category)||"").toLowerCase(), (lbk.get(y.category)||"").toLowerCase())); break;
+        case "cat_za":  a.sort((x,y)=>cmp((lbk.get(y.category)||"").toLowerCase(), (lbk.get(x.category)||"").toLowerCase())); break;
+        case "newest":  a.sort((x,y)=>{ const dx=parseDateSafe(x.addedAt), dy=parseDateSafe(y.addedAt); if(dx&&dy) return dy-dx; if(dx&&!dy) return -1; if(!dx&&dy) return 1; return 0; }); break;
+        case "oldest":  a.sort((x,y)=>{ const dx=parseDateSafe(x.addedAt), dy=parseDateSafe(y.addedAt); if(dx&&dy) return dx-dy; if(dx&&!dy) return -1; if(!dx&&dy) return 1; return 0; }); break;
         default: break;
       }
       rebuildRows();
@@ -660,7 +604,7 @@
     };
   }
 
-  // ---------- MP3-Importer (inkl. Cover-URL .jpeg auf GitHub) ----------
+  // ---------- MP3-Importer (Dateiname -> ID; Cover .jpeg) ----------
   function openMp3Importer() {
     const modal = makeModal("MP3 importieren", true);
     const content = modal.querySelector(".content");
@@ -701,7 +645,7 @@
         <input id="mp3src" class="mt-1 w-full px-2 py-2 rounded bg-neutral-800" placeholder="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/DATEI.mp3">
       </div>
       <p class="md:col-span-2 text-xs text-neutral-400 mt-2">
-        Hinweis: Upload zur GitHub-Repo weiterhin manuell (Datei nach <code>/assets/songs</code> und Cover nach <code>/assets/covers</code>).
+        Hinweis: Upload zur GitHub-Repo weiterhin manuell (Datei nach <code>/assets/songs</code> und <code>/assets/covers</code>).
         Diese Maske legt den Song lokal an und erzeugt die passenden RAW-URLs.
       </p>
     `;
@@ -736,7 +680,7 @@
 
     const fi = $("#mp3file", form);
 
-    // Datei-Import -> ID/URL strikt aus bereinigtem Dateinamen
+    // Datei-Import -> ID/URL strikt aus bereinigtem Dateinamen; Cover .jpeg
     fi.onchange = () => {
       const file = fi.files?.[0];
       if (!file) return;
@@ -745,19 +689,13 @@
       const cleanId  = idFromFilename(basename);
       const cleanFile = cleanId + ".mp3";
 
-      // ID + Titel
       $("#mp3id", form).value    = cleanId;
       $("#mp3title", form).value = titleFromFilename(basename);
-
-      // Song-RAW-URL (GitHub)
       $("#mp3src", form).value   =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${cleanFile}`;
-
-      // Cover-RAW-URL (GitHub) – .jpeg (exakt)
       $("#mp3cover", form).value =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/${cleanId}.jpeg`;
 
-      // Dauer automatisch bestimmen
       const objURL = URL.createObjectURL(file);
       const a = new Audio(); a.src = objURL;
       a.addEventListener('loadedmetadata', () => {
@@ -790,7 +728,7 @@
       }
 
       const catObj = state.categories.find(c => c.key === cat);
-      const finalCover = (cover || "").trim() || catObj?.cover || STD_COVER;
+      const finalCover = cover || catObj?.cover || STD_COVER;
 
       const rest = state.songs.filter(x => x.id !== id);
       state.songs = [...rest, {
@@ -800,7 +738,7 @@
       }];
 
       saveDraftSongs(); rerender();
-      alert("Song angelegt (lokal). MP3 nach /assets/songs und Cover (.jpeg) nach /assets/covers hochladen.");
+      alert("Song angelegt (lokal). Lade MP3 nach /assets/songs und Cover nach /assets/covers hoch.");
     };
   }
 
