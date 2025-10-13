@@ -415,7 +415,7 @@
       "title": "Carry Me Over The Sky",
       "artist": "R.A.L.F.",
       "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_over_the_sky",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_over_the_sky.jpeg",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_over_the_sky.mp3",
       "duration": 260,
       "addedAt": "2025-09-05T08:55:46.352Z"
@@ -1169,6 +1169,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_of_energy.mp3",
       "duration": 253,
       "addedAt": "2025-10-13T08:38:17.136Z"
+    },
+    {
+      "id": "ghost_of_the_highway",
+      "title": "Ghost Of The Highway",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ghost_of_the_highway.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ghost_of_the_highway.mp3",
+      "duration": 259,
+      "addedAt": "2025-10-13T11:49:23.116Z"
     }
   ]
 }
