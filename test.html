@@ -1,219 +1,156 @@
-<!-- R.A.L.F. – PS5 Testplayer | test.html v1.0 -->
+<!-- R.A.L.F. – PS5 Audio Testseite | test.html v1.1 -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>R.A.L.F. – PS5 Testplayer</title>
-  <meta name="description" content="Minimaler Testplayer mit PS5-Kompatibilitätsmodus." />
+
+  <title>R.A.L.F. – PS5 Audio Test</title>
+  <meta name="description" content="Sehr einfache Testseite, um die Audio-Wiedergabe auf PS5 zu prüfen." />
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <meta name="theme-color" content="#0a0a0a" />
+
+  <!-- keine Framework-Abhängigkeiten nötig, aber Tailwind für Layout-Helfer -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    img, audio, video { -webkit-user-drag: none; user-select: none; }
-    @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
-    .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
+    body { background:#0a0a0a; color:#f5f5f5; }
+    .card{ border:1px solid #ea580c; border-radius:1rem; background:rgba(23,23,23,.72); }
+    .btn{ border-radius:9999px; padding:.55rem 1rem; font-weight:600 }
+    .btn-primary{ background:#ea580c } .btn-primary:hover{ background:#f97316 }
+    .btn-ghost{ border:1px solid #ea580c } .btn-ghost:hover{ background:rgba(234,88,12,.08) }
+    img{ -webkit-user-drag:none; user-select:none; }
   </style>
 </head>
-<body class="min-h-screen bg-neutral-950 text-neutral-100">
-  <!-- Banner -->
+
+<body class="min-h-screen flex flex-col">
+  <!-- Banner (wie auf der Seite, nur Anzeige – kein Einfluss auf index.html) -->
   <header class="relative w-full h-[160px] bg-black">
     <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
   </header>
-  <div class="orange-sep w-full"></div>
 
-  <main class="max-w-3xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-extrabold mb-4">PS5 Testplayer</h1>
-    <p class="text-sm text-neutral-300 mb-6">
-      Vollständige Datei. Drei Titel. Kompat-Modus aktiviert. Keine Designänderungen am Projekt.
+  <main class="flex-1 max-w-4xl mx-auto px-4 py-8 w-full">
+    <h1 class="text-3xl font-extrabold text-orange-500 text-center">PS5 Audio Test</h1>
+    <p class="text-neutral-300 text-center mt-2">
+      Drei Titel, nativer Browser-Player. <span class="text-neutral-400">Kein Autoplay, <code>preload="none"</code>, MP3-only.</span>
     </p>
 
-    <!-- Trackliste -->
-    <div id="tracks" class="space-y-3">
-      <!-- Cards werden via JS gefüllt -->
-    </div>
-
-    <!-- Player -->
-    <section class="mt-8 rounded-2xl border border-neutral-800 p-4 bg-neutral-900/60">
-      <div class="flex items-center gap-3">
-        <img id="cover" src="" alt="Cover" class="w-16 h-16 rounded-lg object-cover border border-neutral-700">
-        <div class="min-w-0 flex-1">
-          <div id="title" class="font-semibold truncate"></div>
-          <div id="artist" class="text-sm text-neutral-400 truncate">R.A.L.F.</div>
-          <div class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden">
-            <div id="progress" class="h-full bg-orange-500" style="width:0%"></div>
-          </div>
-          <div class="mt-1 text-xs text-neutral-400">
-            <span id="timeNow">—:—</span> / <span id="timeTotal">—:—</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-3 flex items-center gap-3">
-        <button id="btnPlay" class="px-4 py-2 rounded-full bg-orange-600 hover:bg-orange-500 text-white font-semibold">▶</button>
-        <button id="btnStop" class="px-4 py-2 rounded-full border border-neutral-700 hover:border-neutral-500">Stop</button>
-        <label class="ml-auto text-xs text-neutral-400 flex items-center gap-2">
-          <input id="compatToggle" type="checkbox" class="accent-orange-600">
-          Kompat-Modus erzwingen
-        </label>
-      </div>
-
-      <!-- Native Controls nur als Fallback sichtbar -->
-      <audio id="audio" preload="metadata" class="w-full mt-3 hidden" playsinline>
-        <source id="audioSource" src="" type="audio/mpeg">
+    <!-- EIN gemeinsamer Audio-Player (PS5: klare Nutzer-Geste → play()) -->
+    <section class="card p-4 mt-6">
+      <audio id="player"
+             class="w-full"
+             controls
+             preload="none"
+             playsinline
+             crossorigin="anonymous">
+        <!-- Quelle wird per Klick gesetzt -->
+        Ihr Browser unterstützt das Audio-Element nicht.
       </audio>
-
-      <p id="hint" class="mt-2 text-xs text-neutral-400 hidden">
-        Autostart blockiert. Bitte den Play-Button im eingeblendeten Player drücken.
-      </p>
+      <div id="nowPlaying" class="text-sm text-neutral-400 mt-2">— nichts ausgewählt —</div>
     </section>
+
+    <!-- Songliste -->
+    <section class="grid sm:grid-cols-3 gap-4 mt-6">
+      <!-- 1) Beyond the Silence -->
+      <article class="card p-4">
+        <img
+          src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_silence.jpeg"
+          alt="Beyond the Silence – Cover"
+          class="w-full aspect-square object-cover rounded-lg border border-neutral-700" />
+        <h2 class="mt-3 font-semibold">Beyond the Silence</h2>
+        <p class="text-xs text-neutral-400">R.A.L.F. · Trance / Techno</p>
+        <button
+          class="btn btn-primary mt-3 w-full"
+          data-src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3"
+          data-title="Beyond the Silence">
+          ▶ Abspielen
+        </button>
+      </article>
+
+      <!-- 2) Zwischen Den Zeilen -->
+      <article class="card p-4">
+        <img
+          src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_zeilen.jpeg"
+          alt="Zwischen Den Zeilen – Cover"
+          class="w-full aspect-square object-cover rounded-lg border border-neutral-700" />
+        <h2 class="mt-3 font-semibold">Zwischen Den Zeilen</h2>
+        <p class="text-xs text-neutral-400">R.A.L.F. · Deutsch Rap</p>
+        <button
+          class="btn btn-primary mt-3 w-full"
+          data-src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_den_zeilen.mp3"
+          data-title="Zwischen Den Zeilen">
+          ▶ Abspielen
+        </button>
+      </article>
+
+      <!-- 3) Ride The Madness -->
+      <article class="card p-4">
+        <img
+          src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ride_the_madness.jpeg"
+          alt="Ride The Madness – Cover"
+          class="w-full aspect-square object-cover rounded-lg border border-neutral-700" />
+        <h2 class="mt-3 font-semibold">Ride The Madness</h2>
+        <p class="text-xs text-neutral-400">R.A.L.F. · Classic Rock</p>
+        <button
+          class="btn btn-primary mt-3 w-full"
+          data-src="https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ride_the_madness.mp3"
+          data-title="Ride The Madness">
+          ▶ Abspielen
+        </button>
+      </article>
+    </section>
+
+    <!-- Extras -->
+    <div class="mt-6 flex gap-3 justify-center">
+      <button id="stopBtn" class="btn btn-ghost">⏹ Stopp</button>
+      <button id="reloadBtn" class="btn btn-ghost">⟲ Seite neu laden</button>
+    </div>
   </main>
 
   <footer class="border-t border-neutral-800">
-    <div class="max-w-3xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
-      <span>© R.A.L.F. – Streaming-only.</span>
-      <span>test.html v1.0</span>
+    <div class="max-w-4xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
+      <span>© R.A.L.F. – Alle Rechte vorbehalten.</span>
+      <span>test.html v1.1</span>
     </div>
   </footer>
 
   <script>
-    // === Daten: 3 Songs aus deinem songs.json ===
-    const SONGS = [
-      {
-        id: "beyond_the_silence",
-        title: "Beyond the Silence",
-        artist: "R.A.L.F.",
-        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3",
-        cover: "/assets/covers/beyond_the_silence.jpeg"
-      },
-      {
-        id: "ride_the_madness",
-        title: "Ride The Madness",
-        artist: "R.A.L.F.",
-        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ride_the_madness.mp3",
-        cover: "/assets/covers/ride_the_madness.jpeg"
-      },
-      {
-        id: "light_up_the_night",
-        title: "Light Up The Night",
-        artist: "R.A.L.F.",
-        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/light_up_the_night.mp3",
-        cover: "/assets/covers/light_up_the_night.jpeg"
+    // Super-simpler Controller: Quelle setzen & abspielen bei Nutzer-Geste
+    (function(){
+      const player = document.getElementById('player');
+      const now = document.getElementById('nowPlaying');
+
+      function playSrc(src, title){
+        try {
+          // Quelle nur setzen, wenn anders – reduziert Neuinitialisierung
+          if (!player.src || !player.src.endsWith(src)) {
+            player.src = src;
+          }
+          // Auf manchen Geräten hilft ein explizites load() vor play()
+          player.load();
+          player.play().then(()=>{
+            now.textContent = 'Now Playing: ' + title;
+          }).catch(()=> {
+            // Falls Play blockiert (z.B. ohne Geste) – Hinweis anzeigen
+            now.textContent = 'Tippe auf ▶ im Player, um „' + title + '“ zu starten.';
+          });
+        } catch(e){
+          now.textContent = 'Konnte nicht starten: ' + (title || '');
+        }
       }
-    ];
 
-    // === Elemente ===
-    const listEl = document.getElementById('tracks');
-    const audio  = document.getElementById('audio');
-    const source = document.getElementById('audioSource');
-    const btnPlay= document.getElementById('btnPlay');
-    const btnStop= document.getElementById('btnStop');
-    const compat = document.getElementById('compatToggle');
-    const titleEl= document.getElementById('title');
-    const artistEl=document.getElementById('artist');
-    const coverEl= document.getElementById('cover');
-    const progBar= document.getElementById('progress');
-    const tNow   = document.getElementById('timeNow');
-    const tTotal = document.getElementById('timeTotal');
-    const hint   = document.getElementById('hint');
+      document.querySelectorAll('button[data-src]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const src = btn.getAttribute('data-src');
+          const title = btn.getAttribute('data-title') || 'Unbekannt';
+          playSrc(src, title);
+        });
+      });
 
-    // Kompat-Modus per URL ?compat=1 vorbelegen
-    compat.checked = new URLSearchParams(location.search).get('compat') === '1';
-
-    // Liste rendern
-    SONGS.forEach((s, i) => {
-      const row = document.createElement('div');
-      row.className = "flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-900/50";
-      row.innerHTML = `
-        <img src="${s.cover}" alt="Cover" class="w-14 h-14 rounded-lg object-cover border border-neutral-700">
-        <div class="min-w-0 flex-1">
-          <div class="font-semibold truncate">${s.title}</div>
-          <div class="text-sm text-neutral-400 truncate">${s.artist}</div>
-          <div class="text-xs text-neutral-500 truncate">${s.src}</div>
-        </div>
-        <button class="play px-3 py-1.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold">▶ Abspielen</button>
-      `;
-      row.querySelector('.play').onclick = () => startTrack(s);
-      listEl.appendChild(row);
-      if (i === 0) setHeader(s);
-    });
-
-    function setHeader(s){
-      titleEl.textContent = s.title || '';
-      artistEl.textContent = s.artist || '';
-      coverEl.src = s.cover || '';
-    }
-
-    // Zeitformat
-    function fmt(sec){
-      if (!isFinite(sec) || sec <= 0) return '—:—';
-      const m = Math.floor(sec/60)|0, s = Math.floor(sec%60)|0;
-      return m + ':' + String(s).padStart(2,'0');
-    }
-
-    // Fortschritt
-    audio.addEventListener('timeupdate', () => {
-      const d = audio.duration || 0;
-      const c = audio.currentTime || 0;
-      if (isFinite(d) && d > 0) {
-        progBar.style.width = Math.min(100, Math.round((c/d)*100)) + '%';
-        tNow.textContent = fmt(c);
-      }
-    });
-    audio.addEventListener('loadedmetadata', () => {
-      tTotal.textContent = fmt(audio.duration);
-    });
-    audio.addEventListener('ended', () => {
-      btnPlay.textContent = '▶';
-    });
-    audio.addEventListener('play', () => { btnPlay.textContent = '⏸'; hint.classList.add('hidden'); });
-    audio.addEventListener('pause', () => { btnPlay.textContent = '▶'; });
-
-    // Play/Stop Buttons
-    btnPlay.onclick = () => {
-      if (audio.paused) safePlay(); else audio.pause();
-    };
-    btnStop.onclick = () => {
-      try { audio.pause(); } catch(_) {}
-      audio.currentTime = 0;
-    };
-
-    // Kern: Kompatibles Starten
-    async function safePlay(){
-      // Im Kompat-Modus keine restriktiven Flags
-      if (compat.checked) {
-        audio.removeAttribute('controlslist');
-        audio.classList.add('block'); // native Controls zeigen, falls Browser Play ablehnt
-      }
-      try {
-        audio.load(); // wichtig für einige Browser auf Konsolen
-        await audio.play();
-      } catch (e) {
-        // Play-Promise abgelehnt: Native Controls sichtbar machen und Hinweis zeigen
-        audio.classList.remove('hidden');
-        audio.classList.add('block');
-        hint.classList.remove('hidden');
-      }
-    }
-
-    function startTrack(s){
-      setHeader(s);
-      // Quelle neu setzen
-      source.src = s.src;
-      audio.setAttribute('playsinline', '');
-      audio.setAttribute('preload', 'metadata');
-      // Typ sicher angeben
-      source.type = 'audio/mpeg';
-      // Reset der UI
-      progBar.style.width = '0%';
-      tNow.textContent = '—:—';
-      tTotal.textContent = '—:—';
-      // Immer erst nach explizitem Klick starten
-      safePlay();
-      // Query zum Debuggen
-      const p = new URLSearchParams(location.search);
-      p.set('id', s.id);
-      history.replaceState(null,'','?'+p.toString());
-    }
+      document.getElementById('stopBtn').addEventListener('click', ()=>{
+        try { player.pause(); player.currentTime = 0; } catch(e){}
+      });
+      document.getElementById('reloadBtn').addEventListener('click', ()=> location.reload());
+    })();
   </script>
 </body>
 </html>
