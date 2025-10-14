@@ -1179,6 +1179,136 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ghost_of_the_highway.mp3",
       "duration": 259,
       "addedAt": "2025-10-13T11:49:23.116Z"
+    },
+    {
+      "id": "beyond_the_stars",
+      "title": "Beyond The Stars",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_stars.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_stars.mp3",
+      "duration": 241,
+      "addedAt": "2025-10-14T21:14:57.855Z"
+    },
+    {
+      "id": "black_rain_city",
+      "title": "Black Rain City",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/black_rain_city.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/black_rain_city.mp3",
+      "duration": 267,
+      "addedAt": "2025-10-14T21:15:36.734Z"
+    },
+    {
+      "id": "born_to_crash",
+      "title": "Born To Crash",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/born_to_crash.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/born_to_crash.mp3",
+      "duration": 233,
+      "addedAt": "2025-10-14T21:16:11.379Z"
+    },
+    {
+      "id": "break_the_shadows",
+      "title": "Break The Shadows",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_shadows.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_shadows.mp3",
+      "duration": 214,
+      "addedAt": "2025-10-14T21:16:57.331Z"
+    },
+    {
+      "id": "bulletproof_lies",
+      "title": "Bulletproof Lies",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bulletproof_lies.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bulletproof_lies.mp3",
+      "duration": 228,
+      "addedAt": "2025-10-14T21:17:18.729Z"
+    },
+    {
+      "id": "electric_horizon",
+      "title": "Electric Horizon",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/electric_horizon.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/electric_horizon.mp3",
+      "duration": 174,
+      "addedAt": "2025-10-14T21:18:09.439Z"
+    },
+    {
+      "id": "iron_pulse",
+      "title": "Iron Pulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_pulse.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_pulse.mp3",
+      "duration": 209,
+      "addedAt": "2025-10-14T21:18:56.946Z"
+    },
+    {
+      "id": "last_man_breathing",
+      "title": "Last Man Breathing",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/last_man_breathing.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/last_man_breathing.mp3",
+      "duration": 284,
+      "addedAt": "2025-10-14T21:19:35.288Z"
+    },
+    {
+      "id": "no_way_out",
+      "title": "No Way Out",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_out.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_out.mp3",
+      "duration": 184,
+      "addedAt": "2025-10-14T21:20:50.093Z"
+    },
+    {
+      "id": "nova_frequency",
+      "title": "Nova Frequency",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nova_frequency.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nova_frequency.mp3",
+      "duration": 236,
+      "addedAt": "2025-10-14T21:21:07.746Z"
+    },
+    {
+      "id": "midnight_surge",
+      "title": "Midnight Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_surge.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_surge.mp3",
+      "duration": 246,
+      "addedAt": "2025-10-14T21:21:58.694Z"
+    },
+    {
+      "id": "dead_end_saint",
+      "title": "Dead End Saint",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dead_end_saint.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dead_end_saint.mp3",
+      "duration": 272,
+      "addedAt": "2025-10-14T21:22:17.986Z"
+    },
+    {
+      "id": "neon_dominion",
+      "title": "Neon Dominion",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_dominion.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_dominion.mp3",
+      "duration": 234,
+      "addedAt": "2025-10-14T21:22:51.376Z"
     }
   ]
 }
