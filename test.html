@@ -1,0 +1,219 @@
+<!-- R.A.L.F. – PS5 Testplayer | test.html v1.0 -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R.A.L.F. – PS5 Testplayer</title>
+  <meta name="description" content="Minimaler Testplayer mit PS5-Kompatibilitätsmodus." />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    img, audio, video { -webkit-user-drag: none; user-select: none; }
+    @keyframes pulseLine { 0%,100%{box-shadow:0 0 0 rgba(234,88,12,0)} 50%{box-shadow:0 0 16px rgba(234,88,12,.35)} }
+    .orange-sep { height: 4px; background: #ea580c; animation: pulseLine 3.2s ease-in-out infinite; }
+  </style>
+</head>
+<body class="min-h-screen bg-neutral-950 text-neutral-100">
+  <!-- Banner -->
+  <header class="relative w-full h-[160px] bg-black">
+    <img src="/assets/logo-banner.png" alt="R.A.L.F. Banner" class="absolute inset-0 w-full h-full object-fill" />
+  </header>
+  <div class="orange-sep w-full"></div>
+
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-extrabold mb-4">PS5 Testplayer</h1>
+    <p class="text-sm text-neutral-300 mb-6">
+      Vollständige Datei. Drei Titel. Kompat-Modus aktiviert. Keine Designänderungen am Projekt.
+    </p>
+
+    <!-- Trackliste -->
+    <div id="tracks" class="space-y-3">
+      <!-- Cards werden via JS gefüllt -->
+    </div>
+
+    <!-- Player -->
+    <section class="mt-8 rounded-2xl border border-neutral-800 p-4 bg-neutral-900/60">
+      <div class="flex items-center gap-3">
+        <img id="cover" src="" alt="Cover" class="w-16 h-16 rounded-lg object-cover border border-neutral-700">
+        <div class="min-w-0 flex-1">
+          <div id="title" class="font-semibold truncate"></div>
+          <div id="artist" class="text-sm text-neutral-400 truncate">R.A.L.F.</div>
+          <div class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden">
+            <div id="progress" class="h-full bg-orange-500" style="width:0%"></div>
+          </div>
+          <div class="mt-1 text-xs text-neutral-400">
+            <span id="timeNow">—:—</span> / <span id="timeTotal">—:—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-center gap-3">
+        <button id="btnPlay" class="px-4 py-2 rounded-full bg-orange-600 hover:bg-orange-500 text-white font-semibold">▶</button>
+        <button id="btnStop" class="px-4 py-2 rounded-full border border-neutral-700 hover:border-neutral-500">Stop</button>
+        <label class="ml-auto text-xs text-neutral-400 flex items-center gap-2">
+          <input id="compatToggle" type="checkbox" class="accent-orange-600">
+          Kompat-Modus erzwingen
+        </label>
+      </div>
+
+      <!-- Native Controls nur als Fallback sichtbar -->
+      <audio id="audio" preload="metadata" class="w-full mt-3 hidden" playsinline>
+        <source id="audioSource" src="" type="audio/mpeg">
+      </audio>
+
+      <p id="hint" class="mt-2 text-xs text-neutral-400 hidden">
+        Autostart blockiert. Bitte den Play-Button im eingeblendeten Player drücken.
+      </p>
+    </section>
+  </main>
+
+  <footer class="border-t border-neutral-800">
+    <div class="max-w-3xl mx-auto px-4 py-6 text-xs text-neutral-500 flex justify-between">
+      <span>© R.A.L.F. – Streaming-only.</span>
+      <span>test.html v1.0</span>
+    </div>
+  </footer>
+
+  <script>
+    // === Daten: 3 Songs aus deinem songs.json ===
+    const SONGS = [
+      {
+        id: "beyond_the_silence",
+        title: "Beyond the Silence",
+        artist: "R.A.L.F.",
+        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3",
+        cover: "/assets/covers/beyond_the_silence.jpeg"
+      },
+      {
+        id: "ride_the_madness",
+        title: "Ride The Madness",
+        artist: "R.A.L.F.",
+        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ride_the_madness.mp3",
+        cover: "/assets/covers/ride_the_madness.jpeg"
+      },
+      {
+        id: "light_up_the_night",
+        title: "Light Up The Night",
+        artist: "R.A.L.F.",
+        src: "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/light_up_the_night.mp3",
+        cover: "/assets/covers/light_up_the_night.jpeg"
+      }
+    ];
+
+    // === Elemente ===
+    const listEl = document.getElementById('tracks');
+    const audio  = document.getElementById('audio');
+    const source = document.getElementById('audioSource');
+    const btnPlay= document.getElementById('btnPlay');
+    const btnStop= document.getElementById('btnStop');
+    const compat = document.getElementById('compatToggle');
+    const titleEl= document.getElementById('title');
+    const artistEl=document.getElementById('artist');
+    const coverEl= document.getElementById('cover');
+    const progBar= document.getElementById('progress');
+    const tNow   = document.getElementById('timeNow');
+    const tTotal = document.getElementById('timeTotal');
+    const hint   = document.getElementById('hint');
+
+    // Kompat-Modus per URL ?compat=1 vorbelegen
+    compat.checked = new URLSearchParams(location.search).get('compat') === '1';
+
+    // Liste rendern
+    SONGS.forEach((s, i) => {
+      const row = document.createElement('div');
+      row.className = "flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-900/50";
+      row.innerHTML = `
+        <img src="${s.cover}" alt="Cover" class="w-14 h-14 rounded-lg object-cover border border-neutral-700">
+        <div class="min-w-0 flex-1">
+          <div class="font-semibold truncate">${s.title}</div>
+          <div class="text-sm text-neutral-400 truncate">${s.artist}</div>
+          <div class="text-xs text-neutral-500 truncate">${s.src}</div>
+        </div>
+        <button class="play px-3 py-1.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold">▶ Abspielen</button>
+      `;
+      row.querySelector('.play').onclick = () => startTrack(s);
+      listEl.appendChild(row);
+      if (i === 0) setHeader(s);
+    });
+
+    function setHeader(s){
+      titleEl.textContent = s.title || '';
+      artistEl.textContent = s.artist || '';
+      coverEl.src = s.cover || '';
+    }
+
+    // Zeitformat
+    function fmt(sec){
+      if (!isFinite(sec) || sec <= 0) return '—:—';
+      const m = Math.floor(sec/60)|0, s = Math.floor(sec%60)|0;
+      return m + ':' + String(s).padStart(2,'0');
+    }
+
+    // Fortschritt
+    audio.addEventListener('timeupdate', () => {
+      const d = audio.duration || 0;
+      const c = audio.currentTime || 0;
+      if (isFinite(d) && d > 0) {
+        progBar.style.width = Math.min(100, Math.round((c/d)*100)) + '%';
+        tNow.textContent = fmt(c);
+      }
+    });
+    audio.addEventListener('loadedmetadata', () => {
+      tTotal.textContent = fmt(audio.duration);
+    });
+    audio.addEventListener('ended', () => {
+      btnPlay.textContent = '▶';
+    });
+    audio.addEventListener('play', () => { btnPlay.textContent = '⏸'; hint.classList.add('hidden'); });
+    audio.addEventListener('pause', () => { btnPlay.textContent = '▶'; });
+
+    // Play/Stop Buttons
+    btnPlay.onclick = () => {
+      if (audio.paused) safePlay(); else audio.pause();
+    };
+    btnStop.onclick = () => {
+      try { audio.pause(); } catch(_) {}
+      audio.currentTime = 0;
+    };
+
+    // Kern: Kompatibles Starten
+    async function safePlay(){
+      // Im Kompat-Modus keine restriktiven Flags
+      if (compat.checked) {
+        audio.removeAttribute('controlslist');
+        audio.classList.add('block'); // native Controls zeigen, falls Browser Play ablehnt
+      }
+      try {
+        audio.load(); // wichtig für einige Browser auf Konsolen
+        await audio.play();
+      } catch (e) {
+        // Play-Promise abgelehnt: Native Controls sichtbar machen und Hinweis zeigen
+        audio.classList.remove('hidden');
+        audio.classList.add('block');
+        hint.classList.remove('hidden');
+      }
+    }
+
+    function startTrack(s){
+      setHeader(s);
+      // Quelle neu setzen
+      source.src = s.src;
+      audio.setAttribute('playsinline', '');
+      audio.setAttribute('preload', 'metadata');
+      // Typ sicher angeben
+      source.type = 'audio/mpeg';
+      // Reset der UI
+      progBar.style.width = '0%';
+      tNow.textContent = '—:—';
+      tTotal.textContent = '—:—';
+      // Immer erst nach explizitem Klick starten
+      safePlay();
+      // Query zum Debuggen
+      const p = new URLSearchParams(location.search);
+      p.set('id', s.id);
+      history.replaceState(null,'','?'+p.toString());
+    }
+  </script>
+</body>
+</html>
