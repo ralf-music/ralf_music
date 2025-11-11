@@ -64,6 +64,11 @@
       "key": "romania",
       "label": "Romania",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "deutsch_pop",
+      "label": "Deutsch Pop",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
 }

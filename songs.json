@@ -1309,6 +1309,86 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_dominion.mp3",
       "duration": 234,
       "addedAt": "2025-10-14T21:22:51.376Z"
+    },
+    {
+      "id": "still_here",
+      "title": "Still Here",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/still_here.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/still_here.mp3",
+      "duration": 194,
+      "addedAt": "2025-11-11T18:55:01.198Z"
+    },
+    {
+      "id": "keine_spuren",
+      "title": "Keine Spuren",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_spuren.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_spuren.mp3",
+      "duration": 179,
+      "addedAt": "2025-11-11T18:55:29.925Z"
+    },
+    {
+      "id": "wenn_der_abend_leiser_wird",
+      "title": "Wenn Der Abend Leiser Wird",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wenn_der_abend_leiser_wird.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wenn_der_abend_leiser_wird.mp3",
+      "duration": 167,
+      "addedAt": "2025-11-11T19:01:40.566Z"
+    },
+    {
+      "id": "so_wie_du_mich_siehst",
+      "title": "So Wie Du Mich Siehst",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/so_wie_du_mich_siehst.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/so_wie_du_mich_siehst.mp3",
+      "duration": 169,
+      "addedAt": "2025-11-11T19:03:38.408Z"
+    },
+    {
+      "id": "zwischen_den_tagen",
+      "title": "Zwischen Den Tagen",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_tagen.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_den_tagen.mp3",
+      "duration": 140,
+      "addedAt": "2025-11-11T19:03:59.246Z"
+    },
+    {
+      "id": "carry_me_through",
+      "title": "Carry Me Through",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_through.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_through.mp3",
+      "duration": 178,
+      "addedAt": "2025-11-11T19:13:34.017Z"
+    },
+    {
+      "id": "stand_in_the_sun",
+      "title": "Stand In The Sun",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stand_in_the_sun.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stand_in_the_sun.mp3",
+      "duration": 189,
+      "addedAt": "2025-11-11T19:13:58.825Z"
+    },
+    {
+      "id": "stronger_now",
+      "title": "Stronger Now",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stronger_now.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stronger_now.mp3",
+      "duration": 180,
+      "addedAt": "2025-11-11T19:22:09.546Z"
     }
   ]
 }
