@@ -69,6 +69,11 @@
       "key": "deutsch_pop",
       "label": "Deutsch Pop",
       "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
+    },
+    {
+      "key": "heavy_metal_hard_rock",
+      "label": "Heavy Metal / Hard Rock",
+      "cover": "https://github.com/ralf-music/ralf_music/blob/main/assets/logo-kategorie.png?raw=true"
     }
   ]
 }

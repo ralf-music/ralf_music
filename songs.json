@@ -1389,6 +1389,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stronger_now.mp3",
       "duration": 180,
       "addedAt": "2025-11-11T19:22:09.546Z"
+    },
+    {
+      "id": "break_the_frame",
+      "title": "Break The Frame",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_frame.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_frame.mp3",
+      "duration": 159,
+      "addedAt": "2025-11-11T19:46:01.556Z"
+    },
+    {
+      "id": "razor_line",
+      "title": "Razor Line",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/razor_line.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/razor_line.mp3",
+      "duration": 244,
+      "addedAt": "2025-11-11T19:46:22.011Z"
+    },
+    {
+      "id": "blades_of_the_storm",
+      "title": "Blades Of The Storm",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/blades_of_the_storm.jpeg",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/blades_of_the_storm.mp3",
+      "duration": 177,
+      "addedAt": "2025-11-11T19:47:36.315Z"
     }
   ]
 }
