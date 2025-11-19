@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v4.8.13 -->
+<!-- R.A.L.F. – Music Showcase | index.html v4.9.1 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -71,7 +71,7 @@
     audio::-webkit-media-controls-enclosure{ overflow:hidden; }
 
     /* Bottom Sheet */
-    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:90; /* über Player */ 
+    .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:90;
       background:#0a0a0a; border-top:1px solid #262626;
       transform:translateY(100%); transition:transform .22s ease; max-height:65vh;
       display:flex; flex-direction:column; }
@@ -138,7 +138,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.8.13">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.9.1">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -209,13 +209,13 @@
       <div class="flex items-center gap-4">
         <a href="/donate.html" class="underline underline-offset-4 hover:text-neutral-300">☕ Unterstützen</a>
         <a href="/contact.html" class="underline underline-offset-4 hover:text-neutral-300">✉️ Kontakt</a>
-        <span>v4.8.13</span>
+        <span>v4.9.1</span>
       </div>
     </div>
   </footer>
 
   <script>
-    const VERSION='4.8.13';
+    const VERSION='4.9.1';
     const state={ songs:[], categories:[], cat:'all', query:'', active:null, queue:[], queueIndex:-1, shuffle:false, repeat:'none', userPaused:false };
 
     function loadLocalOverrides(){
@@ -277,7 +277,7 @@
       filtered.forEach(s=>{
         const card=document.createElement('div'); card.className='card group';
         card.innerHTML=`
-          <div class="aspect-[3/4] overflow-hidden relative">
+          <div class="aspect-square overflow-hidden relative">
             <img src="${s.cover}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-[1.06] transition" />
             ${newest.has(s.id)?`<span class="badge badge-new">NEU</span>`:''}
             ${state.active===s.id?`<span class="badge badge-now">Now&nbsp;Playing</span>`:''}
@@ -351,7 +351,7 @@
     (function coverFullscreen(){ const el=document.getElementById('playerCover'); const sheet=document.getElementById('coverFull'); const close=document.getElementById('coverClose'); el.addEventListener('click',()=>sheet.classList.add('open')); close.addEventListener('click',()=>sheet.classList.remove('open')); sheet.addEventListener('click',e=>{ if(e.target===sheet) sheet.classList.remove('open'); }); })();
 
     (function sheet(){ const sheet=document.getElementById('sheet'); const more=document.getElementById('moreBtn'); const closeBtn=document.getElementById('sheetClose'); const list=document.getElementById('queueList'); const repeatBtn=document.getElementById('repeatBtn'); const playerCloseBtn=document.getElementById('playerCloseBtn');
-      function renderQueue(){ list.innerHTML=''; if(!state.queue.length){ list.innerHTML='<div class="px-3 py-2 text-neutral-400 text-sm">Keine Queue.</div>'; return; } for(let i=0;i<state.queue.length;i++){ const id=state.queue[i]; const s=state.songs.find(x=>x.id===id); if(!s) continue; const row=document.createElement('div'); row.className='flex items-center gap-3 px-2 py-2 hover:bg-white/5 rounded-lg cursor-pointer'; row.innerHTML=`<img src="${s.cover}" class="w-8 h-8 rounded object-cover" alt=""><div class="flex-1 min-w-0"><div class="text-sm truncate">${s.title}</div><div class="text-xs text-neutral-400 truncate">${s.artist||''}</div></div><div class="text-xs text-neutral-500">${i+1}</div>`; row.onclick=()=>{ state.queueIndex=i; playSongById(id,{fromClick:true}); }; list.appendChild(row); } }
+      function renderQueue(){ list.innerHTML=''; if(!state.queue.length){ list.innerHTML='<div class="px-3 py-2 text-neutral-400 text-sm">Keine Titel in der Liste.</div>'; return; } for(let i=0;i<state.queue.length;i++){ const id=state.queue[i]; const s=state.songs.find(x=>x.id===id); if(!s) continue; const row=document.createElement('div'); row.className='flex items-center gap-3 px-2 py-2 hover:bg-white/5 rounded-lg cursor-pointer'; row.innerHTML=`<img src="${s.cover}" class="w-8 h-8 rounded object-cover" alt=""><div class="flex-1 min-w-0"><div class="text-sm truncate">${s.title}</div><div class="text-xs text-neutral-400 truncate">${s.artist||''}</div></div><div class="text-xs text-neutral-500">${i+1}</div>`; row.onclick=()=>{ state.queueIndex=i; playSongById(id,{fromClick:true}); }; list.appendChild(row); } }
       function openSheet(){ renderQueue(); updateRepeatBtnLabel(); sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); }
       function closeSheet(){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); }
       more.addEventListener('click',openSheet); closeBtn.addEventListener('click',closeSheet); repeatBtn.addEventListener('click',cycleRepeat); playerCloseBtn.addEventListener('click',()=>{ hardClosePlayer(); closeSheet(); });
@@ -359,7 +359,7 @@
 
     function hardClosePlayer(){ const audio=document.getElementById('audio'); try{audio.pause();}catch{} state.userPaused=true; state.active=null; state.queue=[]; state.queueIndex=-1; document.getElementById('playerDock').classList.add('hidden'); document.getElementById('coverFull').classList.remove('open'); updateCounter(); renderSongs(); const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString()); try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=null; } }catch{} }
 
-    function updateMediaSession(s){ try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=new MediaMetadata({ title:s.title||'', artist:s.artist||'', album:'R.A.L.F. – Music Showcase', artwork:[ {src:s.cover,sizes:'96x96',type:'image/jpeg'}, {src:s.cover,sizes:'128x128',type:'image/jpeg'}, {src:s.cover,sizes:'192x192',type:'image/jpeg'}, {src:s.cover,sizes:'256x256',type:'image/jpeg'}, {src:s.cover,sizes:'384x384',type:'image/jpeg'}, {src:s.cover,sizes:'512x512',type:'image/jpeg'} ] }); navigator.mediaSession.setActionHandler('previoustrack',playPrev); navigator.mediaSession.setActionHandler('nexttrack',()=>playNext(false)); navigator.mediaSession.setActionHandler('play',()=>document.getElementById('audio').play().catch(()=>{})); navigator.mediaSession.setActionHandler('pause',()=>document.getElementById('audio').pause()); } }catch(e){} }
+    function updateMediaSession(s){ try{ if('mediaSession' in navigator){ navigator.mediaSession.metadata=new MediaMetadata({ title:s.title||'', artist:s.artist||'', album:'R.A.L.F. – Music Showcase', artwork:[ {src:s.cover,sizes:'96x96',type:'image/png'}, {src:s.cover,sizes:'128x128',type:'image/png'}, {src:s.cover,sizes:'192x192',type:'image/png'}, {src:s.cover,sizes:'256x256',type:'image/png'}, {src:s.cover,sizes:'384x384',type:'image/png'}, {src:s.cover,sizes:'512x512',type:'image/png'} ] }); navigator.mediaSession.setActionHandler('previoustrack',playPrev); navigator.mediaSession.setActionHandler('nexttrack',()=>playNext(false)); navigator.mediaSession.setActionHandler('play',()=>document.getElementById('audio').play().catch(()=>{})); navigator.mediaSession.setActionHandler('pause',()=>document.getElementById('audio').pause()); } }catch(e){} }
 
     (function maybeLoadEditor(){ if(new URLSearchParams(location.search).get("edit")==="1"){ var s=document.createElement("script"); s.src="/editor.js?v=4.3"; document.body.appendChild(s); } })();
 
