@@ -5,7 +5,7 @@
       "title": "Beyond the Silence",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_silence.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_silence.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3",
       "duration": 276,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -15,7 +15,7 @@
       "title": "Zwischen Den Zeilen",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_zeilen.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_zeilen.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_den_zeilen.mp3",
       "duration": 163,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -25,7 +25,7 @@
       "title": "Edge Of Tomorrow",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_tomorrow.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_tomorrow.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_tomorrow.mp3",
       "duration": 243,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -35,7 +35,7 @@
       "title": "Augen Sagen Mehr",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/augen_sagen_mehr.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/augen_sagen_mehr.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/augen_sagen_mehr.mp3",
       "duration": 124,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -45,7 +45,7 @@
       "title": "Falsch Verstanden",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falsch_verstanden.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falsch_verstanden.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falsch_verstanden.mp3",
       "duration": 228,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -55,7 +55,7 @@
       "title": "Farben Der Liebe",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/farben_der_liebe.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/farben_der_liebe.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/farben_der_liebe.mp3",
       "duration": 149,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -65,7 +65,7 @@
       "title": "Glasherz",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glasherz.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glasherz.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/glasherz.mp3",
       "duration": 189,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -75,7 +75,7 @@
       "title": "Kein Wort Von Dir",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kein_wort_von_dir.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kein_wort_von_dir.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kein_wort_von_dir.mp3",
       "duration": 174,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -85,7 +85,7 @@
       "title": "Keine Heimat",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_heimat.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_heimat.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_heimat.mp3",
       "duration": 179,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -95,7 +95,7 @@
       "title": "Mitten In Der Nacht",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mitten_in_der_nacht.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mitten_in_der_nacht.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mitten_in_der_nacht.mp3",
       "duration": 158,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -105,7 +105,7 @@
       "title": "Ohne Limit",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ohne_limit.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ohne_limit.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ohne_limit.mp3",
       "duration": 127,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -115,7 +115,7 @@
       "title": "Straßen Bleiben Kalt",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/straßen_bleiben_kalt.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/straßen_bleiben_kalt.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/straßen_bleiben_kalt.mp3",
       "duration": 177,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -125,7 +125,7 @@
       "title": "Zwischen Uns",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_uns.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_uns.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_uns.mp3",
       "duration": 163,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -135,7 +135,7 @@
       "title": "Howard – Stoff In Tüten",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard–stoff_in_tueten.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard–stoff_in_tueten.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard–stoff_in_tueten.mp3",
       "duration": 177,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -145,7 +145,7 @@
       "title": "Howard II – Tiefer Fall",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_II–tiefer_fall.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_II–tiefer_fall.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_II–tiefer_fall.mp3",
       "duration": 190,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -155,7 +155,7 @@
       "title": "Howard III – Keine Freiheit",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_III–keine_freiheit.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_III–keine_freiheit.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_III–keine_freiheit.mp3",
       "duration": 181,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -165,7 +165,7 @@
       "title": "Howard IV – Wie Ein Schatten",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_IV–wie_ein_schatten.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_IV–wie_ein_schatten.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_IV–wie_ein_schatten.mp3",
       "duration": 149,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -175,7 +175,7 @@
       "title": "Howard V – Ruhig In Mir",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_V–ruhig_in_mir.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_V–ruhig_in_mir.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_V–ruhig_in_mir.mp3",
       "duration": 219,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -185,7 +185,7 @@
       "title": "Bass Like Fire",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bass_like_fire.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bass_like_fire.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bass_like_fire.mp3",
       "duration": 276,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -195,7 +195,7 @@
       "title": "Dancefloor Love",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dancefloor_love.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dancefloor_love.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dancefloor_love.mp3",
       "duration": 175,
       "addedAt": "2025-09-04T21:45:39.545Z"
@@ -205,7 +205,7 @@
       "title": "Feel The Light",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_light.jpeg",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_light.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feel_the_light.mp3",
       "duration": 189,
       "addedAt": "2025-09-04T21:45:39.545Z"
