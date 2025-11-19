@@ -5,7 +5,7 @@
    - addedAt: kompaktes Feld mit Dropdown (Anzeigen/Bearbeiten/↻ jetzt/Leeren).
    - Tabellentitel "Reihenfolge" -> "Sortieren".
    - Header/Cells nowrap, keine Überlappungen.
-   - MP3-Importer: Cover weiterhin .jpeg.
+   - MP3-Importer: Cover weiterhin .png.
 */
 
 (function () {
@@ -689,7 +689,7 @@
 
     const fi = $("#mp3file", form);
 
-    // Datei-Import -> ID/URL strikt aus Dateinamen; Cover .jpeg
+    // Datei-Import -> ID/URL strikt aus Dateinamen; Cover .png
     fi.onchange = () => {
       const file = fi.files?.[0];
       if (!file) return;
@@ -703,7 +703,7 @@
       $("#mp3src", form).value   =
         `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/${cleanFile}`;
       $("#mp3cover", form).value =
-        `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/${cleanId}.jpeg`;
+        `https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/${cleanId}.png`;
 
       const objURL = URL.createObjectURL(file);
       const a = new Audio(); a.src = objURL;
