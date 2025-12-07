@@ -1429,6 +1429,176 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/turn_the_lights_up.mp3",
       "duration": 222,
       "addedAt": "2025-12-07T14:15:15.881Z"
+    },
+    {
+      "id": "zwei_herzen_ein_gefuehl",
+      "title": "Zwei Herzen – Ein Gefühl",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwei_herzen_ein_gefuehl.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwei_herzen_ein_gefuehl.mp3",
+      "duration": 208,
+      "addedAt": "2025-12-07T14:27:59.786Z"
+    },
+    {
+      "id": "fly_forever",
+      "title": "Fly Forever",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fly_forever.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fly_forever.mp3",
+      "duration": 274,
+      "addedAt": "2025-12-07T14:28:27.372Z"
+    },
+    {
+      "id": "ion_drive",
+      "title": "ION Drive",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ion_drive.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ion_drive.mp3",
+      "duration": 249,
+      "addedAt": "2025-12-07T14:28:45.596Z"
+    },
+    {
+      "id": "quantum_surge",
+      "title": "Quantum Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_surge.mp3",
+      "duration": 269,
+      "addedAt": "2025-12-07T14:29:05.599Z"
+    },
+    {
+      "id": "quantum_drift",
+      "title": "Quantum Drift",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_drift.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_drift.mp3",
+      "duration": 202,
+      "addedAt": "2025-12-07T14:29:32.691Z"
+    },
+    {
+      "id": "kinetic_waves",
+      "title": "Kinetic Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kinetic_waves.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kinetic_waves.mp3",
+      "duration": 185,
+      "addedAt": "2025-12-07T14:29:43.751Z"
+    },
+    {
+      "id": "neon_velocity",
+      "title": "Neon Velocity",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_velocity.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_velocity.mp3",
+      "duration": 226,
+      "addedAt": "2025-12-07T14:30:04.391Z"
+    },
+    {
+      "id": "neon_heartline",
+      "title": "Neon Heartline",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_heartline.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_heartline.mp3",
+      "duration": 253,
+      "addedAt": "2025-12-07T14:30:19.384Z"
+    },
+    {
+      "id": "solar_impulse",
+      "title": "Solar Impulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/solar_impulse.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/solar_impulse.mp3",
+      "duration": 254,
+      "addedAt": "2025-12-07T14:30:42.902Z"
+    },
+    {
+      "id": "gravity_shift",
+      "title": "Gravity Shift",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/gravity_shift.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/gravity_shift.mp3",
+      "duration": 277,
+      "addedAt": "2025-12-07T14:30:58.475Z"
+    },
+    {
+      "id": "euphoria_rising",
+      "title": "Euphoria Rising",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/euphoria_rising.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/euphoria_rising.mp3",
+      "duration": 206,
+      "addedAt": "2025-12-07T14:34:01.453Z"
+    },
+    {
+      "id": "ethereal_sky",
+      "title": "Ethereal Sky",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ethereal_sky.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ethereal_sky.mp3",
+      "duration": 249,
+      "addedAt": "2025-12-07T14:34:18.858Z"
+    },
+    {
+      "id": "touch_the_fire",
+      "title": "Touch The Fire",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/touch_the_fire.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/touch_the_fire.mp3",
+      "duration": 299,
+      "addedAt": "2025-12-07T14:34:51.822Z"
+    },
+    {
+      "id": "rise_into_the_sun",
+      "title": "Rise Into The Sun",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_into_the_sun.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_into_the_sun.mp3",
+      "duration": 208,
+      "addedAt": "2025-12-07T14:35:15.912Z"
+    },
+    {
+      "id": "xmas_under_neon_skies",
+      "title": "X-Mas Under Neon Skies",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/xmas_under_neon_skies.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/xmas_under_neon_skies.mp3",
+      "duration": 297,
+      "addedAt": "2025-12-07T14:36:01.481Z"
+    },
+    {
+      "id": "crystal_veins",
+      "title": "Crystal Veins",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/crystal_veins.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/crystal_veins.mp3",
+      "duration": 221,
+      "addedAt": "2025-12-07T14:36:27.571Z"
+    },
+    {
+      "id": "inner_pulse",
+      "title": "Inner Pulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/inner_pulse.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inner_pulse.mp3",
+      "duration": 252,
+      "addedAt": "2025-12-07T14:36:46.093Z"
     }
   ]
 }
