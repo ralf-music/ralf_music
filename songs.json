@@ -1599,6 +1599,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inner_pulse.mp3",
       "duration": 252,
       "addedAt": "2025-12-07T14:36:46.093Z"
+    },
+    {
+      "id": "banjo_in_the_night",
+      "title": "Banjo In The Night",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/banjo_in_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/banjo_in_the_night.mp3",
+      "duration": 282,
+      "addedAt": "2025-12-18T20:24:22.776Z"
     }
   ]
 }
