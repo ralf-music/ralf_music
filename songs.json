@@ -1619,6 +1619,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fcb_feuer_von_froettmaning.mp3",
       "duration": 224,
       "addedAt": "2025-12-21T04:00:15.251Z"
+    },
+    {
+      "id": "nicht_mein_fest",
+      "title": "Nicht Mein Fest",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nicht_mein_fest.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nicht_mein_fest.mp3",
+      "duration": 261,
+      "addedAt": "2025-12-22T16:16:28.065Z"
     }
   ]
 }
