@@ -1629,6 +1629,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nicht_mein_fest.mp3",
       "duration": 261,
       "addedAt": "2025-12-22T16:16:28.065Z"
+    },
+    {
+      "id": "waechter_der_nacht",
+      "title": "Wächter Der Nacht",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/waechter_der_nacht.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/waechter_der_nacht.mp3",
+      "duration": 162,
+      "addedAt": "2026-02-13T23:48:23.478Z"
+    },
+    {
+      "id": "temporal_sequence",
+      "title": "Temporal Sequence",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/temporal_sequence.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/temporal_sequence.mp3",
+      "duration": 197,
+      "addedAt": "2026-02-13T23:49:14.923Z"
+    },
+    {
+      "id": "hammerfall_within",
+      "title": "Hammerfall Within",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hammerfall_within.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hammerfall_within.mp3",
+      "duration": 199,
+      "addedAt": "2026-02-13T23:49:31.034Z"
     }
   ]
 }
