@@ -1669,6 +1669,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_radiance.mp3",
       "duration": 306,
       "addedAt": "2026-02-14T19:21:59.595Z"
+    },
+    {
+      "id": "riot_engine",
+      "title": "Riot Engine",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/riot_engine.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/riot_engine.mp3",
+      "duration": 215,
+      "addedAt": "2026-02-14T19:42:12.239Z"
     }
   ]
 }
