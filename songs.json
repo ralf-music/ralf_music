@@ -1659,6 +1659,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hammerfall_within.mp3",
       "duration": 199,
       "addedAt": "2026-02-13T23:49:31.034Z"
+    },
+    {
+      "id": "midnight_radiance",
+      "title": "Midnight Radiance",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_radiance.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_radiance.mp3",
+      "duration": 306,
+      "addedAt": "2026-02-14T19:21:59.595Z"
     }
   ]
 }
