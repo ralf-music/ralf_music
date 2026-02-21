@@ -1678,7 +1678,27 @@
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/riot_engine.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/riot_engine.mp3",
       "duration": 215,
-      "addedAt": "2026-02-14T19:42:12.239Z"
+      "addedAt": "2026-02-21T23:00:25.985Z"
+    },
+    {
+      "id": "iron_reign",
+      "title": "Iron Reign",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_reign.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_reign.mp3",
+      "duration": 189,
+      "addedAt": "2026-02-21T23:01:28.862Z"
+    },
+    {
+      "id": "nur_routine",
+      "title": "Nur Routine",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nur_routine.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nur_routine.mp3",
+      "duration": 157,
+      "addedAt": "2026-02-21T23:28:31.636Z"
     }
   ]
 }
