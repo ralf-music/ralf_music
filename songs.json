@@ -1709,6 +1709,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_spuren.mp3",
       "duration": 193,
       "addedAt": "2026-02-22T14:55:55.788Z"
+    },
+    {
+      "id": "higher_than_the_stars",
+      "title": "Higher Than The Stars",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/higher_than_the_stars.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/higher_than_the_stars.mp3",
+      "duration": 292,
+      "addedAt": "2026-02-22T18:08:31.970Z"
     }
   ]
 }
