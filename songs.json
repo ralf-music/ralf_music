@@ -1719,6 +1719,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/higher_than_the_stars.mp3",
       "duration": 292,
       "addedAt": "2026-02-22T18:08:31.970Z"
+    },
+    {
+      "id": "mind_horizon",
+      "title": "Mind Horizon",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mind_horizon.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mind_horizon.mp3",
+      "duration": 210,
+      "addedAt": "2026-02-23T01:19:45.894Z"
+    },
+    {
+      "id": "echoes_in_time",
+      "title": "Echoes In Time",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_in_time.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_in_time.mp3",
+      "duration": 174,
+      "addedAt": "2026-02-23T01:19:55.700Z"
+    },
+    {
+      "id": "steelheart_rising",
+      "title": "Steelheart Rising",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/steelheart_rising.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/steelheart_rising.mp3",
+      "duration": 209,
+      "addedAt": "2026-02-23T01:20:05.790Z"
     }
   ]
 }
