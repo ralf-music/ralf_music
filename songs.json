@@ -1749,6 +1749,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/steelheart_rising.mp3",
       "duration": 209,
       "addedAt": "2026-02-23T01:20:05.790Z"
+    },
+    {
+      "id": "eternal_dawn",
+      "title": "Eternal Dawn",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_dawn.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_dawn.mp3",
+      "duration": 188,
+      "addedAt": "2026-03-01T11:46:48.090Z"
     }
   ]
 }
