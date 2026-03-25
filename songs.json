@@ -1759,6 +1759,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_dawn.mp3",
       "duration": 188,
       "addedAt": "2026-03-01T11:46:48.090Z"
+    },
+    {
+      "id": "eternal_flame",
+      "title": "Eternal Flame",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_flame.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_flame.mp3",
+      "duration": 242,
+      "addedAt": "2026-03-25T12:18:42.792Z"
     }
   ]
 }
