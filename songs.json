@@ -1899,6 +1899,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ignite_the_night.mp3",
       "duration": 204,
       "addedAt": "2026-03-31T18:08:27.984Z"
+    },
+    {
+      "id": "grau_in_mir",
+      "title": "Grau In Mir",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/grau_in_mir.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/grau_in_mir.mp3",
+      "duration": 178,
+      "addedAt": "2026-03-31T18:18:42.540Z"
+    },
+    {
+      "id": "burning_silence",
+      "title": "Burning Silence",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/burning_silence.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/burning_silence.mp3",
+      "duration": 149,
+      "addedAt": "2026-03-31T18:19:08.718Z"
     }
   ]
 }
