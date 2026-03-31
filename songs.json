@@ -1949,6 +1949,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/static_blood.mp3",
       "duration": 207,
       "addedAt": "2026-03-31T18:47:40.034Z"
+    },
+    {
+      "id": "ein_moment_fuer_immer",
+      "title": "Ein Moment Für Immer",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ein_moment_fuer_immer.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ein_moment_fuer_immer.mp3",
+      "duration": 179,
+      "addedAt": "2026-03-31T22:16:08.664Z"
     }
   ]
 }
