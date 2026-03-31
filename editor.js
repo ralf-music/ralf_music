@@ -1,16 +1,14 @@
-/* === R.A.L.F. Editor v4.9 ===
-   Änderungen ggü. 4.8:
-   - Spaltenbreiten justiert: ID breiter, Artist/Kategorie schmaler.
-   - Cover-URL & Song-URL kompakt (ca. 10–15 sichtbare Zeichen), klar getrennt.
-   - addedAt: kompaktes Feld mit Dropdown (Anzeigen/Bearbeiten/↻ jetzt/Leeren).
-   - Tabellentitel "Reihenfolge" -> "Sortieren".
-   - Header/Cells nowrap, keine Überlappungen.
-   - MP3-Importer: Cover weiterhin .png.
+/* === R.A.L.F. Editor v5.0 ===
+   Änderungen ggü. 4.9:
+   - Editor-Modal deutlich breiter und etwas höher:
+     98vw, max. 1800px, größere nutzbare Höhe.
+   - Mehr Platz für "Songs verwalten", "Kategorien verwalten" und "MP3 importieren".
+   - Sonstige Logik unverändert.
 */
 
 (function () {
   // ---------- Version ----------
-  const EDITOR_VERSION = "4.9";
+  const EDITOR_VERSION = "5.0";
 
   // ---------- State absichern ----------
   if (!window.state || typeof window.state !== "object") window.state = {};
@@ -94,9 +92,9 @@
 
       .col-id     { min-width: 160px; width: 160px; }
       .col-title  { min-width: 240px; width: 240px; }
-      .col-artist { min-width: 110px; width: 110px; } /* "R.A.L.F." passt exakt */
+      .col-artist { min-width: 110px; width: 110px; }
       .col-cat    { min-width: 150px; width: 150px; }
-      .col-url    { min-width: 280px; width: 280px; } /* ~10–15 sichtbare Zeichen + Menü */
+      .col-url    { min-width: 280px; width: 280px; }
       .col-dur    { min-width: 72px;  width: 72px;  }
       .col-added  { min-width: 190px; width: 190px; }
       .col-order  { min-width: 90px;  width: 90px;  }
@@ -191,7 +189,7 @@
     const wrap = document.createElement("div");
     wrap.className = "fixed inset-0 bg-black/70 flex items-center justify-center z-50";
     wrap.innerHTML = `
-      <div class="bg-neutral-900 p-6 rounded-lg w-[96%] max-w-6xl ring-1 ring-white/10 relative">
+      <div class="bg-neutral-900 p-6 rounded-lg w-[98vw] max-w-[1800px] ring-1 ring-white/10 relative">
         <div class="flex items-center justify-between gap-3">
           <h3 class="font-bold">${title}</h3>
           <div class="flex items-center gap-2">
@@ -199,7 +197,7 @@
             <button class="close bg-neutral-700 hover:bg-neutral-600 px-3 py-1.5 rounded">Schließen</button>
           </div>
         </div>
-        <div class="content mt-4 max-h-[70vh] overflow-auto pr-1"></div>
+        <div class="content mt-4 max-h-[82vh] overflow-auto pr-1"></div>
       </div>`;
     wrap.querySelectorAll(".close").forEach(b => b.onclick = () => wrap.remove());
     document.body.appendChild(wrap);
@@ -416,7 +414,6 @@
       cell.appendChild(sel);
     }
 
-    // Gemeinsamer Dropdown-Baustein (URL/addedAt)
     function buildMenu(wrap, items) {
       let pop = null;
       function closePop(){ if(pop){ pop.remove(); pop=null; } }
@@ -499,14 +496,12 @@
         const tr = document.createElement("tr");
         tr.className = "border-t border-white/10";
 
-        // ID
         const tdId = document.createElement("td"); tdId.className="py-2 pr-2 col-id";
         const inId = document.createElement("input"); inId.className="w-full px-2 py-1 rounded bg-neutral-800";
         inId.value = s.id || ""; inId.placeholder="id";
         inId.oninput = e => state.songs[i].id = e.target.value;
         tdId.appendChild(inId);
 
-        // Titel
         const tdTitle = document.createElement("td"); tdTitle.className="py-2 pr-2 col-title";
         const inTitle = document.createElement("input"); inTitle.className="w-full px-2 py-1 rounded bg-neutral-800";
         inTitle.value = s.title || ""; inTitle.placeholder="Titel";
@@ -514,40 +509,33 @@
         inTitle.oninput = e => state.songs[i].title = e.target.value;
         tdTitle.appendChild(inTitle);
 
-        // Artist
         const tdArtist = document.createElement("td"); tdArtist.className="py-2 pr-2 col-artist";
         const inArtist = document.createElement("input"); inArtist.className="w-full px-2 py-1 rounded bg-neutral-800";
         inArtist.value = s.artist || DEFAULT_ARTIST; inArtist.placeholder="Artist";
         inArtist.oninput = e => state.songs[i].artist = e.target.value;
         tdArtist.appendChild(inArtist);
 
-        // Kategorie
         const tdCat = document.createElement("td"); tdCat.className="py-2 pr-2 col-cat";
         rebuildCatSel(tdCat, s.category, i);
 
-        // Cover-URL
         const tdCover = document.createElement("td"); tdCover.className="py-2 pr-2 col-url";
         const coverUI = urlCell(s.cover || "", v => state.songs[i].cover = v);
         tdCover.appendChild(coverUI.wrap);
 
-        // Song-URL
         const tdSrc = document.createElement("td"); tdSrc.className="py-2 pr-2 col-url";
         const srcUI = urlCell(s.src || "", v => state.songs[i].src = v);
         tdSrc.appendChild(srcUI.wrap);
 
-        // Dauer
         const tdDur = document.createElement("td"); tdDur.className="py-2 pr-2 col-dur";
         const inDur = document.createElement("input"); inDur.className="w-full px-2 py-1 rounded bg-neutral-800";
         inDur.value = String(s.duration || 0); inDur.placeholder="Sek.";
         inDur.oninput = e => state.songs[i].duration = parseInt(e.target.value) || 0;
         tdDur.appendChild(inDur);
 
-        // addedAt (kompakt + Menü)
         const tdAdded = document.createElement("td"); tdAdded.className="py-2 pr-2 col-added";
         const addedUI = addedAtCell(s.addedAt || "", v => state.songs[i].addedAt = v);
         tdAdded.appendChild(addedUI.wrap);
 
-        // Sortieren
         const tdOrder = document.createElement("td"); tdOrder.className="py-2 pl-2 col-order";
         const up = document.createElement("button");
         up.className = "px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-700 mr-1";
@@ -559,7 +547,6 @@
         dn.onclick = () => { moveItem(state.songs, i, Math.min(state.songs.length - 1, i + 1)); rebuildRows(); };
         tdOrder.append(up, dn);
 
-        // Aktion
         const tdAct = document.createElement("td"); tdAct.className="py-2 pl-2 col-act";
         const del = document.createElement("button");
         del.className = "bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-sm";
@@ -676,7 +663,7 @@
       const plus = document.createElement("option"); plus.value = "__new__"; plus.textContent = "+ Neue Kategorie…"; sel.appendChild(plus);
       sel.onchange = (e) => {
         if (e.target.value === "__new__") {
-          const label = prompt("Name der neuen Kategorie:"); 
+          const label = prompt("Name der neuen Kategorie:");
           if (!label) { rebuild(); return; }
           const key = idFromTitle(label) || "neu";
           if (!state.categories.some(c => c.key === key)) { state.categories.push({ key, label, cover: STD_COVER }); saveDraftCats(); rerender(); }
@@ -689,7 +676,6 @@
 
     const fi = $("#mp3file", form);
 
-    // Datei-Import -> ID/URL strikt aus Dateinamen; Cover .png
     fi.onchange = () => {
       const file = fi.files?.[0];
       if (!file) return;
