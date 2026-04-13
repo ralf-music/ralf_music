@@ -1959,6 +1959,56 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ein_moment_fuer_immer.mp3",
       "duration": 179,
       "addedAt": "2026-03-31T22:16:08.664Z"
+    },
+    {
+      "id": "pulse_of_africa",
+      "title": "Pulse Of Africa",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pulse_of_africa.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/pulse_of_africa.mp3",
+      "duration": 260,
+      "addedAt": "2026-04-13T17:25:00.400Z"
+    },
+    {
+      "id": "pa_ty",
+      "title": "Pa Ty",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pa_ty.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/pa_ty.mp3",
+      "duration": 157,
+      "addedAt": "2026-04-13T17:26:20.725Z"
+    },
+    {
+      "id": "no_retreat",
+      "title": "No Retreat",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_retreat.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_retreat.mp3",
+      "duration": 287,
+      "addedAt": "2026-04-13T17:26:43.842Z"
+    },
+    {
+      "id": "forward_pressure",
+      "title": "Forward Pressure",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/forward_pressure.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/forward_pressure.mp3",
+      "duration": 254,
+      "addedAt": "2026-04-13T17:26:57.238Z"
+    },
+    {
+      "id": "darkline_momentum",
+      "title": "Darkline Momentum",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/darkline_momentum.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/darkline_momentum.mp3",
+      "duration": 291,
+      "addedAt": "2026-04-13T17:27:37.027Z"
     }
   ]
 }
