@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v4.9.5 -->
+<!-- R.A.L.F. – Music Showcase | index.html v4.9.6 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -131,6 +131,14 @@
   <!-- Kategorien -->
   <div id="catBar" class="max-w-7xl mx-auto px-4 mt-6 flex flex-wrap gap-2"></div>
 
+  <!-- Hinweis -->
+  <div class="max-w-7xl mx-auto px-4 mt-3">
+    <p class="text-xs text-neutral-500 leading-relaxed">
+      Falls ein Song nicht sofort startet oder hängt, liegt es am Server. Bitte einfach erneut versuchen.<br>
+      Ein späterer Serverumzug ist geplant.
+    </p>
+  </div>
+
   <!-- Songs -->
   <main class="max-w-6xl mx-auto px-4 pb-28 mt-10">
     <div id="songsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
@@ -138,7 +146,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.9.5">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="4.9.6">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -152,6 +160,11 @@
           </div>
           <div id="playerBar" class="mt-2 h-1.5 bg-neutral-700 rounded-full overflow-hidden cursor-pointer">
             <div id="playerProgress" class="h-full bg-orange-500" style="width:0%"></div>
+          </div>
+          <div class="mt-1 flex items-center justify-between text-xs text-neutral-400">
+            <span id="currentTime">0:00</span>
+            <span id="loadingState" class="text-neutral-500"></span>
+            <span id="totalTime">0:00</span>
           </div>
         </div>
         <div class="hidden md:block">
@@ -209,13 +222,13 @@
       <div class="flex items-center gap-4">
         <a href="/donate.html" class="underline underline-offset-4 hover:text-neutral-300">☕ Unterstützen</a>
         <a href="/contact.html" class="underline underline-offset-4 hover:text-neutral-300">✉️ Kontakt</a>
-        <span>v4.9.5</span>
+        <span>v4.9.6</span>
       </div>
     </div>
   </footer>
 
   <script>
-    const VERSION='4.9.5';
+    const VERSION='4.9.6';
     const NEW_LIMIT = 20;
 
     const state={
@@ -233,6 +246,55 @@
 
     let stallWatchdog = null;
     let recoverLock = false;
+    let playRetryTimer = null;
+    let playRetryCount = 0;
+    let activeSongMeta = null;
+
+    function formatTime(sec){
+      if(!isFinite(sec) || sec < 0) return '0:00';
+      const mins = Math.floor(sec / 60);
+      const secs = Math.floor(sec % 60).toString().padStart(2,'0');
+      return mins + ':' + secs;
+    }
+
+    function setLoadingState(text=''){
+      const el = document.getElementById('loadingState');
+      if(el) el.textContent = text;
+    }
+
+    function updateTimeDisplay(audio){
+      const currentEl = document.getElementById('currentTime');
+      const totalEl = document.getElementById('totalTime');
+
+      if(currentEl){
+        currentEl.textContent = formatTime(audio?.currentTime || 0);
+      }
+
+      const total = activeSongMeta?.duration || audio?.duration || 0;
+      if(totalEl){
+        totalEl.textContent = formatTime(total);
+      }
+    }
+
+    function clearPlayRetry(){
+      if(playRetryTimer){
+        clearTimeout(playRetryTimer);
+        playRetryTimer = null;
+      }
+      playRetryCount = 0;
+    }
+
+    function schedulePlayRetry(audio){
+      if(state.userPaused) return;
+      if(playRetryCount >= 2) return;
+
+      clearTimeout(playRetryTimer);
+      playRetryTimer = setTimeout(()=>{
+        playRetryCount++;
+        setLoadingState('Lädt…');
+        audio.play().catch(()=>{});
+      }, 1200);
+    }
 
     function loadLocalOverrides(){
       const s=localStorage.getItem('ralf_songs_json');
@@ -562,6 +624,7 @@
           }
         }catch{}
         state.userPaused = false;
+        setLoadingState('');
         audio.play().catch(()=>{}).finally(()=>{ recoverLock=false; });
       };
 
@@ -582,16 +645,35 @@
 
       audio.onwaiting = () => {
         if(!audio.paused && !state.userPaused && !audio.ended){
-          audio.play().catch(()=>{});
+          setLoadingState('Lädt…');
+          schedulePlayRetry(audio);
         }
       };
 
       audio.onstalled = () => {
+        setLoadingState('Lädt…');
         recoverPlayback(audio);
       };
 
       audio.onplaying = () => {
         recoverLock = false;
+        clearPlayRetry();
+        setLoadingState('');
+      };
+
+      audio.oncanplay = () => {
+        updateTimeDisplay(audio);
+      };
+
+      audio.onloadedmetadata = () => {
+        updateTimeDisplay(audio);
+      };
+
+      audio.onerror = () => {
+        if(!state.userPaused){
+          setLoadingState('Lädt…');
+          schedulePlayRetry(audio);
+        }
       };
 
       stallWatchdog = setInterval(()=>{
@@ -610,6 +692,7 @@
 
         if(sameCount >= 2){
           sameCount = 0;
+          setLoadingState('Lädt…');
           recoverPlayback(audio);
         }
       }, 3000);
@@ -623,6 +706,8 @@
     function playSong(s,opts={}){
       const {fromClick=false,forceAutoplay=false}=opts;
       state.active=s.id;
+      activeSongMeta = s;
+      clearPlayRetry();
 
       if(!state.queue.length){
         state.queue=[s.id];
@@ -637,6 +722,10 @@
       document.getElementById('playerTitle').textContent=s.title||'';
       document.getElementById('playerArtist').textContent=s.artist||'';
       document.getElementById('coverFullImg').src=s.cover||'';
+      document.getElementById('playerProgress').style.width='0%';
+      document.getElementById('currentTime').textContent='0:00';
+      document.getElementById('totalTime').textContent=formatTime(s.duration || 0);
+      setLoadingState('Lädt…');
 
       const audio=document.getElementById('audio');
       const nextSrc=s.src||'';
@@ -652,18 +741,25 @@
 
       if(auto){
         state.userPaused = false;
-        audio.play().catch(()=>{});
+        audio.play().then(()=>{
+          setLoadingState('');
+        }).catch(()=>{
+          schedulePlayRetry(audio);
+        });
       }
 
       audio.ontimeupdate=()=>{
         const base=s.duration||audio.duration||1;
         const pct=Math.min(100,Math.round((audio.currentTime/base)*100));
         document.getElementById('playerProgress').style.width=pct+'%';
+        updateTimeDisplay(audio);
       };
 
       audio.onended=()=>{
         state.userPaused = false;
         clearAudioRecovery();
+        clearPlayRetry();
+        setLoadingState('');
         if(state.repeat==='one'){
           audio.currentTime=0;
           audio.play().catch(()=>{});
@@ -785,9 +881,16 @@
       btn.onclick=()=>{
         if(audio.paused){
           state.userPaused=false;
-          audio.play().catch(()=>{});
+          setLoadingState('Lädt…');
+          audio.play().then(()=>{
+            setLoadingState('');
+          }).catch(()=>{
+            schedulePlayRetry(audio);
+          });
         } else {
           state.userPaused=true;
+          clearPlayRetry();
+          setLoadingState('');
           audio.pause();
         }
       };
@@ -870,12 +973,15 @@
       const audio=document.getElementById('audio');
       try{audio.pause();}catch{}
       clearAudioRecovery();
+      clearPlayRetry();
       state.userPaused=true;
       state.active=null;
+      activeSongMeta=null;
       state.queue=[];
       state.queueIndex=-1;
       document.getElementById('playerDock').classList.add('hidden');
       document.getElementById('coverFull').classList.remove('open');
+      setLoadingState('');
       updateCounter();
       renderSongs();
       const p=new URLSearchParams(location.search);
