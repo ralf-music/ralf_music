@@ -2009,6 +2009,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/darkline_momentum.mp3",
       "duration": 291,
       "addedAt": "2026-04-13T17:27:37.027Z"
+    },
+    {
+      "id": "afrohu",
+      "title": "Afrohu",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/afrohu.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/afrohu.mp3",
+      "duration": 195,
+      "addedAt": "2026-04-13T18:49:55.317Z"
+    },
+    {
+      "id": "zemra_rreh",
+      "title": "Zemra Rreh",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zemra_rreh.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/zemra_rreh.mp3",
+      "duration": 192,
+      "addedAt": "2026-04-13T19:19:27.464Z"
     }
   ]
 }
