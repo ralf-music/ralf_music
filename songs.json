@@ -2029,6 +2029,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/zemra_rreh.mp3",
       "duration": 192,
       "addedAt": "2026-04-13T19:19:27.464Z"
+    },
+    {
+      "id": "echoes_beyond",
+      "title": "Echoes Beyond",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_beyond.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_beyond.mp3",
+      "duration": 204,
+      "addedAt": "2026-04-27T21:32:13.110Z"
+    },
+    {
+      "id": "silent_horizon",
+      "title": "Silent Horizon",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/silent_horizon.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/silent_horizon.mp3",
+      "duration": 204,
+      "addedAt": "2026-04-27T21:36:07.847Z"
     }
   ]
 }
