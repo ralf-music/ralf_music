@@ -2059,6 +2059,36 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_back.mp3",
       "duration": 242,
       "addedAt": "2026-04-27T21:48:16.600Z"
+    },
+    {
+      "id": "edge_of_control",
+      "title": "Edge Of Control",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_control.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_control.mp3",
+      "duration": 144,
+      "addedAt": "2026-04-27T22:07:17.696Z"
+    },
+    {
+      "id": "mos_u_lodh",
+      "title": "Mos U Lodh",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mos_u_lodh.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mos_u_lodh.mp3",
+      "duration": 156,
+      "addedAt": "2026-04-27T22:07:39.047Z"
+    },
+    {
+      "id": "afer_dhe_larg",
+      "title": "Afër Dhe Larg",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/afer_dhe_larg.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/afer_dhe_larg.mp3",
+      "duration": 147,
+      "addedAt": "2026-04-27T22:11:10.468Z"
     }
   ]
 }
