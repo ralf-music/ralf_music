@@ -2049,6 +2049,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/silent_horizon.mp3",
       "duration": 204,
       "addedAt": "2026-04-27T21:36:07.847Z"
+    },
+    {
+      "id": "no_way_back",
+      "title": "No Way Back",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_back.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_back.mp3",
+      "duration": 242,
+      "addedAt": "2026-04-27T21:48:16.600Z"
     }
   ]
 }
