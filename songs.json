@@ -2109,6 +2109,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_current.mp3",
       "duration": 238,
       "addedAt": "2026-05-14T22:07:02.351Z"
+    },
+    {
+      "id": "into_the_surge",
+      "title": "Into The Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/into_the_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/into_the_surge.mp3",
+      "duration": 259,
+      "addedAt": "2026-05-14T22:11:34.582Z"
+    },
+    {
+      "id": "solar_vector",
+      "title": "Solar Vector",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/solar_vector.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/solar_vector.mp3",
+      "duration": 189,
+      "addedAt": "2026-05-14T22:12:41.923Z"
     }
   ]
 }
