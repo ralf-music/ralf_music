@@ -2089,6 +2089,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/afer_dhe_larg.mp3",
       "duration": 147,
       "addedAt": "2026-04-27T22:11:10.468Z"
+    },
+    {
+      "id": "falling_through_the_waves",
+      "title": "Falling Through The Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falling_through_the_waves.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falling_through_the_waves.mp3",
+      "duration": 229,
+      "addedAt": "2026-05-14T22:06:44.074Z"
+    },
+    {
+      "id": "lost_in_the_current",
+      "title": "Lost In The Current",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/lost_in_the_current.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_current.mp3",
+      "duration": 238,
+      "addedAt": "2026-05-14T22:07:02.351Z"
     }
   ]
 }
