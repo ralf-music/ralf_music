@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v5.0.0 -->
+<!-- R.A.L.F. – Music Showcase | index.html v5.0.1 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -146,7 +146,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="5.0.0">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="5.0.1">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -223,13 +223,13 @@
       <div class="flex items-center gap-4">
         <a href="/donate.html" class="underline underline-offset-4 hover:text-neutral-300">☕ Unterstützen</a>
         <a href="/contact.html" class="underline underline-offset-4 hover:text-neutral-300">✉️ Kontakt</a>
-        <span>v5.0.0</span>
+        <span>v5.0.1</span>
       </div>
     </div>
   </footer>
 
   <script>
-    const VERSION='5.0.0';
+    const VERSION='5.0.1';
     const NEW_LIMIT=20;
 
     const state={
@@ -275,30 +275,6 @@
       const pct=Math.max(0,Math.min(100,(audio.currentTime/base)*100));
       document.getElementById('playerProgress').style.width=pct+'%';
       updateTimeDisplay(audio);
-      updateMediaSessionPosition(audio);
-    }
-
-    function updateMediaSessionPlaybackState(){
-      try{
-        if(!('mediaSession' in navigator)) return;
-        if(!state.active){
-          navigator.mediaSession.playbackState='none';
-          return;
-        }
-        const a=activeAudio();
-        navigator.mediaSession.playbackState=(a&&!a.paused&&!a.ended)?'playing':'paused';
-      }catch{}
-    }
-
-    function updateMediaSessionPosition(audio=activeAudio()){
-      try{
-        if(!('mediaSession' in navigator)||!audio||!state.active) return;
-        const duration=Number(activeSongMeta?.duration||audio.duration||0);
-        if(!isFinite(duration)||duration<=0) return;
-        const position=Math.max(0,Math.min(Number(audio.currentTime||0),duration));
-        const playbackRate=Number(audio.playbackRate||1) || 1;
-        navigator.mediaSession.setPositionState({duration,playbackRate,position});
-      }catch{}
     }
 
     function loadLocalOverrides(){
@@ -548,13 +524,13 @@
       a.addEventListener('waiting',()=>{ if(slot===activeSlot&&!state.userPaused&&!a.ended) setPlaybackStatus('buffering','Puffert…'); });
       a.addEventListener('stalled',()=>{ if(slot===activeSlot&&!state.userPaused&&!a.ended) setPlaybackStatus('buffering','Puffert…'); });
       a.addEventListener('canplay',()=>{ if(slot===activeSlot){ updateTimeDisplay(a); if(!a.paused&&!state.userPaused) setPlaybackStatus('playing',''); } });
-      a.addEventListener('playing',()=>{ if(slot===activeSlot){ state.userPaused=false; setPlaybackStatus('playing',''); updatePlayIcon(); updateMediaSessionPlaybackState(); updateMediaSessionPosition(a); prepareNext(); } });
-      a.addEventListener('pause',()=>{ if(slot===activeSlot&&!a.ended){ if(state.userPaused) setPlaybackStatus('paused',''); updatePlayIcon(); updateMediaSessionPlaybackState(); updateMediaSessionPosition(a); } });
+      a.addEventListener('playing',()=>{ if(slot===activeSlot){ state.userPaused=false; setPlaybackStatus('playing',''); updatePlayIcon(); prepareNext(); } });
+      a.addEventListener('pause',()=>{ if(slot===activeSlot&&!a.ended){ if(state.userPaused) setPlaybackStatus('paused',''); updatePlayIcon(); } });
       a.addEventListener('timeupdate',()=>{ if(slot===activeSlot) updateProgress(a); });
-      a.addEventListener('loadedmetadata',()=>{ if(slot===activeSlot){ updateTimeDisplay(a); updateMediaSessionPosition(a); } });
-      a.addEventListener('ended',()=>{ if(slot!==activeSlot) return; setPlaybackStatus('ended',''); updatePlayIcon(); updateMediaSessionPlaybackState(); state.userPaused=false; if(state.repeat==='one'){ a.currentTime=0; a.play().catch(()=>setPlaybackStatus('error','Erneut versuchen')); } else playNext(true); });
+      a.addEventListener('loadedmetadata',()=>{ if(slot===activeSlot) updateTimeDisplay(a); });
+      a.addEventListener('ended',()=>{ if(slot!==activeSlot) return; setPlaybackStatus('ended',''); updatePlayIcon(); state.userPaused=false; if(state.repeat==='one'){ a.currentTime=0; a.play().catch(()=>setPlaybackStatus('error','Erneut versuchen')); } else playNext(true); });
       a.addEventListener('error',()=>{ if(slot===activeSlot){ setPlaybackStatus('error','Erneut versuchen'); updatePlayIcon(); } });
-      a.addEventListener('play',()=>{ if(slot===activeSlot){ updatePlayIcon(); updateMediaSessionPlaybackState(); } });
+      a.addEventListener('play',()=>{ if(slot===activeSlot) updatePlayIcon(); });
     }
 
     function playSongById(id,opts={}){ const s=state.songs.find(x=>x.id===id); if(s) playSong(s,opts); }
@@ -692,52 +668,19 @@
       state.userPaused=true; state.active=null; state.playback='idle'; activeSongMeta=null; state.queue=[]; state.queueIndex=-1;
       document.getElementById('playerDock').classList.add('hidden'); document.getElementById('coverFull').classList.remove('open'); setPlaybackStatus('idle',''); updateCounter(); renderSongs();
       const p=new URLSearchParams(location.search); p.delete('id'); history.replaceState(null,'','?'+p.toString());
-      try{
-        if('mediaSession'in navigator){
-          navigator.mediaSession.metadata=null;
-          navigator.mediaSession.playbackState='none';
-          try{ navigator.mediaSession.setPositionState(); }catch{}
-        }
-      }catch{}
+      try{if('mediaSession'in navigator)navigator.mediaSession.metadata=null;}catch{}
     }
 
     function updateMediaSession(s){
       try{
-        if(!('mediaSession' in navigator)) return;
-
-        // Jede Titeländerung erzeugt neue Metadaten, damit Android/BT die Änderung
-        // möglichst zuverlässig an externe Geräte weiterreichen kann.
-        navigator.mediaSession.metadata=new MediaMetadata({
-          title:s.title||'',
-          artist:s.artist||'',
-          album:'R.A.L.F. – Music Showcase',
-          artwork:s.cover?[{src:s.cover,sizes:'1024x1024',type:'image/png'}]:[]
-        });
-
-        navigator.mediaSession.setActionHandler('previoustrack',playPrev);
-        navigator.mediaSession.setActionHandler('nexttrack',()=>playNext(false));
-        navigator.mediaSession.setActionHandler('play',()=>{
-          state.userPaused=false;
-          const a=activeAudio();
-          if(a) a.play().catch(()=>{});
-        });
-        navigator.mediaSession.setActionHandler('pause',()=>{
-          state.userPaused=true;
-          const a=activeAudio();
-          if(a) a.pause();
-        });
-        try{
-          navigator.mediaSession.setActionHandler('seekto',details=>{
-            const a=activeAudio();
-            if(!a||typeof details.seekTime!=='number') return;
-            if(details.fastSeek&&typeof a.fastSeek==='function') a.fastSeek(details.seekTime);
-            else a.currentTime=details.seekTime;
-            updateMediaSessionPosition(a);
-          });
-        }catch{}
-
-        updateMediaSessionPlaybackState();
-        updateMediaSessionPosition(activeAudio());
+        if('mediaSession'in navigator){
+          navigator.mediaSession.metadata=new MediaMetadata({title:s.title||'',artist:s.artist||'',album:'R.A.L.F. – Music Showcase',artwork:[{src:s.cover,sizes:'96x96',type:'image/png'},{src:s.cover,sizes:'128x128',type:'image/png'},{src:s.cover,sizes:'192x192',type:'image/png'},{src:s.cover,sizes:'256x256',type:'image/png'},{src:s.cover,sizes:'384x384',type:'image/png'},{src:s.cover,sizes:'512x512',type:'image/png'}]});
+          navigator.mediaSession.setActionHandler('previoustrack',playPrev);
+          navigator.mediaSession.setActionHandler('nexttrack',()=>playNext(false));
+          navigator.mediaSession.setActionHandler('play',()=>{state.userPaused=false;activeAudio()?.play().catch(()=>{});});
+          navigator.mediaSession.setActionHandler('pause',()=>{state.userPaused=true;activeAudio()?.pause();});
+          try{ navigator.mediaSession.playbackState=activeAudio()?.paused?'paused':'playing'; }catch{}
+        }
       }catch{}
     }
 

@@ -1,4 +1,4 @@
-const CACHE_VERSION='ralf-music-v5.0.0';
+const CACHE_VERSION='ralf-music-v5.0.1';
 const SHELL_CACHE=CACHE_VERSION+'-shell';
 const RUNTIME_CACHE=CACHE_VERSION+'-runtime';
 const COVER_CACHE=CACHE_VERSION+'-covers';
@@ -79,20 +79,16 @@ self.addEventListener('fetch',event=>{
   const url=new URL(request.url);
   const path=url.pathname.toLowerCase();
 
-  // Niemals MP3-Dateien im PWA-Cache speichern.
-  if(path.endsWith('.mp3')){
-    event.respondWith(fetch(request));
-    return;
-  }
+  // WICHTIG: MP3s vollständig dem Browser überlassen.
+  // Kein respondWith(), kein Cache, kein Service-Worker-Proxying.
+  if(path.endsWith('.mp3')) return;
 
-  // Song- und Kategoriedaten: Netzwerk zuerst, Cache nur als Offline-Fallback.
   if(url.origin===self.location.origin &&
      (url.pathname==='/songs.json'||url.pathname==='/categories.json')){
     event.respondWith(networkFirst(request,JSON_CACHE));
     return;
   }
 
-  // Cover nur bei tatsächlicher Nutzung cachen, keine komplette Bibliothek vorladen.
   if(url.hostname==='raw.githubusercontent.com' &&
      url.pathname.includes('/assets/covers/') &&
      path.endsWith('.png')){
@@ -100,13 +96,11 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Tailwind-CDN nach erfolgreichem Abruf für spätere Offline-Starts behalten.
   if(url.hostname==='cdn.tailwindcss.com'){
     event.respondWith(staleWhileRevalidate(request,RUNTIME_CACHE));
     return;
   }
 
-  // App-Shell und lokale statische Assets.
   if(url.origin===self.location.origin &&
      (url.pathname==='/' ||
       url.pathname==='/index.html' ||
