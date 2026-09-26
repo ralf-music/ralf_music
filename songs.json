@@ -2036,7 +2036,7 @@
       "artist": "R.A.L.F.",
       "category": "albania",
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/afer_dhe_larg.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/afer_dhe_larg.mp3",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/afer_dhe_larg.mp3",
       "duration": 147,
       "addedAt": "2026-09-26T22:28:21.912Z"
     },
@@ -2046,7 +2046,7 @@
       "artist": "R.A.L.F.",
       "category": "albania",
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mos_u_lodh.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mos_u_lodh.mp3",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/mos_u_lodh.mp3",
       "duration": 156,
       "addedAt": "2026-09-26T22:28:45.216Z"
     }
