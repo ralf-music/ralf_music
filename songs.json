@@ -2059,6 +2059,26 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_control.mp3",
       "duration": 144,
       "addedAt": "2026-09-27T18:37:58.670Z"
+    },
+    {
+      "id": "snikkers_tief_im_traum",
+      "title": "Snikkers Tief Im Traum",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/snikkers_tief_im_traum.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/snikkers_tief_im_traum.mp3",
+      "duration": 225,
+      "addedAt": "2026-09-27T21:22:44.562Z"
+    },
+    {
+      "id": "wobbelbauch_party",
+      "title": "Wobbelbauch Party",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wobbelbauch_party.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wobbelbauch_party.mp3",
+      "duration": 140,
+      "addedAt": "2026-09-27T21:25:23.794Z"
     }
   ]
 }
