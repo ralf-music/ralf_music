@@ -2049,6 +2049,16 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/mos_u_lodh.mp3",
       "duration": 156,
       "addedAt": "2026-09-26T22:28:45.216Z"
+    },
+    {
+      "id": "edge_of_control",
+      "title": "Edge Of Control",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_control.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_control.mp3",
+      "duration": 144,
+      "addedAt": "2026-09-27T18:37:58.670Z"
     }
   ]
 }
