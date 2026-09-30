@@ -1,13 +1,13 @@
 {
   "songs": [
     {
-      "id": "zwischen_uns",
-      "title": "Zwischen Uns",
+      "id": "beyond_the_silence",
+      "title": "Beyond the Silence",
       "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_uns.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_uns.mp3",
-      "duration": 163,
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_silence.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3",
+      "duration": 276,
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
@@ -21,273 +21,243 @@
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "zwischen_den_tagen",
-      "title": "Zwischen Den Tagen",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_tagen.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_den_tagen.mp3",
-      "duration": 140,
-      "addedAt": "2025-11-11T19:03:59.246Z"
-    },
-    {
-      "id": "zwei_herzen_ein_gefuehl",
-      "title": "Zwei Herzen – Ein Gefühl",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwei_herzen_ein_gefuehl.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwei_herzen_ein_gefuehl.mp3",
-      "duration": 208,
-      "addedAt": "2025-12-07T14:27:59.786Z"
-    },
-    {
-      "id": "zu_weit_gegangen",
-      "title": "Zu Weit Gegangen",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zu_weit_gegangen.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zu_weit_gegangen.mp3",
-      "duration": 177,
-      "addedAt": "2026-03-31T18:02:32.777Z"
-    },
-    {
-      "id": "zemra_rreh",
-      "title": "Zemra Rreh",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zemra_rreh.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/zemra_rreh.mp3",
-      "duration": 192,
-      "addedAt": "2026-04-13T19:19:27.464Z"
-    },
-    {
-      "id": "you_are_my_home",
-      "title": "You Are My Home",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/you_are_my_home.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/you_are_my_home.mp3",
-      "duration": 216,
-      "addedAt": "2025-09-06T14:59:27.905Z"
-    },
-    {
-      "id": "xmas_under_neon_skies",
-      "title": "X-Mas Under Neon Skies",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/xmas_under_neon_skies.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/xmas_under_neon_skies.mp3",
-      "duration": 297,
-      "addedAt": "2025-12-07T14:36:01.481Z"
-    },
-    {
-      "id": "waechter_der_nacht",
-      "title": "Wächter Der Nacht",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/waechter_der_nacht.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/waechter_der_nacht.mp3",
-      "duration": 162,
-      "addedAt": "2026-02-13T23:48:23.478Z"
-    },
-    {
-      "id": "wobbelbauch_party",
-      "title": "Wobbelbauch Party",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wobbelbauch_party.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wobbelbauch_party.mp3",
-      "duration": 140,
-      "addedAt": "2026-09-27T21:25:23.794Z"
-    },
-    {
-      "id": "within_the_flow",
-      "title": "Within The Flow",
+      "id": "edge_of_tomorrow",
+      "title": "Edge Of Tomorrow",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/within_the_flow.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/within_the_flow.mp3",
-      "duration": 153,
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_tomorrow.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_tomorrow.mp3",
+      "duration": 243,
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "wir_stehn_bereit",
-      "title": "Wir Steh´n Bereit",
+      "id": "augen_sagen_mehr",
+      "title": "Augen Sagen Mehr",
       "artist": "R.A.L.F.",
-      "category": "deutsch_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wir_stehn_bereit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wir_stehn_bereit.mp3",
-      "duration": 184,
-      "addedAt": "2025-10-05T20:15:15.600Z"
-    },
-    {
-      "id": "wings_tonight",
-      "title": "Wings Tonight",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wings_tonight.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wings_tonight.mp3",
-      "duration": 262,
-      "addedAt": "2025-09-05T08:57:26.886Z"
-    },
-    {
-      "id": "wings_of_light",
-      "title": "Wings Of Light",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wings_of_light.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wings_of_light.mp3",
-      "duration": 273,
-      "addedAt": "2025-10-12T08:54:21.225Z"
-    },
-    {
-      "id": "well_rise_together",
-      "title": "We´ll Rise Together",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/well_rise_together.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/well_rise_together.mp3",
-      "duration": 188,
-      "addedAt": "2025-09-06T14:58:45.480Z"
-    },
-    {
-      "id": "wenn_der_abend_leiser_wird",
-      "title": "Wenn Der Abend Leiser Wird",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wenn_der_abend_leiser_wird.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wenn_der_abend_leiser_wird.mp3",
-      "duration": 167,
-      "addedAt": "2025-11-11T19:01:40.566Z"
-    },
-    {
-      "id": "weightless_sky",
-      "title": "Weightless Sky",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/weightless_sky.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/weightless_sky.mp3",
-      "duration": 170,
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/augen_sagen_mehr.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/augen_sagen_mehr.mp3",
+      "duration": 124,
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "weightless_mind",
-      "title": "Weightless Mind",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/weightless_mind.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/weightless_mind.mp3",
-      "duration": 236,
-      "addedAt": "2025-09-22T20:59:30.430Z"
-    },
-    {
-      "id": "was_von_dir_bleibt",
-      "title": "Was Von Dir Bleibt",
+      "id": "falsch_verstanden",
+      "title": "Falsch Verstanden",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/was_von_dir_bleibt.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/was_von_dir_bleibt.mp3",
-      "duration": 134,
-      "addedAt": "2025-10-12T08:53:50.299Z"
-    },
-    {
-      "id": "war_nie_geplant",
-      "title": "War Nie Geplant",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/war_nie_geplant.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/war_nie_geplant.mp3",
-      "duration": 147,
-      "addedAt": "2026-03-31T18:46:09.297Z"
-    },
-    {
-      "id": "voltage_realm",
-      "title": "Voltage Realm",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/voltage_realm.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/voltage_realm.mp3",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falsch_verstanden.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falsch_verstanden.mp3",
       "duration": 228,
-      "addedAt": "2025-10-13T08:37:40.809Z"
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "verraten_vergessen",
-      "title": "Verraten & vergessen",
+      "id": "farben_der_liebe",
+      "title": "Farben Der Liebe",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/verraten_vergessen.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/verraten_vergessen.mp3",
-      "duration": 171,
-      "addedAt": "2025-09-26T00:14:55.944Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/farben_der_liebe.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/farben_der_liebe.mp3",
+      "duration": 149,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "verlorene_zeit",
-      "title": "Verlorene Zeit",
+      "id": "glasherz",
+      "title": "Glasherz",
       "artist": "R.A.L.F.",
       "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/verlorene_zeit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/verlorene_zeit.mp3",
-      "duration": 157,
-      "addedAt": "2025-09-26T00:12:07.261Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glasherz.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/glasherz.mp3",
+      "duration": 189,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "turn_the_lights_up",
-      "title": "Turn The Lights Up",
+      "id": "kein_wort_von_dir",
+      "title": "Kein Wort Von Dir",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/turn_the_lights_up.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/turn_the_lights_up.mp3",
-      "duration": 222,
-      "addedAt": "2025-12-07T14:15:15.881Z"
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kein_wort_von_dir.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kein_wort_von_dir.mp3",
+      "duration": 174,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "touch_the_fire",
-      "title": "Touch The Fire",
+      "id": "keine_heimat",
+      "title": "Keine Heimat",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_heimat.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_heimat.mp3",
+      "duration": 179,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "mitten_in_der_nacht",
+      "title": "Mitten In Der Nacht",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mitten_in_der_nacht.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mitten_in_der_nacht.mp3",
+      "duration": 158,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "ohne_limit",
+      "title": "Ohne Limit",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ohne_limit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ohne_limit.mp3",
+      "duration": 127,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "straßen_bleiben_kalt",
+      "title": "Straßen Bleiben Kalt",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/straßen_bleiben_kalt.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/straßen_bleiben_kalt.mp3",
+      "duration": 177,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "zwischen_uns",
+      "title": "Zwischen Uns",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_uns.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_uns.mp3",
+      "duration": 163,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "howard–stoff_in_tueten",
+      "title": "Howard – Stoff In Tüten",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard–stoff_in_tueten.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard–stoff_in_tueten.mp3",
+      "duration": 177,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "howard_II–tiefer_fall",
+      "title": "Howard II – Tiefer Fall",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_II–tiefer_fall.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_II–tiefer_fall.mp3",
+      "duration": 190,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "howard_III–keine_freiheit",
+      "title": "Howard III – Keine Freiheit",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_III–keine_freiheit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_III–keine_freiheit.mp3",
+      "duration": 181,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "howard_IV–wie_ein_schatten",
+      "title": "Howard IV – Wie Ein Schatten",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_IV–wie_ein_schatten.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_IV–wie_ein_schatten.mp3",
+      "duration": 149,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "howard_V–ruhig_in_mir",
+      "title": "Howard V – Ruhig In Mir",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_V–ruhig_in_mir.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_V–ruhig_in_mir.mp3",
+      "duration": 219,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "bass_like_fire",
+      "title": "Bass Like Fire",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/touch_the_fire.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/touch_the_fire.mp3",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bass_like_fire.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bass_like_fire.mp3",
+      "duration": 276,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "dancefloor_love",
+      "title": "Dancefloor Love",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dancefloor_love.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dancefloor_love.mp3",
+      "duration": 175,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "feel_the_light",
+      "title": "Feel The Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_light.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feel_the_light.mp3",
+      "duration": 189,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "fire_within",
+      "title": "Fire Within",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fire_within.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fire_within.mp3",
       "duration": 299,
-      "addedAt": "2025-12-07T14:34:51.822Z"
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "time_to_believe",
-      "title": "Time To Believe",
+      "id": "freedom_is_life",
+      "title": "Freedom Is Life",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/time_to_believe.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/time_to_believe.mp3",
-      "duration": 255,
-      "addedAt": "2025-10-12T08:53:03.850Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/freedom_is_life.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/freedom_is_life.mp3",
+      "duration": 192,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "tiefer",
-      "title": "Tiefer",
-      "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/tiefer.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/tiefer.mp3",
-      "duration": 140,
-      "addedAt": "2025-09-04T21:51:25.007Z"
-    },
-    {
-      "id": "ti_je_festa",
-      "title": "Ti Je Festa",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ti_je_festa.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/ti_je_festa.mp3",
-      "duration": 172,
-      "addedAt": "2025-09-15T18:42:15.696Z"
-    },
-    {
-      "id": "through_your_eyes",
-      "title": "Through Your Eyes",
+      "id": "get_ready_now",
+      "title": "Get Ready Now",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/through_your_eyes.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/through_your_eyes.mp3",
-      "duration": 197,
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/get_ready_now.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/get_ready_now.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "lost_in_the_light",
+      "title": "Lost In The Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/lost_in_the_light.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_light.mp3",
+      "duration": 184,
+      "addedAt": "2025-09-04T21:45:39.545Z"
+    },
+    {
+      "id": "no_gravity",
+      "title": "No Gravity",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_gravity.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_gravity.mp3",
+      "duration": 223,
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
@@ -301,214 +271,44 @@
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "temporal_sequence",
-      "title": "Temporal Sequence",
+      "id": "through_your_eyes",
+      "title": "Through Your Eyes",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/temporal_sequence.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/temporal_sequence.mp3",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/through_your_eyes.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/through_your_eyes.mp3",
       "duration": 197,
-      "addedAt": "2026-02-13T23:49:14.923Z"
-    },
-    {
-      "id": "tausend_meilen_bis_zu_dir",
-      "title": "Tausend Meilen Bis Zu Dir",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/tausend_meilen_bis_zu_dir.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/tausend_meilen_bis_zu_dir.mp3",
-      "duration": 219,
-      "addedAt": "2025-09-08T10:39:08.243Z"
-    },
-    {
-      "id": "stronger_now",
-      "title": "Stronger Now",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stronger_now.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stronger_now.mp3",
-      "duration": 180,
-      "addedAt": "2025-11-11T19:22:09.546Z"
-    },
-    {
-      "id": "straßen_bleiben_kalt",
-      "title": "Straßen Bleiben Kalt",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/straßen_bleiben_kalt.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/straßen_bleiben_kalt.mp3",
-      "duration": 177,
       "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "stormbreaker",
-      "title": "Stormbreaker",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stormbreaker.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stormbreaker.mp3",
-      "duration": 209,
-      "addedAt": "2026-03-31T17:44:41.740Z"
-    },
-    {
-      "id": "still_howling_at_the_moon",
-      "title": "Still Howling At The Moon",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/still_howling_at_the_moon.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/still_howling_at_the_moon.mp3",
-      "duration": 293,
-      "addedAt": "2025-09-05T08:58:33.126Z"
-    },
-    {
-      "id": "still_here",
-      "title": "Still Here",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/still_here.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/still_here.mp3",
-      "duration": 194,
-      "addedAt": "2025-11-11T18:55:01.198Z"
-    },
-    {
-      "id": "sternenklare_nacht",
-      "title": "Sternenklare Nacht",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sternenklare_nacht.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sternenklare_nacht.mp3",
-      "duration": 150,
-      "addedAt": "2025-09-26T10:02:47.546Z"
-    },
-    {
-      "id": "steelheart_rising",
-      "title": "Steelheart Rising",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/steelheart_rising.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/steelheart_rising.mp3",
-      "duration": 209,
-      "addedAt": "2026-02-23T01:20:05.790Z"
-    },
-    {
-      "id": "static_blood",
-      "title": "Static Blood",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/static_blood.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/static_blood.mp3",
-      "duration": 207,
-      "addedAt": "2026-03-31T18:47:40.034Z"
-    },
-    {
-      "id": "stand_in_the_sun",
-      "title": "Stand In The Sun",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stand_in_the_sun.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stand_in_the_sun.mp3",
-      "duration": 189,
-      "addedAt": "2025-11-11T19:13:58.825Z"
-    },
-    {
-      "id": "spiegelbild",
-      "title": "Spiegelbild",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/spiegelbild.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/spiegelbild.mp3",
-      "duration": 182,
-      "addedAt": "2025-10-12T08:52:28.803Z"
-    },
-    {
-      "id": "sonte_je_ti",
-      "title": "Sonte Je Ti",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sonte_je_ti.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/sonte_je_ti.mp3",
-      "duration": 146,
-      "addedAt": "2025-09-15T18:41:34.454Z"
-    },
-    {
-      "id": "solar_impulse",
-      "title": "Solar Impulse",
+      "id": "weightless_sky",
+      "title": "Weightless Sky",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/solar_impulse.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/solar_impulse.mp3",
-      "duration": 254,
-      "addedAt": "2025-12-07T14:30:42.902Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/weightless_sky.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/weightless_sky.mp3",
+      "duration": 170,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "soaring_waves",
-      "title": "Soaring Waves",
+      "id": "within_the_flow",
+      "title": "Within The Flow",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/soaring_waves.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/soaring_waves.mp3",
-      "duration": 242,
-      "addedAt": "2025-09-26T10:50:22.386Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/within_the_flow.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/within_the_flow.mp3",
+      "duration": 153,
+      "addedAt": "2025-09-04T21:45:39.545Z"
     },
     {
-      "id": "so_wie_du_mich_siehst",
-      "title": "So Wie Du Mich Siehst",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/so_wie_du_mich_siehst.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/so_wie_du_mich_siehst.mp3",
-      "duration": 169,
-      "addedAt": "2025-11-11T19:03:38.408Z"
-    },
-    {
-      "id": "snikkers_tief_im_traum",
-      "title": "Snikkers Tief Im Traum",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/snikkers_tief_im_traum.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/snikkers_tief_im_traum.mp3",
-      "duration": 225,
-      "addedAt": "2026-09-27T21:22:44.562Z"
-    },
-    {
-      "id": "si_hera_e_pare",
-      "title": "Si Hera e Parë",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/si_hera_e_pare.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/si_hera_e_pare.mp3",
-      "duration": 168,
-      "addedAt": "2025-09-15T21:23:28.950Z"
-    },
-    {
-      "id": "shadows_fade",
-      "title": "Shadows Fade",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/shadows_fade.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/shadows_fade.mp3",
-      "duration": 217,
-      "addedAt": "2025-09-07T10:12:37.422Z"
-    },
-    {
-      "id": "sendeschluss",
-      "title": "Sendeschluss",
+      "id": "tiefer",
+      "title": "Tiefer",
       "artist": "R.A.L.F.",
       "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sendeschluss.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sendeschluss.mp3",
-      "duration": 187,
-      "addedAt": "2026-03-31T16:13:14.101Z"
-    },
-    {
-      "id": "sehnsucht",
-      "title": "Sehnsucht",
-      "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sehnsucht.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sehnsucht.mp3",
-      "duration": 220,
-      "addedAt": "2025-09-06T03:24:02.994Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/tiefer.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/tiefer.mp3",
+      "duration": 140,
+      "addedAt": "2025-09-04T21:51:25.007Z"
     },
     {
       "id": "schamlos",
@@ -521,434 +321,54 @@
       "addedAt": "2025-09-04T21:51:51.442Z"
     },
     {
-      "id": "satul_meu",
-      "title": "Satul Meu",
+      "id": "kruzifix",
+      "title": "Kruzifix",
       "artist": "R.A.L.F.",
-      "category": "romania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/satul_meu.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/satul_meu.mp3",
-      "duration": 152,
-      "addedAt": "2025-09-28T01:49:53.718Z"
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kruzifix.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kruzifix.mp3",
+      "duration": 217,
+      "addedAt": "2025-09-04T21:52:23.136Z"
     },
     {
-      "id": "run_with_the_night",
-      "title": "Run With The Night",
+      "id": "ich_seh_dich",
+      "title": "Ich Seh Dich",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/run_with_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/run_with_the_night.mp3",
-      "duration": 246,
-      "addedAt": "2025-09-06T03:42:11.131Z"
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ich_seh_dich.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ich_seh_dich.mp3",
+      "duration": 232,
+      "addedAt": "2025-09-04T21:54:36.239Z"
     },
     {
-      "id": "run_to_me_tonight",
-      "title": "Run To Me Tonight",
+      "id": "glut",
+      "title": "Glut",
       "artist": "R.A.L.F.",
-      "category": "freestyle",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/run_to_me_tonight.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/run_to_me_tonight.mp3",
-      "duration": 204,
-      "addedAt": "2025-09-05T09:04:10.860Z"
-    },
-    {
-      "id": "rruga_te_ti",
-      "title": "Rruga Te Ti",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rruga_te_ti.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/rruga_te_ti.mp3",
-      "duration": 152,
-      "addedAt": "2025-09-15T21:16:17.896Z"
-    },
-    {
-      "id": "ritmul_noptii",
-      "title": "Ritmul nopții",
-      "artist": "R.A.L.F.",
-      "category": "romania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ritmul_noptii.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/ritmul_noptii.mp3",
-      "duration": 194,
-      "addedAt": "2025-09-28T01:49:25.419Z"
-    },
-    {
-      "id": "rise_of_energy",
-      "title": "Rise Of Energy",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_of_energy.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_of_energy.mp3",
-      "duration": 253,
-      "addedAt": "2025-10-13T08:38:17.136Z"
-    },
-    {
-      "id": "rise_into_the_sun",
-      "title": "Rise Into The Sun",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_into_the_sun.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_into_the_sun.mp3",
-      "duration": 208,
-      "addedAt": "2025-12-07T14:35:15.912Z"
-    },
-    {
-      "id": "rise_above",
-      "title": "Rise Above",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_above.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_above.mp3",
-      "duration": 264,
-      "addedAt": "2025-09-26T10:13:03.457Z"
-    },
-    {
-      "id": "riot_engine",
-      "title": "Riot Engine",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/riot_engine.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/riot_engine.mp3",
-      "duration": 215,
-      "addedAt": "2026-02-21T23:00:25.985Z"
-    },
-    {
-      "id": "ride_the_madness",
-      "title": "Ride The Madness",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ride_the_madness.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ride_the_madness.mp3",
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glut.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/glut.mp3",
       "duration": 227,
-      "addedAt": "2025-09-05T08:58:14.863Z"
+      "addedAt": "2025-09-04T21:55:01.025Z"
     },
     {
-      "id": "razor_line",
-      "title": "Razor Line",
+      "id": "feuer_und_brand",
+      "title": "Feuer Und Brand",
       "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/razor_line.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/razor_line.mp3",
-      "duration": 244,
-      "addedAt": "2025-11-11T19:46:22.011Z"
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feuer_und_brand.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feuer_und_brand.mp3",
+      "duration": 181,
+      "addedAt": "2025-09-04T22:06:08.073Z"
     },
     {
-      "id": "quantum_surge",
-      "title": "Quantum Surge",
+      "id": "magisch_nah",
+      "title": "Magisch Nah",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_surge.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_surge.mp3",
-      "duration": 269,
-      "addedAt": "2025-12-07T14:29:05.599Z"
-    },
-    {
-      "id": "quantum_drift",
-      "title": "Quantum Drift",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_drift.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_drift.mp3",
-      "duration": 202,
-      "addedAt": "2025-12-07T14:29:32.691Z"
-    },
-    {
-      "id": "pulse_of_the_highlands",
-      "title": "Pulse Of The Highlands",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pulse_of_the_highlands.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/pulse_of_the_highlands.mp3",
-      "duration": 237,
-      "addedAt": "2025-09-05T09:06:15.234Z"
-    },
-    {
-      "id": "pulse_of_africa",
-      "title": "Pulse Of Africa",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pulse_of_africa.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/pulse_of_africa.mp3",
-      "duration": 260,
-      "addedAt": "2026-04-13T17:25:00.400Z"
-    },
-    {
-      "id": "power_of_the_night",
-      "title": "Power Of The Night",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/power_of_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/power_of_the_night.mp3",
-      "duration": 184,
-      "addedAt": "2026-03-31T16:18:02.230Z"
-    },
-    {
-      "id": "pa_ty",
-      "title": "Pa Ty",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pa_ty.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/pa_ty.mp3",
-      "duration": 157,
-      "addedAt": "2026-04-13T17:26:20.725Z"
-    },
-    {
-      "id": "out_of_control",
-      "title": "Out Of Control",
-      "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/out_of_control.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/out_of_control.mp3",
-      "duration": 189,
-      "addedAt": "2025-09-05T09:00:59.721Z"
-    },
-    {
-      "id": "ohne_limit",
-      "title": "Ohne Limit",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ohne_limit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ohne_limit.mp3",
-      "duration": 127,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "nen_dritat_e_nates",
-      "title": "Nën Dritat E Natës",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nen_dritat_e_nates.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nen_dritat_e_nates.mp3",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/magisch_nah.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/magisch_nah.mp3",
       "duration": 160,
-      "addedAt": "2026-03-31T16:17:27.077Z"
-    },
-    {
-      "id": "ne_syte_e_tu",
-      "title": "Në Sytë E Tu",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ne_syte_e_tu.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/ne_syte_e_tu.mp3",
-      "duration": 193,
-      "addedAt": "2025-09-15T21:14:51.774Z"
-    },
-    {
-      "id": "nur_routine",
-      "title": "Nur Routine",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nur_routine.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nur_routine.mp3",
-      "duration": 157,
-      "addedAt": "2026-02-21T23:28:31.636Z"
-    },
-    {
-      "id": "nu_vreau_sa_pleci",
-      "title": "Nu Vreau Să Pleci",
-      "artist": "R.A.L.F.",
-      "category": "romania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nu_vreau_sa_pleci.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/nu_vreau_sa_pleci.mp3",
-      "duration": 212,
-      "addedAt": "2025-09-28T01:48:25.220Z"
-    },
-    {
-      "id": "nova_frequency",
-      "title": "Nova Frequency",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nova_frequency.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nova_frequency.mp3",
-      "duration": 236,
-      "addedAt": "2025-10-14T21:21:07.746Z"
-    },
-    {
-      "id": "no_way_out",
-      "title": "No Way Out",
-      "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_out.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_out.mp3",
-      "duration": 184,
-      "addedAt": "2025-10-14T21:20:50.093Z"
-    },
-    {
-      "id": "no_room_for_your_tears",
-      "title": "No Room For Your Tears",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_room_for_your_tears.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_room_for_your_tears.mp3",
-      "duration": 259,
-      "addedAt": "2025-09-05T08:59:40.305Z"
-    },
-    {
-      "id": "no_retreat",
-      "title": "No Retreat",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_retreat.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_retreat.mp3",
-      "duration": 287,
-      "addedAt": "2026-04-13T17:26:43.842Z"
-    },
-    {
-      "id": "no_gravity",
-      "title": "No Gravity",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_gravity.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_gravity.mp3",
-      "duration": 223,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "nimm_dir_nen_strohhalm_und_halt_dich_fest",
-      "title": "Nimm Dir Nen Strohhalm Und Halt Dich Fest",
-      "artist": "R.A.L.F.",
-      "category": "ballermann",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nimm_dir_nen_strohhalm_und_halt_dich_fest.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nimm_dir_nen_strohhalm_und_halt_dich_fest.mp3",
-      "duration": 187,
-      "addedAt": "2025-09-04T22:10:00.202Z"
-    },
-    {
-      "id": "nicht_mein_fest",
-      "title": "Nicht Mein Fest",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nicht_mein_fest.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nicht_mein_fest.mp3",
-      "duration": 261,
-      "addedAt": "2025-12-22T16:16:28.065Z"
-    },
-    {
-      "id": "neon_velocity",
-      "title": "Neon Velocity",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_velocity.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_velocity.mp3",
-      "duration": 226,
-      "addedAt": "2025-12-07T14:30:04.391Z"
-    },
-    {
-      "id": "neon_reign",
-      "title": "Neon Reign",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_reign.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_reign.mp3",
-      "duration": 214,
-      "addedAt": "2025-10-13T08:35:54.537Z"
-    },
-    {
-      "id": "neon_heartline",
-      "title": "Neon Heartline",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_heartline.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_heartline.mp3",
-      "duration": 253,
-      "addedAt": "2025-12-07T14:30:19.384Z"
-    },
-    {
-      "id": "neon_dominion",
-      "title": "Neon Dominion",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_dominion.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_dominion.mp3",
-      "duration": 234,
-      "addedAt": "2025-10-14T21:22:51.376Z"
-    },
-    {
-      "id": "neoclassica",
-      "title": "NeoClassica",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neoclassica.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neoclassica.mp3",
-      "duration": 223,
-      "addedAt": "2025-09-05T09:06:37.576Z"
-    },
-    {
-      "id": "nata_pa_fund",
-      "title": "Nata Pa Fund",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nata_pa_fund.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nata_pa_fund.mp3",
-      "duration": 138,
-      "addedAt": "2025-09-15T18:41:04.977Z"
-    },
-    {
-      "id": "nata_jone",
-      "title": "Nata Jonë",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nata_jone.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nata_jone.mp3",
-      "duration": 171,
-      "addedAt": "2026-03-31T16:16:48.647Z"
-    },
-    {
-      "id": "mos_u_lodh",
-      "title": "Mos U Lodh",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mos_u_lodh.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/mos_u_lodh.mp3",
-      "duration": 156,
-      "addedAt": "2026-09-26T22:28:45.216Z"
-    },
-    {
-      "id": "mitten_in_der_nacht",
-      "title": "Mitten In Der Nacht",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mitten_in_der_nacht.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mitten_in_der_nacht.mp3",
-      "duration": 158,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "mind_horizon",
-      "title": "Mind Horizon",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mind_horizon.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mind_horizon.mp3",
-      "duration": 210,
-      "addedAt": "2026-02-23T01:19:45.894Z"
-    },
-    {
-      "id": "midnight_surge",
-      "title": "Midnight Surge",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_surge.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_surge.mp3",
-      "duration": 246,
-      "addedAt": "2025-10-14T21:21:58.694Z"
-    },
-    {
-      "id": "midnight_radiance",
-      "title": "Midnight Radiance",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_radiance.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_radiance.mp3",
-      "duration": 306,
-      "addedAt": "2026-02-14T19:21:59.595Z"
-    },
-    {
-      "id": "melodic_surge",
-      "title": "Melodic Surge",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/melodic_surge.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/melodic_surge.mp3",
-      "duration": 230,
-      "addedAt": "2025-10-05T20:19:24.454Z"
+      "addedAt": "2025-09-04T22:17:27.920Z"
     },
     {
       "id": "meine_leber_sagt_nein,mein_glas_sagt_ja(remix)",
@@ -971,494 +391,34 @@
       "addedAt": "2025-09-04T22:13:01.565Z"
     },
     {
-      "id": "mein_blut_mein_wort",
-      "title": "Mein Blut, Mein Wort",
+      "id": "die_insel_bebt",
+      "title": "Die Insel Bebt",
       "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mein_blut_mein_wort.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mein_blut_mein_wort.mp3",
-      "duration": 171,
-      "addedAt": "2025-10-05T20:20:27.093Z"
+      "category": "ballermann",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/die_insel_bebt.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/die_insel_bebt.mp3",
+      "duration": 143,
+      "addedAt": "2025-09-04T22:08:33.813Z"
     },
     {
-      "id": "me_ty",
-      "title": "Me Ty",
+      "id": "nimm_dir_nen_strohhalm_und_halt_dich_fest",
+      "title": "Nimm Dir Nen Strohhalm Und Halt Dich Fest",
       "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/me_ty.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/me_ty.mp3",
-      "duration": 154,
-      "addedAt": "2025-09-15T18:40:33.215Z"
-    },
-    {
-      "id": "magisch_nah",
-      "title": "Magisch Nah",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/magisch_nah.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/magisch_nah.mp3",
-      "duration": 160,
-      "addedAt": "2025-09-04T22:17:27.920Z"
-    },
-    {
-      "id": "lost_in_the_light",
-      "title": "Lost In The Light",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/lost_in_the_light.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_light.mp3",
-      "duration": 184,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "light_up_the_night",
-      "title": "Light Up The Night",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/light_up_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/light_up_the_night.mp3",
-      "duration": 194,
-      "addedAt": "2025-09-07T10:12:15.196Z"
-    },
-    {
-      "id": "letzter_brief",
-      "title": "Letzter Brief",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/letzter_brief.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/letzter_brief.mp3",
-      "duration": 178,
-      "addedAt": "2025-10-12T08:51:47.353Z"
-    },
-    {
-      "id": "last_man_breathing",
-      "title": "Last Man Breathing",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/last_man_breathing.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/last_man_breathing.mp3",
-      "duration": 284,
-      "addedAt": "2025-10-14T21:19:35.288Z"
-    },
-    {
-      "id": "kaempferherz",
-      "title": "Kämpferherz",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kaempferherz.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kaempferherz.mp3",
-      "duration": 188,
-      "addedAt": "2025-09-08T10:18:56.604Z"
-    },
-    {
-      "id": "kur_je_me_mu",
-      "title": "Kur Je Me Mu",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kur_je_me_mu.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/kur_je_me_mu.mp3",
-      "duration": 141,
-      "addedAt": "2025-09-15T18:40:01.342Z"
-    },
-    {
-      "id": "kruzifix",
-      "title": "Kruzifix",
-      "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kruzifix.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kruzifix.mp3",
-      "duration": 217,
-      "addedAt": "2025-09-04T21:52:23.136Z"
-    },
-    {
-      "id": "komet_fuer_die_ewigkeit",
-      "title": "Komet Für Die Ewigkeit",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/komet_fuer_die_ewigkeit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/komet_fuer_die_ewigkeit.mp3",
-      "duration": 250,
-      "addedAt": "2025-09-08T09:46:48.438Z"
-    },
-    {
-      "id": "kinetic_waves",
-      "title": "Kinetic Waves",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kinetic_waves.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kinetic_waves.mp3",
-      "duration": 185,
-      "addedAt": "2025-12-07T14:29:43.751Z"
-    },
-    {
-      "id": "keine_spuren",
-      "title": "Keine Spuren",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_spuren.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_spuren.mp3",
-      "duration": 193,
-      "addedAt": "2026-02-22T14:55:55.788Z"
-    },
-    {
-      "id": "keine_liebe",
-      "title": "Keine Liebe",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_liebe.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_liebe.mp3",
-      "duration": 176,
-      "addedAt": "2025-09-27T12:26:41.028Z"
-    },
-    {
-      "id": "keine_heimat",
-      "title": "Keine Heimat",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_heimat.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_heimat.mp3",
-      "duration": 179,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "kein_wort_von_dir",
-      "title": "Kein Wort Von Dir",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kein_wort_von_dir.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kein_wort_von_dir.mp3",
-      "duration": 174,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "iron_reign",
-      "title": "Iron Reign",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_reign.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_reign.mp3",
-      "duration": 189,
-      "addedAt": "2026-02-21T23:01:28.862Z"
-    },
-    {
-      "id": "iron_pulse",
-      "title": "Iron Pulse",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_pulse.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_pulse.mp3",
-      "duration": 209,
-      "addedAt": "2025-10-14T21:18:56.946Z"
-    },
-    {
-      "id": "irgendwo_in_meiner_zeit",
-      "title": "Irgendwo In Meiner Zeit",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/irgendwo_in_meiner_zeit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/irgendwo_in_meiner_zeit.mp3",
-      "duration": 219,
-      "addedAt": "2025-09-09T02:33:06.513Z"
-    },
-    {
-      "id": "ion_drive",
-      "title": "ION Drive",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ion_drive.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ion_drive.mp3",
-      "duration": 249,
-      "addedAt": "2025-12-07T14:28:45.596Z"
-    },
-    {
-      "id": "inner_pulse",
-      "title": "Inner Pulse",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/inner_pulse.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inner_pulse.mp3",
-      "duration": 252,
-      "addedAt": "2025-12-07T14:36:46.093Z"
-    },
-    {
-      "id": "inima_mea_te_cauta",
-      "title": "Inima Mea Te Caută",
-      "artist": "R.A.L.F.",
-      "category": "romania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/inima_mea_te_cauta.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inima_mea_te_cauta.mp3",
-      "duration": 179,
-      "addedAt": "2026-03-31T18:56:55.070Z"
-    },
-    {
-      "id": "ignite_the_night",
-      "title": "Ignite The Night",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ignite_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ignite_the_night.mp3",
-      "duration": 204,
-      "addedAt": "2026-03-31T18:08:27.984Z"
-    },
-    {
-      "id": "ich_seh_dich",
-      "title": "Ich Seh Dich",
-      "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ich_seh_dich.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ich_seh_dich.mp3",
-      "duration": 232,
-      "addedAt": "2025-09-04T21:54:36.239Z"
-    },
-    {
-      "id": "hypnotic_drive",
-      "title": "Hypnotic Drive",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hypnotic_drive.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hypnotic_drive.mp3",
-      "duration": 260,
-      "addedAt": "2025-10-05T20:21:12.676Z"
-    },
-    {
-      "id": "humbem_ne",
-      "title": "Humbëm Ne",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/humbem_ne.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/humbem_ne.mp3",
-      "duration": 163,
-      "addedAt": "2025-09-15T21:26:33.365Z"
-    },
-    {
-      "id": "howard–stoff_in_tueten",
-      "title": "Howard – Stoff In Tüten",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard–stoff_in_tueten.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard–stoff_in_tueten.mp3",
-      "duration": 177,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "howard_V–ruhig_in_mir",
-      "title": "Howard V – Ruhig In Mir",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_V–ruhig_in_mir.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_V–ruhig_in_mir.mp3",
-      "duration": 219,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "howard_IV–wie_ein_schatten",
-      "title": "Howard IV – Wie Ein Schatten",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_IV–wie_ein_schatten.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_IV–wie_ein_schatten.mp3",
-      "duration": 149,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "howard_III–keine_freiheit",
-      "title": "Howard III – Keine Freiheit",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_III–keine_freiheit.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_III–keine_freiheit.mp3",
-      "duration": 181,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "howard_II–tiefer_fall",
-      "title": "Howard II – Tiefer Fall",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/howard_II–tiefer_fall.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/howard_II–tiefer_fall.mp3",
-      "duration": 190,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "hollow_eyes",
-      "title": "Hollow Eyes",
-      "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hollow_eyes.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hollow_eyes.mp3",
-      "duration": 221,
-      "addedAt": "2025-09-05T09:01:29.564Z"
-    },
-    {
-      "id": "highland_signal",
-      "title": "Highland Signal",
-      "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/highland_signal.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/highland_signal.mp3",
-      "duration": 208,
-      "addedAt": "2026-03-31T16:19:57.853Z"
-    },
-    {
-      "id": "higher_than_the_stars",
-      "title": "Higher Than The Stars",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/higher_than_the_stars.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/higher_than_the_stars.mp3",
-      "duration": 292,
-      "addedAt": "2026-02-22T18:08:31.970Z"
-    },
-    {
-      "id": "high_on_the_wire",
-      "title": "High On The Wire",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/high_on_the_wire.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/high_on_the_wire.mp3",
-      "duration": 202,
-      "addedAt": "2025-09-05T08:59:09.450Z"
-    },
-    {
-      "id": "herz_aus_flammen",
-      "title": "Herz Aus Flammen",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/herz_aus_flammen.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/herz_aus_flammen.mp3",
+      "category": "ballermann",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nimm_dir_nen_strohhalm_und_halt_dich_fest.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nimm_dir_nen_strohhalm_und_halt_dich_fest.mp3",
       "duration": 187,
-      "addedAt": "2025-09-24T10:36:57.493Z"
+      "addedAt": "2025-09-04T22:10:00.202Z"
     },
     {
-      "id": "hammerfall_within",
-      "title": "Hammerfall Within",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hammerfall_within.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hammerfall_within.mp3",
-      "duration": 199,
-      "addedAt": "2026-02-13T23:49:31.034Z"
-    },
-    {
-      "id": "halt_mich_nicht_klein",
-      "title": "Halt Mich Nicht Klein",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/halt_mich_nicht_klein.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/halt_mich_nicht_klein.mp3",
-      "duration": 201,
-      "addedAt": "2026-02-22T14:55:41.166Z"
-    },
-    {
-      "id": "gravity_shift",
-      "title": "Gravity Shift",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/gravity_shift.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/gravity_shift.mp3",
-      "duration": 277,
-      "addedAt": "2025-12-07T14:30:58.475Z"
-    },
-    {
-      "id": "grau_in_mir",
-      "title": "Grau In Mir",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/grau_in_mir.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/grau_in_mir.mp3",
-      "duration": 178,
-      "addedAt": "2026-03-31T18:18:42.540Z"
-    },
-    {
-      "id": "glut",
-      "title": "Glut",
-      "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glut.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/glut.mp3",
-      "duration": 227,
-      "addedAt": "2025-09-04T21:55:01.025Z"
-    },
-    {
-      "id": "glasherz",
-      "title": "Glasherz",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/glasherz.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/glasherz.mp3",
-      "duration": 189,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "ghost_of_the_highway",
-      "title": "Ghost Of The Highway",
+      "id": "carry_me_over_the_sky",
+      "title": "Carry Me Over The Sky",
       "artist": "R.A.L.F.",
       "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ghost_of_the_highway.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ghost_of_the_highway.mp3",
-      "duration": 259,
-      "addedAt": "2025-10-13T11:49:23.116Z"
-    },
-    {
-      "id": "get_ready_now",
-      "title": "Get Ready Now",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/get_ready_now.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/get_ready_now.mp3",
-      "duration": 194,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "fuer_den_moment",
-      "title": "Für Den Moment",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fuer_den_moment.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fuer_den_moment.mp3",
-      "duration": 249,
-      "addedAt": "2025-09-05T09:12:55.475Z"
-    },
-    {
-      "id": "frei_wie_das_feuer",
-      "title": "Frei Wie Das Feuer",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/frei_wie_das_feuer.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/frei_wie_das_feuer.mp3",
-      "duration": 162,
-      "addedAt": "2025-09-05T09:10:02.361Z"
-    },
-    {
-      "id": "freedom_is_life",
-      "title": "Freedom Is Life",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/freedom_is_life.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/freedom_is_life.mp3",
-      "duration": 192,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "forward_pressure",
-      "title": "Forward Pressure",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/forward_pressure.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/forward_pressure.mp3",
-      "duration": 254,
-      "addedAt": "2026-04-13T17:26:57.238Z"
-    },
-    {
-      "id": "forever_tonight",
-      "title": "Forever Tonight",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/forever_tonight.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/forever_tonight.mp3",
-      "duration": 232,
-      "addedAt": "2025-10-05T20:17:52.997Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_over_the_sky.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_over_the_sky.mp3",
+      "duration": 260,
+      "addedAt": "2025-09-05T08:55:46.352Z"
     },
     {
       "id": "for_the_first_time_tonight",
@@ -1471,94 +431,94 @@
       "addedAt": "2025-09-05T08:56:36.184Z"
     },
     {
-      "id": "fly_forever",
-      "title": "Fly Forever",
+      "id": "wings_tonight",
+      "title": "Wings Tonight",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fly_forever.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fly_forever.mp3",
-      "duration": 274,
-      "addedAt": "2025-12-07T14:28:27.372Z"
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wings_tonight.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wings_tonight.mp3",
+      "duration": 262,
+      "addedAt": "2025-09-05T08:57:26.886Z"
     },
     {
-      "id": "fire_within",
-      "title": "Fire Within",
+      "id": "ride_the_madness",
+      "title": "Ride The Madness",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fire_within.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fire_within.mp3",
-      "duration": 299,
-      "addedAt": "2025-09-04T21:45:39.545Z"
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ride_the_madness.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ride_the_madness.mp3",
+      "duration": 227,
+      "addedAt": "2025-09-05T08:58:14.863Z"
     },
     {
-      "id": "fire_in_the_night",
-      "title": "Fire In The Night",
+      "id": "still_howling_at_the_moon",
+      "title": "Still Howling At The Moon",
       "artist": "R.A.L.F.",
-      "category": "freestyle",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fire_in_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fire_in_the_night.mp3",
-      "duration": 174,
-      "addedAt": "2025-09-05T09:03:37.530Z"
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/still_howling_at_the_moon.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/still_howling_at_the_moon.mp3",
+      "duration": 293,
+      "addedAt": "2025-09-05T08:58:33.126Z"
     },
     {
-      "id": "feuer_und_brand",
-      "title": "Feuer Und Brand",
+      "id": "high_on_the_wire",
+      "title": "High On The Wire",
       "artist": "R.A.L.F.",
-      "category": "deutscher_hardrock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feuer_und_brand.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feuer_und_brand.mp3",
-      "duration": 181,
-      "addedAt": "2025-09-04T22:06:08.073Z"
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/high_on_the_wire.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/high_on_the_wire.mp3",
+      "duration": 202,
+      "addedAt": "2025-09-05T08:59:09.450Z"
     },
     {
-      "id": "feel_the_light",
-      "title": "Feel The Light",
+      "id": "no_room_for_your_tears",
+      "title": "No Room For Your Tears",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_light.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feel_the_light.mp3",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_room_for_your_tears.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_room_for_your_tears.mp3",
+      "duration": 259,
+      "addedAt": "2025-09-05T08:59:40.305Z"
+    },
+    {
+      "id": "broken_ways",
+      "title": "Broken Ways",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/broken_ways.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/broken_ways.mp3",
+      "duration": 211,
+      "addedAt": "2025-09-05T09:00:35.776Z"
+    },
+    {
+      "id": "out_of_control",
+      "title": "Out Of Control",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/out_of_control.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/out_of_control.mp3",
       "duration": 189,
-      "addedAt": "2025-09-04T21:45:39.545Z"
+      "addedAt": "2025-09-05T09:00:59.721Z"
     },
     {
-      "id": "feel_the_heat_tonight",
-      "title": "Feel The Heat Tonight",
+      "id": "hollow_eyes",
+      "title": "Hollow Eyes",
       "artist": "R.A.L.F.",
-      "category": "freestyle",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_heat_tonight.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feel_the_heat_tonight.mp3",
-      "duration": 152,
-      "addedAt": "2026-03-31T16:12:47.880Z"
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hollow_eyes.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hollow_eyes.mp3",
+      "duration": 221,
+      "addedAt": "2025-09-05T09:01:29.564Z"
     },
     {
-      "id": "fcb_feuer_von_froettmaning",
-      "title": "FCB - Feuer Von Fröttmaning",
+      "id": "chains_break",
+      "title": "Chains Break",
       "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fcb_feuer_von_froettmaning.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fcb_feuer_von_froettmaning.mp3",
-      "duration": 224,
-      "addedAt": "2025-12-21T04:00:15.251Z"
-    },
-    {
-      "id": "farben_der_liebe",
-      "title": "Farben Der Liebe",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/farben_der_liebe.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/farben_der_liebe.mp3",
-      "duration": 149,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "falsch_verstanden",
-      "title": "Falsch Verstanden",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falsch_verstanden.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falsch_verstanden.mp3",
-      "duration": 228,
-      "addedAt": "2025-09-04T21:45:39.545Z"
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/chains_break.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/chains_break.mp3",
+      "duration": 204,
+      "addedAt": "2025-09-05T09:02:34.158Z"
     },
     {
       "id": "falling_inside",
@@ -1571,6 +531,556 @@
       "addedAt": "2025-09-05T09:02:54.980Z"
     },
     {
+      "id": "fire_in_the_night",
+      "title": "Fire In The Night",
+      "artist": "R.A.L.F.",
+      "category": "freestyle",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fire_in_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fire_in_the_night.mp3",
+      "duration": 174,
+      "addedAt": "2025-09-05T09:03:37.530Z"
+    },
+    {
+      "id": "dont_let_me_go",
+      "title": "Don’t Let Me Go",
+      "artist": "R.A.L.F.",
+      "category": "freestyle",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dont_let_me_go.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dont_let_me_go.mp3",
+      "duration": 204,
+      "addedAt": "2025-09-05T09:03:53.339Z"
+    },
+    {
+      "id": "run_to_me_tonight",
+      "title": "Run To Me Tonight",
+      "artist": "R.A.L.F.",
+      "category": "freestyle",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/run_to_me_tonight.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/run_to_me_tonight.mp3",
+      "duration": 204,
+      "addedAt": "2025-09-05T09:04:10.860Z"
+    },
+    {
+      "id": "back_to_your_heart",
+      "title": "Back To Your Heart",
+      "artist": "R.A.L.F.",
+      "category": "freestyle",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/back_to_your_heart.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/back_to_your_heart.mp3",
+      "duration": 179,
+      "addedAt": "2025-09-05T09:04:31.902Z"
+    },
+    {
+      "id": "a_tale_of_the_piper",
+      "title": "A Tale Of The Piper",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/a_tale_of_the_piper.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/a_tale_of_the_piper.mp3",
+      "duration": 446,
+      "addedAt": "2025-09-05T09:05:53.536Z"
+    },
+    {
+      "id": "pulse_of_the_highlands",
+      "title": "Pulse Of The Highlands",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pulse_of_the_highlands.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/pulse_of_the_highlands.mp3",
+      "duration": 237,
+      "addedAt": "2025-09-05T09:06:15.234Z"
+    },
+    {
+      "id": "neoclassica",
+      "title": "NeoClassica",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neoclassica.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neoclassica.mp3",
+      "duration": 223,
+      "addedAt": "2025-09-05T09:06:37.576Z"
+    },
+    {
+      "id": "bis_zum_letzten_atemzug",
+      "title": "Bis Zum Letzten Atemzug",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bis_zum_letzten_atemzug.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bis_zum_letzten_atemzug.mp3",
+      "duration": 203,
+      "addedAt": "2025-09-05T09:09:38.227Z"
+    },
+    {
+      "id": "frei_wie_das_feuer",
+      "title": "Frei Wie Das Feuer",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/frei_wie_das_feuer.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/frei_wie_das_feuer.mp3",
+      "duration": 162,
+      "addedAt": "2025-09-05T09:10:02.361Z"
+    },
+    {
+      "id": "fuer_den_moment",
+      "title": "Für Den Moment",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fuer_den_moment.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fuer_den_moment.mp3",
+      "duration": 249,
+      "addedAt": "2025-09-05T09:12:55.475Z"
+    },
+    {
+      "id": "sehnsucht",
+      "title": "Sehnsucht",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sehnsucht.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sehnsucht.mp3",
+      "duration": 220,
+      "addedAt": "2025-09-06T03:24:02.994Z"
+    },
+    {
+      "id": "run_with_the_night",
+      "title": "Run With The Night",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/run_with_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/run_with_the_night.mp3",
+      "duration": 246,
+      "addedAt": "2025-09-06T03:42:11.131Z"
+    },
+    {
+      "id": "well_rise_together",
+      "title": "We´ll Rise Together",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/well_rise_together.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/well_rise_together.mp3",
+      "duration": 188,
+      "addedAt": "2025-09-06T14:58:45.480Z"
+    },
+    {
+      "id": "you_are_my_home",
+      "title": "You Are My Home",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/you_are_my_home.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/you_are_my_home.mp3",
+      "duration": 216,
+      "addedAt": "2025-09-06T14:59:27.905Z"
+    },
+    {
+      "id": "light_up_the_night",
+      "title": "Light Up The Night",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/light_up_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/light_up_the_night.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-07T10:12:15.196Z"
+    },
+    {
+      "id": "shadows_fade",
+      "title": "Shadows Fade",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/shadows_fade.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/shadows_fade.mp3",
+      "duration": 217,
+      "addedAt": "2025-09-07T10:12:37.422Z"
+    },
+    {
+      "id": "echoes_of_light",
+      "title": "Echoes Of Light",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_of_light.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_of_light.mp3",
+      "duration": 317,
+      "addedAt": "2025-09-07T10:12:58.917Z"
+    },
+    {
+      "id": "komet_fuer_die_ewigkeit",
+      "title": "Komet Für Die Ewigkeit",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/komet_fuer_die_ewigkeit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/komet_fuer_die_ewigkeit.mp3",
+      "duration": 250,
+      "addedAt": "2025-09-08T09:46:48.438Z"
+    },
+    {
+      "id": "kaempferherz",
+      "title": "Kämpferherz",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kaempferherz.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kaempferherz.mp3",
+      "duration": 188,
+      "addedAt": "2025-09-08T10:18:56.604Z"
+    },
+    {
+      "id": "tausend_meilen_bis_zu_dir",
+      "title": "Tausend Meilen Bis Zu Dir",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/tausend_meilen_bis_zu_dir.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/tausend_meilen_bis_zu_dir.mp3",
+      "duration": 219,
+      "addedAt": "2025-09-08T10:39:08.243Z"
+    },
+    {
+      "id": "irgendwo_in_meiner_zeit",
+      "title": "Irgendwo In Meiner Zeit",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/irgendwo_in_meiner_zeit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/irgendwo_in_meiner_zeit.mp3",
+      "duration": 219,
+      "addedAt": "2025-09-09T02:33:06.513Z"
+    },
+    {
+      "id": "dein_schloss_aus_sand",
+      "title": "Dein Schloss Aus Sand",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dein_schloss_aus_sand.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dein_schloss_aus_sand.mp3",
+      "duration": 205,
+      "addedAt": "2025-09-09T02:33:24.514Z"
+    },
+    {
+      "id": "dashni_e_re",
+      "title": "Dashni E Re",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dashni_e_re.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/dashni_e_re.mp3",
+      "duration": 138,
+      "addedAt": "2025-09-15T18:38:58.276Z"
+    },
+    {
+      "id": "dashuri_nen_diell",
+      "title": "Dashuri Nën Diell",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dashuri_nen_diell.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/dashuri_nen_diell.mp3",
+      "duration": 190,
+      "addedAt": "2025-09-15T18:39:44.558Z"
+    },
+    {
+      "id": "kur_je_me_mu",
+      "title": "Kur Je Me Mu",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kur_je_me_mu.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/kur_je_me_mu.mp3",
+      "duration": 141,
+      "addedAt": "2025-09-15T18:40:01.342Z"
+    },
+    {
+      "id": "me_ty",
+      "title": "Me Ty",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/me_ty.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/me_ty.mp3",
+      "duration": 154,
+      "addedAt": "2025-09-15T18:40:33.215Z"
+    },
+    {
+      "id": "nata_pa_fund",
+      "title": "Nata Pa Fund",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nata_pa_fund.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nata_pa_fund.mp3",
+      "duration": 138,
+      "addedAt": "2025-09-15T18:41:04.977Z"
+    },
+    {
+      "id": "sonte_je_ti",
+      "title": "Sonte Je Ti",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sonte_je_ti.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/sonte_je_ti.mp3",
+      "duration": 146,
+      "addedAt": "2025-09-15T18:41:34.454Z"
+    },
+    {
+      "id": "ti_je_festa",
+      "title": "Ti Je Festa",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ti_je_festa.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/ti_je_festa.mp3",
+      "duration": 172,
+      "addedAt": "2025-09-15T18:42:15.696Z"
+    },
+    {
+      "id": "ne_syte_e_tu",
+      "title": "Në Sytë E Tu",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ne_syte_e_tu.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/ne_syte_e_tu.mp3",
+      "duration": 193,
+      "addedAt": "2025-09-15T21:14:51.774Z"
+    },
+    {
+      "id": "rruga_te_ti",
+      "title": "Rruga Te Ti",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rruga_te_ti.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/rruga_te_ti.mp3",
+      "duration": 152,
+      "addedAt": "2025-09-15T21:16:17.896Z"
+    },
+    {
+      "id": "si_hera_e_pare",
+      "title": "Si Hera e Parë",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/si_hera_e_pare.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/si_hera_e_pare.mp3",
+      "duration": 168,
+      "addedAt": "2025-09-15T21:23:28.950Z"
+    },
+    {
+      "id": "humbem_ne",
+      "title": "Humbëm Ne",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/humbem_ne.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/humbem_ne.mp3",
+      "duration": 163,
+      "addedAt": "2025-09-15T21:26:33.365Z"
+    },
+    {
+      "id": "eternal_light",
+      "title": "Eternal Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_light.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_light.mp3",
+      "duration": 274,
+      "addedAt": "2025-09-22T20:45:44.228Z"
+    },
+    {
+      "id": "weightless_mind",
+      "title": "Weightless Mind",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/weightless_mind.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/weightless_mind.mp3",
+      "duration": 236,
+      "addedAt": "2025-09-22T20:59:30.430Z"
+    },
+    {
+      "id": "herz_aus_flammen",
+      "title": "Herz Aus Flammen",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/herz_aus_flammen.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/herz_aus_flammen.mp3",
+      "duration": 187,
+      "addedAt": "2025-09-24T10:36:57.493Z"
+    },
+    {
+      "id": "verlorene_zeit",
+      "title": "Verlorene Zeit",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/verlorene_zeit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/verlorene_zeit.mp3",
+      "duration": 157,
+      "addedAt": "2025-09-26T00:12:07.261Z"
+    },
+    {
+      "id": "verraten_vergessen",
+      "title": "Verraten & vergessen",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/verraten_vergessen.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/verraten_vergessen.mp3",
+      "duration": 171,
+      "addedAt": "2025-09-26T00:14:55.944Z"
+    },
+    {
+      "id": "sternenklare_nacht",
+      "title": "Sternenklare Nacht",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sternenklare_nacht.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sternenklare_nacht.mp3",
+      "duration": 150,
+      "addedAt": "2025-09-26T10:02:47.546Z"
+    },
+    {
+      "id": "das_echo_der_blauen_berge",
+      "title": "Das Echo Der Blauen Berge",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/das_echo_der_blauen_berge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/das_echo_der_blauen_berge.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-26T10:09:14.843Z"
+    },
+    {
+      "id": "rise_above",
+      "title": "Rise Above",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_above.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_above.mp3",
+      "duration": 264,
+      "addedAt": "2025-09-26T10:13:03.457Z"
+    },
+    {
+      "id": "elevation",
+      "title": "Elevation",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/elevation.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/elevation.mp3",
+      "duration": 393,
+      "addedAt": "2025-09-26T10:39:02.074Z"
+    },
+    {
+      "id": "soaring_waves",
+      "title": "Soaring Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/soaring_waves.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/soaring_waves.mp3",
+      "duration": 242,
+      "addedAt": "2025-09-26T10:50:22.386Z"
+    },
+    {
+      "id": "aurora_sky",
+      "title": "Aurora Sky",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/aurora_sky.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/aurora_sky.mp3",
+      "duration": 337,
+      "addedAt": "2025-09-26T11:10:41.908Z"
+    },
+    {
+      "id": "break_the_silence",
+      "title": "Break The Silence",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_silence.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_silence.mp3",
+      "duration": 191,
+      "addedAt": "2025-09-26T11:15:04.621Z"
+    },
+    {
+      "id": "keine_liebe",
+      "title": "Keine Liebe",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_liebe.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_liebe.mp3",
+      "duration": 176,
+      "addedAt": "2025-09-27T12:26:41.028Z"
+    },
+    {
+      "id": "nu_vreau_sa_pleci",
+      "title": "Nu Vreau Să Pleci",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nu_vreau_sa_pleci.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/nu_vreau_sa_pleci.mp3",
+      "duration": 212,
+      "addedAt": "2025-09-28T01:48:25.220Z"
+    },
+    {
+      "id": "ritmul_noptii",
+      "title": "Ritmul nopții",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ritmul_noptii.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/ritmul_noptii.mp3",
+      "duration": 194,
+      "addedAt": "2025-09-28T01:49:25.419Z"
+    },
+    {
+      "id": "satul_meu",
+      "title": "Satul Meu",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/satul_meu.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/romania/satul_meu.mp3",
+      "duration": 152,
+      "addedAt": "2025-09-28T01:49:53.718Z"
+    },
+    {
+      "id": "wir_stehn_bereit",
+      "title": "Wir Steh´n Bereit",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wir_stehn_bereit.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wir_stehn_bereit.mp3",
+      "duration": 184,
+      "addedAt": "2025-10-05T20:15:15.600Z"
+    },
+    {
+      "id": "eternal_flow",
+      "title": "Eternal Flow",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_flow.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_flow.mp3",
+      "duration": 185,
+      "addedAt": "2025-10-05T20:17:07.831Z"
+    },
+    {
+      "id": "forever_tonight",
+      "title": "Forever Tonight",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/forever_tonight.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/forever_tonight.mp3",
+      "duration": 232,
+      "addedAt": "2025-10-05T20:17:52.997Z"
+    },
+    {
+      "id": "melodic_surge",
+      "title": "Melodic Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/melodic_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/melodic_surge.mp3",
+      "duration": 230,
+      "addedAt": "2025-10-05T20:19:24.454Z"
+    },
+    {
+      "id": "mein_blut_mein_wort",
+      "title": "Mein Blut, Mein Wort",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mein_blut_mein_wort.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mein_blut_mein_wort.mp3",
+      "duration": 171,
+      "addedAt": "2025-10-05T20:20:27.093Z"
+    },
+    {
+      "id": "hypnotic_drive",
+      "title": "Hypnotic Drive",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hypnotic_drive.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hypnotic_drive.mp3",
+      "duration": 260,
+      "addedAt": "2025-10-05T20:21:12.676Z"
+    },
+    {
       "id": "fading_into_you",
       "title": "Fading Into You",
       "artist": "R.A.L.F.",
@@ -1579,6 +1089,436 @@
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fading_into_you.mp3",
       "duration": 261,
       "addedAt": "2025-10-05T20:34:49.606Z"
+    },
+    {
+      "id": "letzter_brief",
+      "title": "Letzter Brief",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/letzter_brief.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/letzter_brief.mp3",
+      "duration": 178,
+      "addedAt": "2025-10-12T08:51:47.353Z"
+    },
+    {
+      "id": "spiegelbild",
+      "title": "Spiegelbild",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/spiegelbild.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/spiegelbild.mp3",
+      "duration": 182,
+      "addedAt": "2025-10-12T08:52:28.803Z"
+    },
+    {
+      "id": "time_to_believe",
+      "title": "Time To Believe",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/time_to_believe.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/time_to_believe.mp3",
+      "duration": 255,
+      "addedAt": "2025-10-12T08:53:03.850Z"
+    },
+    {
+      "id": "was_von_dir_bleibt",
+      "title": "Was Von Dir Bleibt",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/was_von_dir_bleibt.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/was_von_dir_bleibt.mp3",
+      "duration": 134,
+      "addedAt": "2025-10-12T08:53:50.299Z"
+    },
+    {
+      "id": "wings_of_light",
+      "title": "Wings Of Light",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wings_of_light.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wings_of_light.mp3",
+      "duration": 273,
+      "addedAt": "2025-10-12T08:54:21.225Z"
+    },
+    {
+      "id": "neon_reign",
+      "title": "Neon Reign",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_reign.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_reign.mp3",
+      "duration": 214,
+      "addedAt": "2025-10-13T08:35:54.537Z"
+    },
+    {
+      "id": "voltage_realm",
+      "title": "Voltage Realm",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/voltage_realm.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/voltage_realm.mp3",
+      "duration": 228,
+      "addedAt": "2025-10-13T08:37:40.809Z"
+    },
+    {
+      "id": "rise_of_energy",
+      "title": "Rise Of Energy",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_of_energy.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_of_energy.mp3",
+      "duration": 253,
+      "addedAt": "2025-10-13T08:38:17.136Z"
+    },
+    {
+      "id": "ghost_of_the_highway",
+      "title": "Ghost Of The Highway",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ghost_of_the_highway.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ghost_of_the_highway.mp3",
+      "duration": 259,
+      "addedAt": "2025-10-13T11:49:23.116Z"
+    },
+    {
+      "id": "beyond_the_stars",
+      "title": "Beyond The Stars",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_stars.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_stars.mp3",
+      "duration": 241,
+      "addedAt": "2025-10-14T21:14:57.855Z"
+    },
+    {
+      "id": "black_rain_city",
+      "title": "Black Rain City",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/black_rain_city.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/black_rain_city.mp3",
+      "duration": 267,
+      "addedAt": "2025-10-14T21:15:36.734Z"
+    },
+    {
+      "id": "born_to_crash",
+      "title": "Born To Crash",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/born_to_crash.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/born_to_crash.mp3",
+      "duration": 233,
+      "addedAt": "2025-10-14T21:16:11.379Z"
+    },
+    {
+      "id": "break_the_shadows",
+      "title": "Break The Shadows",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_shadows.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_shadows.mp3",
+      "duration": 214,
+      "addedAt": "2025-10-14T21:16:57.331Z"
+    },
+    {
+      "id": "bulletproof_lies",
+      "title": "Bulletproof Lies",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bulletproof_lies.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bulletproof_lies.mp3",
+      "duration": 228,
+      "addedAt": "2025-10-14T21:17:18.729Z"
+    },
+    {
+      "id": "electric_horizon",
+      "title": "Electric Horizon",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/electric_horizon.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/electric_horizon.mp3",
+      "duration": 174,
+      "addedAt": "2025-10-14T21:18:09.439Z"
+    },
+    {
+      "id": "iron_pulse",
+      "title": "Iron Pulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_pulse.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_pulse.mp3",
+      "duration": 209,
+      "addedAt": "2025-10-14T21:18:56.946Z"
+    },
+    {
+      "id": "last_man_breathing",
+      "title": "Last Man Breathing",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/last_man_breathing.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/last_man_breathing.mp3",
+      "duration": 284,
+      "addedAt": "2025-10-14T21:19:35.288Z"
+    },
+    {
+      "id": "no_way_out",
+      "title": "No Way Out",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_out.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_out.mp3",
+      "duration": 184,
+      "addedAt": "2025-10-14T21:20:50.093Z"
+    },
+    {
+      "id": "nova_frequency",
+      "title": "Nova Frequency",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nova_frequency.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nova_frequency.mp3",
+      "duration": 236,
+      "addedAt": "2025-10-14T21:21:07.746Z"
+    },
+    {
+      "id": "midnight_surge",
+      "title": "Midnight Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_surge.mp3",
+      "duration": 246,
+      "addedAt": "2025-10-14T21:21:58.694Z"
+    },
+    {
+      "id": "dead_end_saint",
+      "title": "Dead End Saint",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dead_end_saint.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dead_end_saint.mp3",
+      "duration": 272,
+      "addedAt": "2025-10-14T21:22:17.986Z"
+    },
+    {
+      "id": "neon_dominion",
+      "title": "Neon Dominion",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_dominion.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_dominion.mp3",
+      "duration": 234,
+      "addedAt": "2025-10-14T21:22:51.376Z"
+    },
+    {
+      "id": "still_here",
+      "title": "Still Here",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/still_here.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/still_here.mp3",
+      "duration": 194,
+      "addedAt": "2025-11-11T18:55:01.198Z"
+    },
+    {
+      "id": "wenn_der_abend_leiser_wird",
+      "title": "Wenn Der Abend Leiser Wird",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wenn_der_abend_leiser_wird.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wenn_der_abend_leiser_wird.mp3",
+      "duration": 167,
+      "addedAt": "2025-11-11T19:01:40.566Z"
+    },
+    {
+      "id": "so_wie_du_mich_siehst",
+      "title": "So Wie Du Mich Siehst",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/so_wie_du_mich_siehst.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/so_wie_du_mich_siehst.mp3",
+      "duration": 169,
+      "addedAt": "2025-11-11T19:03:38.408Z"
+    },
+    {
+      "id": "zwischen_den_tagen",
+      "title": "Zwischen Den Tagen",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwischen_den_tagen.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwischen_den_tagen.mp3",
+      "duration": 140,
+      "addedAt": "2025-11-11T19:03:59.246Z"
+    },
+    {
+      "id": "carry_me_through",
+      "title": "Carry Me Through",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_through.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_through.mp3",
+      "duration": 178,
+      "addedAt": "2025-11-11T19:13:34.017Z"
+    },
+    {
+      "id": "stand_in_the_sun",
+      "title": "Stand In The Sun",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stand_in_the_sun.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stand_in_the_sun.mp3",
+      "duration": 189,
+      "addedAt": "2025-11-11T19:13:58.825Z"
+    },
+    {
+      "id": "stronger_now",
+      "title": "Stronger Now",
+      "artist": "R.A.L.F.",
+      "category": "pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stronger_now.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stronger_now.mp3",
+      "duration": 180,
+      "addedAt": "2025-11-11T19:22:09.546Z"
+    },
+    {
+      "id": "break_the_frame",
+      "title": "Break The Frame",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_frame.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_frame.mp3",
+      "duration": 159,
+      "addedAt": "2025-11-11T19:46:01.556Z"
+    },
+    {
+      "id": "razor_line",
+      "title": "Razor Line",
+      "artist": "R.A.L.F.",
+      "category": "classic_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/razor_line.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/razor_line.mp3",
+      "duration": 244,
+      "addedAt": "2025-11-11T19:46:22.011Z"
+    },
+    {
+      "id": "blades_of_the_storm",
+      "title": "Blades Of The Storm",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/blades_of_the_storm.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/blades_of_the_storm.mp3",
+      "duration": 177,
+      "addedAt": "2025-11-11T19:47:36.315Z"
+    },
+    {
+      "id": "turn_the_lights_up",
+      "title": "Turn The Lights Up",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/turn_the_lights_up.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/turn_the_lights_up.mp3",
+      "duration": 222,
+      "addedAt": "2025-12-07T14:15:15.881Z"
+    },
+    {
+      "id": "zwei_herzen_ein_gefuehl",
+      "title": "Zwei Herzen – Ein Gefühl",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zwei_herzen_ein_gefuehl.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zwei_herzen_ein_gefuehl.mp3",
+      "duration": 208,
+      "addedAt": "2025-12-07T14:27:59.786Z"
+    },
+    {
+      "id": "fly_forever",
+      "title": "Fly Forever",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fly_forever.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fly_forever.mp3",
+      "duration": 274,
+      "addedAt": "2025-12-07T14:28:27.372Z"
+    },
+    {
+      "id": "ion_drive",
+      "title": "ION Drive",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ion_drive.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ion_drive.mp3",
+      "duration": 249,
+      "addedAt": "2025-12-07T14:28:45.596Z"
+    },
+    {
+      "id": "quantum_surge",
+      "title": "Quantum Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_surge.mp3",
+      "duration": 269,
+      "addedAt": "2025-12-07T14:29:05.599Z"
+    },
+    {
+      "id": "quantum_drift",
+      "title": "Quantum Drift",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/quantum_drift.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/quantum_drift.mp3",
+      "duration": 202,
+      "addedAt": "2025-12-07T14:29:32.691Z"
+    },
+    {
+      "id": "kinetic_waves",
+      "title": "Kinetic Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/kinetic_waves.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/kinetic_waves.mp3",
+      "duration": 185,
+      "addedAt": "2025-12-07T14:29:43.751Z"
+    },
+    {
+      "id": "neon_velocity",
+      "title": "Neon Velocity",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_velocity.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_velocity.mp3",
+      "duration": 226,
+      "addedAt": "2025-12-07T14:30:04.391Z"
+    },
+    {
+      "id": "neon_heartline",
+      "title": "Neon Heartline",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/neon_heartline.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/neon_heartline.mp3",
+      "duration": 253,
+      "addedAt": "2025-12-07T14:30:19.384Z"
+    },
+    {
+      "id": "solar_impulse",
+      "title": "Solar Impulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/solar_impulse.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/solar_impulse.mp3",
+      "duration": 254,
+      "addedAt": "2025-12-07T14:30:42.902Z"
+    },
+    {
+      "id": "gravity_shift",
+      "title": "Gravity Shift",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/gravity_shift.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/gravity_shift.mp3",
+      "duration": 277,
+      "addedAt": "2025-12-07T14:30:58.475Z"
     },
     {
       "id": "euphoria_rising",
@@ -1601,224 +1541,34 @@
       "addedAt": "2025-12-07T14:34:18.858Z"
     },
     {
-      "id": "eternal_light",
-      "title": "Eternal Light",
+      "id": "touch_the_fire",
+      "title": "Touch The Fire",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_light.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_light.mp3",
-      "duration": 274,
-      "addedAt": "2025-09-22T20:45:44.228Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/touch_the_fire.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/touch_the_fire.mp3",
+      "duration": 299,
+      "addedAt": "2025-12-07T14:34:51.822Z"
     },
     {
-      "id": "eternal_flow",
-      "title": "Eternal Flow",
+      "id": "rise_into_the_sun",
+      "title": "Rise Into The Sun",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_flow.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_flow.mp3",
-      "duration": 185,
-      "addedAt": "2025-10-05T20:17:07.831Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/rise_into_the_sun.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/rise_into_the_sun.mp3",
+      "duration": 208,
+      "addedAt": "2025-12-07T14:35:15.912Z"
     },
     {
-      "id": "eternal_flame",
-      "title": "Eternal Flame",
+      "id": "xmas_under_neon_skies",
+      "title": "X-Mas Under Neon Skies",
       "artist": "R.A.L.F.",
       "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_flame.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_flame.mp3",
-      "duration": 242,
-      "addedAt": "2026-03-25T12:18:42.792Z"
-    },
-    {
-      "id": "eternal_dawn",
-      "title": "Eternal Dawn",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_dawn.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_dawn.mp3",
-      "duration": 188,
-      "addedAt": "2026-03-01T11:46:48.090Z"
-    },
-    {
-      "id": "elevation",
-      "title": "Elevation",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/elevation.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/elevation.mp3",
-      "duration": 393,
-      "addedAt": "2025-09-26T10:39:02.074Z"
-    },
-    {
-      "id": "electric_horizon",
-      "title": "Electric Horizon",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/electric_horizon.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/electric_horizon.mp3",
-      "duration": 174,
-      "addedAt": "2025-10-14T21:18:09.439Z"
-    },
-    {
-      "id": "ein_moment_fuer_immer",
-      "title": "Ein Moment Für Immer",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ein_moment_fuer_immer.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ein_moment_fuer_immer.mp3",
-      "duration": 179,
-      "addedAt": "2026-03-31T22:16:08.664Z"
-    },
-    {
-      "id": "edge_of_tomorrow",
-      "title": "Edge Of Tomorrow",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_tomorrow.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_tomorrow.mp3",
-      "duration": 243,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "edge_of_the_fire",
-      "title": "Edge Of The Fire",
-      "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_the_fire.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_the_fire.mp3",
-      "duration": 209,
-      "addedAt": "2026-03-31T16:18:52.296Z"
-    },
-    {
-      "id": "edge_of_control",
-      "title": "Edge Of Control",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_control.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_control.mp3",
-      "duration": 144,
-      "addedAt": "2026-09-27T18:37:58.670Z"
-    },
-    {
-      "id": "echoes_of_light",
-      "title": "Echoes Of Light",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_of_light.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_of_light.mp3",
-      "duration": 317,
-      "addedAt": "2025-09-07T10:12:58.917Z"
-    },
-    {
-      "id": "echoes_in_time",
-      "title": "Echoes In Time",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_in_time.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_in_time.mp3",
-      "duration": 174,
-      "addedAt": "2026-02-23T01:19:55.700Z"
-    },
-    {
-      "id": "echo_flow",
-      "title": "Echo Flow",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echo_flow.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echo_flow.mp3",
-      "duration": 213,
-      "addedAt": "2026-03-31T16:11:42.549Z"
-    },
-    {
-      "id": "dont_let_me_go",
-      "title": "Don’t Let Me Go",
-      "artist": "R.A.L.F.",
-      "category": "freestyle",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dont_let_me_go.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dont_let_me_go.mp3",
-      "duration": 204,
-      "addedAt": "2025-09-05T09:03:53.339Z"
-    },
-    {
-      "id": "die_insel_bebt",
-      "title": "Die Insel Bebt",
-      "artist": "R.A.L.F.",
-      "category": "ballermann",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/die_insel_bebt.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/die_insel_bebt.mp3",
-      "duration": 143,
-      "addedAt": "2025-09-04T22:08:33.813Z"
-    },
-    {
-      "id": "dein_schloss_aus_sand",
-      "title": "Dein Schloss Aus Sand",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dein_schloss_aus_sand.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dein_schloss_aus_sand.mp3",
-      "duration": 205,
-      "addedAt": "2025-09-09T02:33:24.514Z"
-    },
-    {
-      "id": "dead_end_saint",
-      "title": "Dead End Saint",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dead_end_saint.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dead_end_saint.mp3",
-      "duration": 272,
-      "addedAt": "2025-10-14T21:22:17.986Z"
-    },
-    {
-      "id": "dashuri_nen_diell",
-      "title": "Dashuri Nën Diell",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dashuri_nen_diell.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/dashuri_nen_diell.mp3",
-      "duration": 190,
-      "addedAt": "2025-09-15T18:39:44.558Z"
-    },
-    {
-      "id": "dashni_e_re",
-      "title": "Dashni E Re",
-      "artist": "R.A.L.F.",
-      "category": "albania",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dashni_e_re.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/dashni_e_re.mp3",
-      "duration": 138,
-      "addedAt": "2025-09-15T18:38:58.276Z"
-    },
-    {
-      "id": "das_echo_der_blauen_berge",
-      "title": "Das Echo Der Blauen Berge",
-      "artist": "R.A.L.F.",
-      "category": "schlager",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/das_echo_der_blauen_berge.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/das_echo_der_blauen_berge.mp3",
-      "duration": 194,
-      "addedAt": "2025-09-26T10:09:14.843Z"
-    },
-    {
-      "id": "darkline_momentum",
-      "title": "Darkline Momentum",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/darkline_momentum.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/darkline_momentum.mp3",
-      "duration": 291,
-      "addedAt": "2026-04-13T17:27:37.027Z"
-    },
-    {
-      "id": "dancefloor_love",
-      "title": "Dancefloor Love",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/dancefloor_love.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/dancefloor_love.mp3",
-      "duration": 175,
-      "addedAt": "2025-09-04T21:45:39.545Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/xmas_under_neon_skies.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/xmas_under_neon_skies.mp3",
+      "duration": 297,
+      "addedAt": "2025-12-07T14:36:01.481Z"
     },
     {
       "id": "crystal_veins",
@@ -1831,6 +1581,276 @@
       "addedAt": "2025-12-07T14:36:27.571Z"
     },
     {
+      "id": "inner_pulse",
+      "title": "Inner Pulse",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/inner_pulse.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inner_pulse.mp3",
+      "duration": 252,
+      "addedAt": "2025-12-07T14:36:46.093Z"
+    },
+    {
+      "id": "banjo_in_the_night",
+      "title": "Banjo In The Night",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/banjo_in_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/banjo_in_the_night.mp3",
+      "duration": 282,
+      "addedAt": "2025-12-18T20:24:22.776Z"
+    },
+    {
+      "id": "fcb_feuer_von_froettmaning",
+      "title": "FCB - Feuer Von Fröttmaning",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/fcb_feuer_von_froettmaning.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/fcb_feuer_von_froettmaning.mp3",
+      "duration": 224,
+      "addedAt": "2025-12-21T04:00:15.251Z"
+    },
+    {
+      "id": "nicht_mein_fest",
+      "title": "Nicht Mein Fest",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nicht_mein_fest.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nicht_mein_fest.mp3",
+      "duration": 261,
+      "addedAt": "2025-12-22T16:16:28.065Z"
+    },
+    {
+      "id": "waechter_der_nacht",
+      "title": "Wächter Der Nacht",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/waechter_der_nacht.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/waechter_der_nacht.mp3",
+      "duration": 162,
+      "addedAt": "2026-02-13T23:48:23.478Z"
+    },
+    {
+      "id": "nata_jone",
+      "title": "Nata Jonë",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nata_jone.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nata_jone.mp3",
+      "duration": 171,
+      "addedAt": "2026-03-31T16:16:48.647Z"
+    },
+    {
+      "id": "temporal_sequence",
+      "title": "Temporal Sequence",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/temporal_sequence.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/temporal_sequence.mp3",
+      "duration": 197,
+      "addedAt": "2026-02-13T23:49:14.923Z"
+    },
+    {
+      "id": "nen_dritat_e_nates",
+      "title": "Nën Dritat E Natës",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nen_dritat_e_nates.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/nen_dritat_e_nates.mp3",
+      "duration": 160,
+      "addedAt": "2026-03-31T16:17:27.077Z"
+    },
+    {
+      "id": "hammerfall_within",
+      "title": "Hammerfall Within",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/hammerfall_within.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/hammerfall_within.mp3",
+      "duration": 199,
+      "addedAt": "2026-02-13T23:49:31.034Z"
+    },
+    {
+      "id": "riot_engine",
+      "title": "Riot Engine",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/riot_engine.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/riot_engine.mp3",
+      "duration": 215,
+      "addedAt": "2026-02-21T23:00:25.985Z"
+    },
+    {
+      "id": "iron_reign",
+      "title": "Iron Reign",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/iron_reign.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/iron_reign.mp3",
+      "duration": 189,
+      "addedAt": "2026-02-21T23:01:28.862Z"
+    },
+    {
+      "id": "nur_routine",
+      "title": "Nur Routine",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/nur_routine.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/nur_routine.mp3",
+      "duration": 157,
+      "addedAt": "2026-02-21T23:28:31.636Z"
+    },
+    {
+      "id": "halt_mich_nicht_klein",
+      "title": "Halt Mich Nicht Klein",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/halt_mich_nicht_klein.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/halt_mich_nicht_klein.mp3",
+      "duration": 201,
+      "addedAt": "2026-02-22T14:55:41.166Z"
+    },
+    {
+      "id": "keine_spuren",
+      "title": "Keine Spuren",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/keine_spuren.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/keine_spuren.mp3",
+      "duration": 193,
+      "addedAt": "2026-02-22T14:55:55.788Z"
+    },
+    {
+      "id": "inima_mea_te_cauta",
+      "title": "Inima Mea Te Caută",
+      "artist": "R.A.L.F.",
+      "category": "romania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/inima_mea_te_cauta.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/inima_mea_te_cauta.mp3",
+      "duration": 179,
+      "addedAt": "2026-03-31T18:56:55.070Z"
+    },
+    {
+      "id": "power_of_the_night",
+      "title": "Power Of The Night",
+      "artist": "R.A.L.F.",
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/power_of_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/power_of_the_night.mp3",
+      "duration": 184,
+      "addedAt": "2026-03-31T16:18:02.230Z"
+    },
+    {
+      "id": "war_nie_geplant",
+      "title": "War Nie Geplant",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/war_nie_geplant.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/war_nie_geplant.mp3",
+      "duration": 147,
+      "addedAt": "2026-03-31T18:46:09.297Z"
+    },
+    {
+      "id": "grau_in_mir",
+      "title": "Grau In Mir",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_pop",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/grau_in_mir.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/grau_in_mir.mp3",
+      "duration": 178,
+      "addedAt": "2026-03-31T18:18:42.540Z"
+    },
+    {
+      "id": "steelheart_rising",
+      "title": "Steelheart Rising",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/steelheart_rising.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/steelheart_rising.mp3",
+      "duration": 209,
+      "addedAt": "2026-02-23T01:20:05.790Z"
+    },
+    {
+      "id": "feel_the_heat_tonight",
+      "title": "Feel The Heat Tonight",
+      "artist": "R.A.L.F.",
+      "category": "freestyle",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/feel_the_heat_tonight.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/feel_the_heat_tonight.mp3",
+      "duration": 152,
+      "addedAt": "2026-03-31T16:12:47.880Z"
+    },
+    {
+      "id": "mind_horizon",
+      "title": "Mind Horizon",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mind_horizon.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/mind_horizon.mp3",
+      "duration": 210,
+      "addedAt": "2026-02-23T01:19:45.894Z"
+    },
+    {
+      "id": "sendeschluss",
+      "title": "Sendeschluss",
+      "artist": "R.A.L.F.",
+      "category": "deutscher_hardrock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/sendeschluss.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/sendeschluss.mp3",
+      "duration": 187,
+      "addedAt": "2026-03-31T16:13:14.101Z"
+    },
+    {
+      "id": "midnight_radiance",
+      "title": "Midnight Radiance",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/midnight_radiance.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/midnight_radiance.mp3",
+      "duration": 306,
+      "addedAt": "2026-02-14T19:21:59.595Z"
+    },
+    {
+      "id": "zu_weit_gegangen",
+      "title": "Zu Weit Gegangen",
+      "artist": "R.A.L.F.",
+      "category": "deutsch_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zu_weit_gegangen.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/zu_weit_gegangen.mp3",
+      "duration": 177,
+      "addedAt": "2026-03-31T18:02:32.777Z"
+    },
+    {
+      "id": "stormbreaker",
+      "title": "Stormbreaker",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/stormbreaker.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/stormbreaker.mp3",
+      "duration": 209,
+      "addedAt": "2026-03-31T17:44:41.740Z"
+    },
+    {
+      "id": "edge_of_the_fire",
+      "title": "Edge Of The Fire",
+      "artist": "R.A.L.F.",
+      "category": "alternative_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_the_fire.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_the_fire.mp3",
+      "duration": 209,
+      "addedAt": "2026-03-31T16:18:52.296Z"
+    },
+    {
+      "id": "eternal_flame",
+      "title": "Eternal Flame",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_flame.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_flame.mp3",
+      "duration": 242,
+      "addedAt": "2026-03-25T12:18:42.792Z"
+    },
+    {
       "id": "close_to_the_edge",
       "title": "Close To The Edge",
       "artist": "R.A.L.F.",
@@ -1841,34 +1861,14 @@
       "addedAt": "2026-03-31T16:19:37.800Z"
     },
     {
-      "id": "chains_break",
-      "title": "Chains Break",
+      "id": "highland_signal",
+      "title": "Highland Signal",
       "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/chains_break.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/chains_break.mp3",
-      "duration": 204,
-      "addedAt": "2025-09-05T09:02:34.158Z"
-    },
-    {
-      "id": "carry_me_through",
-      "title": "Carry Me Through",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_through.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_through.mp3",
-      "duration": 178,
-      "addedAt": "2025-11-11T19:13:34.017Z"
-    },
-    {
-      "id": "carry_me_over_the_sky",
-      "title": "Carry Me Over The Sky",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/carry_me_over_the_sky.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/carry_me_over_the_sky.mp3",
-      "duration": 260,
-      "addedAt": "2025-09-05T08:55:46.352Z"
+      "category": "other",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/highland_signal.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/highland_signal.mp3",
+      "duration": 208,
+      "addedAt": "2026-03-31T16:19:57.853Z"
     },
     {
       "id": "call_of_the_glen",
@@ -1891,164 +1891,44 @@
       "addedAt": "2026-03-31T18:19:08.718Z"
     },
     {
-      "id": "bulletproof_lies",
-      "title": "Bulletproof Lies",
+      "id": "eternal_dawn",
+      "title": "Eternal Dawn",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eternal_dawn.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eternal_dawn.mp3",
+      "duration": 188,
+      "addedAt": "2026-03-01T11:46:48.090Z"
+    },
+    {
+      "id": "static_blood",
+      "title": "Static Blood",
       "artist": "R.A.L.F.",
       "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bulletproof_lies.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bulletproof_lies.mp3",
-      "duration": 228,
-      "addedAt": "2025-10-14T21:17:18.729Z"
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/static_blood.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/static_blood.mp3",
+      "duration": 207,
+      "addedAt": "2026-03-31T18:47:40.034Z"
     },
     {
-      "id": "broken_ways",
-      "title": "Broken Ways",
+      "id": "ein_moment_fuer_immer",
+      "title": "Ein Moment Für Immer",
       "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/broken_ways.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/broken_ways.mp3",
-      "duration": 211,
-      "addedAt": "2025-09-05T09:00:35.776Z"
-    },
-    {
-      "id": "break_the_silence",
-      "title": "Break The Silence",
-      "artist": "R.A.L.F.",
-      "category": "pop",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_silence.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_silence.mp3",
-      "duration": 191,
-      "addedAt": "2025-09-26T11:15:04.621Z"
-    },
-    {
-      "id": "break_the_shadows",
-      "title": "Break The Shadows",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_shadows.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_shadows.mp3",
-      "duration": 214,
-      "addedAt": "2025-10-14T21:16:57.331Z"
-    },
-    {
-      "id": "break_the_frame",
-      "title": "Break The Frame",
-      "artist": "R.A.L.F.",
-      "category": "alternative_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/break_the_frame.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/break_the_frame.mp3",
-      "duration": 159,
-      "addedAt": "2025-11-11T19:46:01.556Z"
-    },
-    {
-      "id": "born_to_crash",
-      "title": "Born To Crash",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/born_to_crash.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/born_to_crash.mp3",
-      "duration": 233,
-      "addedAt": "2025-10-14T21:16:11.379Z"
-    },
-    {
-      "id": "blades_of_the_storm",
-      "title": "Blades Of The Storm",
-      "artist": "R.A.L.F.",
-      "category": "heavy_metal_hard_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/blades_of_the_storm.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/blades_of_the_storm.mp3",
-      "duration": 177,
-      "addedAt": "2025-11-11T19:47:36.315Z"
-    },
-    {
-      "id": "black_rain_city",
-      "title": "Black Rain City",
-      "artist": "R.A.L.F.",
-      "category": "classic_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/black_rain_city.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/black_rain_city.mp3",
-      "duration": 267,
-      "addedAt": "2025-10-14T21:15:36.734Z"
-    },
-    {
-      "id": "bis_zum_letzten_atemzug",
-      "title": "Bis Zum Letzten Atemzug",
-      "artist": "R.A.L.F.",
-      "category": "deutsch_rock",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bis_zum_letzten_atemzug.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bis_zum_letzten_atemzug.mp3",
-      "duration": 203,
-      "addedAt": "2025-09-05T09:09:38.227Z"
-    },
-    {
-      "id": "beyond_the_stars",
-      "title": "Beyond The Stars",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_stars.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_stars.mp3",
-      "duration": 241,
-      "addedAt": "2025-10-14T21:14:57.855Z"
-    },
-    {
-      "id": "beyond_the_silence",
-      "title": "Beyond the Silence",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/beyond_the_silence.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/beyond_the_silence.mp3",
-      "duration": 276,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "bass_like_fire",
-      "title": "Bass Like Fire",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/bass_like_fire.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/bass_like_fire.mp3",
-      "duration": 276,
-      "addedAt": "2025-09-04T21:45:39.545Z"
-    },
-    {
-      "id": "banjo_in_the_night",
-      "title": "Banjo In The Night",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/banjo_in_the_night.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/banjo_in_the_night.mp3",
-      "duration": 282,
-      "addedAt": "2025-12-18T20:24:22.776Z"
-    },
-    {
-      "id": "back_to_your_heart",
-      "title": "Back To Your Heart",
-      "artist": "R.A.L.F.",
-      "category": "freestyle",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/back_to_your_heart.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/back_to_your_heart.mp3",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ein_moment_fuer_immer.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ein_moment_fuer_immer.mp3",
       "duration": 179,
-      "addedAt": "2025-09-05T09:04:31.902Z"
+      "addedAt": "2026-03-31T22:16:08.664Z"
     },
     {
-      "id": "aurora_sky",
-      "title": "Aurora Sky",
+      "id": "mos_u_lodh",
+      "title": "Mos U Lodh",
       "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/aurora_sky.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/aurora_sky.mp3",
-      "duration": 337,
-      "addedAt": "2025-09-26T11:10:41.908Z"
-    },
-    {
-      "id": "augen_sagen_mehr",
-      "title": "Augen Sagen Mehr",
-      "artist": "R.A.L.F.",
-      "category": "deutschrap",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/augen_sagen_mehr.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/augen_sagen_mehr.mp3",
-      "duration": 124,
-      "addedAt": "2025-09-04T21:45:39.545Z"
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/mos_u_lodh.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/mos_u_lodh.mp3",
+      "duration": 156,
+      "addedAt": "2026-04-27T22:07:39.047Z"
     },
     {
       "id": "afrohu",
@@ -2061,24 +1941,124 @@
       "addedAt": "2026-04-13T18:49:55.317Z"
     },
     {
+      "id": "pa_ty",
+      "title": "Pa Ty",
+      "artist": "R.A.L.F.",
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pa_ty.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/pa_ty.mp3",
+      "duration": 157,
+      "addedAt": "2026-04-13T17:26:20.725Z"
+    },
+    {
       "id": "afer_dhe_larg",
-      "title": "Afer Dhe Larg",
+      "title": "Afër Dhe Larg",
       "artist": "R.A.L.F.",
       "category": "albania",
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/afer_dhe_larg.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/afer_dhe_larg.mp3",
       "duration": 147,
-      "addedAt": "2026-09-26T22:28:21.912Z"
+      "addedAt": "2026-04-27T22:11:10.468Z"
     },
     {
-      "id": "a_tale_of_the_piper",
-      "title": "A Tale Of The Piper",
+      "id": "zemra_rreh",
+      "title": "Zemra Rreh",
       "artist": "R.A.L.F.",
-      "category": "other",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/a_tale_of_the_piper.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/a_tale_of_the_piper.mp3",
-      "duration": 446,
-      "addedAt": "2025-09-05T09:05:53.536Z"
+      "category": "albania",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/zemra_rreh.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/albania/zemra_rreh.mp3",
+      "duration": 192,
+      "addedAt": "2026-04-13T19:19:27.464Z"
+    },
+    {
+      "id": "edge_of_control",
+      "title": "Edge Of Control",
+      "artist": "R.A.L.F.",
+      "category": "heavy_metal_hard_rock",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/edge_of_control.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/edge_of_control.mp3",
+      "duration": 144,
+      "addedAt": "2026-04-27T22:07:17.696Z"
+    },
+    {
+      "id": "echoes_in_time",
+      "title": "Echoes In Time",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_in_time.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_in_time.mp3",
+      "duration": 174,
+      "addedAt": "2026-02-23T01:19:55.700Z"
+    },
+    {
+      "id": "ignite_the_night",
+      "title": "Ignite The Night",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/ignite_the_night.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/ignite_the_night.mp3",
+      "duration": 204,
+      "addedAt": "2026-03-31T18:08:27.984Z"
+    },
+    {
+      "id": "echo_flow",
+      "title": "Echo Flow",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echo_flow.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echo_flow.mp3",
+      "duration": 213,
+      "addedAt": "2026-03-31T16:11:42.549Z"
+    },
+    {
+      "id": "higher_than_the_stars",
+      "title": "Higher Than The Stars",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/higher_than_the_stars.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/higher_than_the_stars.mp3",
+      "duration": 292,
+      "addedAt": "2026-02-22T18:08:31.970Z"
+    },
+    {
+      "id": "no_retreat",
+      "title": "No Retreat",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_retreat.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_retreat.mp3",
+      "duration": 171,
+      "addedAt": "2026-04-13T17:26:43.842Z"
+    },
+    {
+      "id": "pulse_of_africa",
+      "title": "Pulse Of Africa",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/pulse_of_africa.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/pulse_of_africa.mp3",
+      "duration": 260,
+      "addedAt": "2026-04-13T17:25:00.400Z"
+    },
+    {
+      "id": "darkline_momentum",
+      "title": "Darkline Momentum",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/darkline_momentum.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/darkline_momentum.mp3",
+      "duration": 291,
+      "addedAt": "2026-04-13T17:27:37.027Z"
+    },
+    {
+      "id": "forward_pressure",
+      "title": "Forward Pressure",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/forward_pressure.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/forward_pressure.mp3",
+      "duration": 254,
+      "addedAt": "2026-04-13T17:26:57.238Z"
     },
     {
       "id": "echoes_beyond",
@@ -2088,37 +2068,7 @@
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/echoes_beyond.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/echoes_beyond.mp3",
       "duration": 204,
-      "addedAt": "2026-09-29T16:50:24.222Z"
-    },
-    {
-      "id": "falling_through_the_waves",
-      "title": "Falling Through The Waves",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falling_through_the_waves.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falling_through_the_waves.mp3",
-      "duration": 229,
-      "addedAt": "2026-09-29T16:52:38.612Z"
-    },
-    {
-      "id": "lost_in_the_current",
-      "title": "Lost In The Current",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/lost_in_the_current.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_current.mp3",
-      "duration": 238,
-      "addedAt": "2026-09-29T16:54:41.796Z"
-    },
-    {
-      "id": "no_way_back",
-      "title": "No Way Back",
-      "artist": "R.A.L.F.",
-      "category": "trance_techno",
-      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_back.png",
-      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_back.mp3",
-      "duration": 242,
-      "addedAt": "2026-09-29T16:56:03.286Z"
+      "addedAt": "2026-04-27T21:32:13.110Z"
     },
     {
       "id": "silent_horizon",
@@ -2128,7 +2078,97 @@
       "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/silent_horizon.png",
       "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/silent_horizon.mp3",
       "duration": 204,
-      "addedAt": "2026-09-29T16:57:05.214Z"
+      "addedAt": "2026-04-27T21:36:07.847Z"
+    },
+    {
+      "id": "no_way_back",
+      "title": "No Way Back",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/no_way_back.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/no_way_back.mp3",
+      "duration": 242,
+      "addedAt": "2026-04-27T21:48:16.600Z"
+    },
+    {
+      "id": "falling_through_the_waves",
+      "title": "Falling Through The Waves",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/falling_through_the_waves.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/falling_through_the_waves.mp3",
+      "duration": 229,
+      "addedAt": "2026-05-14T22:06:44.074Z"
+    },
+    {
+      "id": "lost_in_the_current",
+      "title": "Lost In The Current",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/lost_in_the_current.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/lost_in_the_current.mp3",
+      "duration": 238,
+      "addedAt": "2026-05-14T22:07:02.351Z"
+    },
+    {
+      "id": "into_the_surge",
+      "title": "Into The Surge",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/into_the_surge.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/into_the_surge.mp3",
+      "duration": 259,
+      "addedAt": "2026-05-14T22:11:34.582Z"
+    },
+    {
+      "id": "solar_vector",
+      "title": "Solar Vector",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/solar_vector.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/solar_vector.mp3",
+      "duration": 189,
+      "addedAt": "2026-05-14T22:12:41.923Z"
+    },
+    {
+      "id": "eastern_echoes",
+      "title": "Eastern Echoes",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/eastern_echoes.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/eastern_echoes.mp3",
+      "duration": 173,
+      "addedAt": "2026-09-30T18:31:41.671Z"
+    },
+    {
+      "id": "parallel_hearts",
+      "title": "Parallel Hearts",
+      "artist": "R.A.L.F.",
+      "category": "trance_techno",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/parallel_hearts.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/parallel_hearts.mp3",
+      "duration": 245,
+      "addedAt": "2026-09-30T18:32:06.362Z"
+    },
+    {
+      "id": "schwarze_madonna",
+      "title": "Schwarze Madonna",
+      "artist": "R.A.L.F.",
+      "category": "schlager",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/schwarze_madonna.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/schwarze_madonna.mp3",
+      "duration": 187,
+      "addedAt": "2026-09-30T18:32:37.677Z"
+    },
+    {
+      "id": "wortgewalt",
+      "title": "Wortgewalt",
+      "artist": "R.A.L.F.",
+      "category": "deutschrap",
+      "cover": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/covers/wortgewalt.png",
+      "src": "https://raw.githubusercontent.com/ralf-music/ralf_music/main/assets/songs/wortgewalt.mp3",
+      "duration": 254,
+      "addedAt": "2026-09-30T18:32:50.228Z"
     }
   ]
 }
