@@ -1,0 +1,6 @@
+/* R.A.L.F. Music Showcase only: isolated game theme */
+:root { color-scheme:dark; accent-color:#ea580c; }
+html,body { background:#0a0a0a !important; color:#f5f5f5; }
+.page-shell,.run-page { background:#0a0a0a !important; }
+.game-card { border-color:#ea580c !important; box-shadow:0 0 18px rgba(234,88,12,.15); }
+button:focus-visible,a:focus-visible { outline:2px solid #fb923c;outline-offset:3px; }

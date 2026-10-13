@@ -1,4 +1,4 @@
-const CACHE_VERSION='ralf-music-v5.0.1';
+const CACHE_VERSION='ralf-music-v5.1.0';
 const SHELL_CACHE=CACHE_VERSION+'-shell';
 const RUNTIME_CACHE=CACHE_VERSION+'-runtime';
 const COVER_CACHE=CACHE_VERSION+'-covers';
@@ -27,11 +27,7 @@ self.addEventListener('activate',event=>{
   event.waitUntil((async()=>{
     const keep=new Set([SHELL_CACHE,RUNTIME_CACHE,COVER_CACHE,JSON_CACHE]);
     const keys=await caches.keys();
-    await Promise.all(
-      keys
-        .filter(k=>k.startsWith('ralf-music-')&&!keep.has(k))
-        .map(k=>caches.delete(k))
-    );
+    await Promise.all(keys.filter(k=>k.startsWith('ralf-music-')&&!keep.has(k)).map(k=>caches.delete(k)));
     await self.clients.claim();
   })());
 });
@@ -40,7 +36,7 @@ async function networkFirst(request,cacheName){
   const cache=await caches.open(cacheName);
   try{
     const response=await fetch(request);
-    if(response&&response.ok) await cache.put(request,response.clone());
+    if(response&&response.ok) cache.put(request,response.clone());
     return response;
   }catch(err){
     const cached=await cache.match(request);
@@ -52,10 +48,8 @@ async function networkFirst(request,cacheName){
 async function staleWhileRevalidate(request,cacheName){
   const cache=await caches.open(cacheName);
   const cached=await cache.match(request);
-  const network=fetch(request).then(async response=>{
-    if(response&&(response.ok||response.type==='opaque')){
-      try{ await cache.put(request,response.clone()); }catch{}
-    }
+  const network=fetch(request).then(response=>{
+    if(response&&(response.ok||response.type==='opaque')) cache.put(request,response.clone());
     return response;
   }).catch(()=>null);
   return cached||network||Response.error();
@@ -66,47 +60,41 @@ async function cacheFirst(request,cacheName){
   const cached=await cache.match(request);
   if(cached) return cached;
   const response=await fetch(request);
-  if(response&&(response.ok||response.type==='opaque')){
-    try{ await cache.put(request,response.clone()); }catch{}
-  }
+  if(response&&(response.ok||response.type==='opaque')) cache.put(request,response.clone());
   return response;
 }
 
 self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET') return;
-
   const url=new URL(request.url);
-  const path=url.pathname.toLowerCase();
 
-  // WICHTIG: MP3s vollständig dem Browser überlassen.
-  // Kein respondWith(), kein Cache, kein Service-Worker-Proxying.
-  if(path.endsWith('.mp3')) return;
+  // MP3s werden absichtlich niemals über den Service Worker gecacht.
+  if(url.pathname.toLowerCase().endsWith('.mp3')){
+    event.respondWith(fetch(request));
+    return;
+  }
 
-  if(url.origin===self.location.origin &&
-     (url.pathname==='/songs.json'||url.pathname==='/categories.json')){
+  // Song- und Kategoriedaten: aktuelle Netzwerkversion, Cache nur als Fallback.
+  if(url.origin===self.location.origin&&(url.pathname.endsWith('/songs.json')||url.pathname.endsWith('/categories.json'))){
     event.respondWith(networkFirst(request,JSON_CACHE));
     return;
   }
 
-  if(url.hostname==='raw.githubusercontent.com' &&
-     url.pathname.includes('/assets/covers/') &&
-     path.endsWith('.png')){
+  // Cover on demand cachen. Keine Playlist-Vorladung.
+  if(url.hostname==='raw.githubusercontent.com'&&url.pathname.includes('/assets/covers/')&&url.pathname.toLowerCase().endsWith('.png')){
     event.respondWith(cacheFirst(request,COVER_CACHE));
     return;
   }
 
+  // Tailwind-CDN nach erfolgreichem Erstabruf für spätere Offline-Starts behalten.
   if(url.hostname==='cdn.tailwindcss.com'){
     event.respondWith(staleWhileRevalidate(request,RUNTIME_CACHE));
     return;
   }
 
-  if(url.origin===self.location.origin &&
-     (url.pathname==='/' ||
-      url.pathname==='/index.html' ||
-      url.pathname==='/manifest.json' ||
-      url.pathname.startsWith('/assets/') ||
-      url.pathname==='/editor.js')){
+  // Alpha-App-Shell und lokale statische Assets.
+  if(url.origin===self.location.origin&&(url.pathname==='/'||url.pathname==='/index.html'||url.pathname==='/manifest.json'||url.pathname==='/editor.js'||url.pathname.startsWith('/assets/'))){
     event.respondWith(staleWhileRevalidate(request,SHELL_CACHE));
   }
 });

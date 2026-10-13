@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#171319" />
+  <title>Snikkers Run</title>
+  <link rel="stylesheet" href="snikkers-run.css" />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d0b10; }
+    body {
+      min-height: var(--omd-game-vh, 100dvh);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    .run-page {
+      min-height: var(--omd-game-vh, 100dvh);
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255,47,146,.14), transparent 42%),
+        linear-gradient(180deg, #171319 0%, #0d0b10 100%);
+    }
+    .run-shell { width: min(1100px, 100%); }
+    .standalone-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 14px;
+      flex-wrap: wrap;
+    }
+    .standalone-brand { min-width: 0; }
+    .standalone-eyebrow {
+      margin: 0 0 4px;
+      color: #ff65b5;
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .18em;
+    }
+    .standalone-title { margin: 0; font-size: clamp(1.5rem, 4vw, 2.35rem); }
+    .standalone-actions { display: flex; gap: 8px; }
+    .standalone-btn {
+      min-height: 44px;
+      border: 1px solid #ff2f92;
+      border-radius: 999px;
+      background: rgba(255,47,146,.08);
+      color: #fff;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .standalone-btn:hover { background: rgba(255,47,146,.16); }
+    .standalone-note {
+      margin: 12px 2px 0;
+      color: #a3a3a3;
+      text-align: center;
+      font-size: .78rem;
+    }
+    .run-page.is-fullscreen {
+      width: 100vw;
+      height: var(--omd-game-vh, 100dvh);
+      padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+      align-items: center;
+      background: #050505;
+    }
+    .run-page.is-fullscreen .run-shell { width: 100%; }
+    .run-page.is-fullscreen .standalone-note { display: none; }
+    @media (orientation: landscape) and (max-height: 600px) {
+      .run-page { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
+      .standalone-head { margin-bottom: 8px; }
+      .standalone-eyebrow { display: none; }
+      .standalone-title { font-size: 1.25rem; }
+      .standalone-note { display: none; }
+    }
+  </style>
+<link rel="stylesheet" href="../ralf-game-theme.css" />
+</head>
+<body>
+  <main id="runPage" class="run-page">
+    <div class="run-shell">
+      <header class="standalone-head">
+        <div class="standalone-brand">
+          <p class="standalone-eyebrow">ONE MORE DAY · MINIGAME</p>
+          <h1 class="standalone-title">Snikkers Run</h1>
+        </div>
+        <div class="standalone-actions">
+          <button id="fullscreenBtn" class="standalone-btn" type="button">⛶ Vollbild</button>
+        </div>
+      </header>
+      <div id="runMount"></div>
+      <p class="standalone-note">Direkt spielbare Standalone-Version · Bestscore wird lokal im Browser gespeichert.</p>
+    </div>
+  </main>
+
+  <script src="game-viewport.js"></script>
+  <script src="snikkers-run.js"></script>
+  <script>
+    (() => {
+      const page = document.getElementById('runPage');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+      window.SnikkersRun.mount('#runMount', {
+        assetBase: './assets',
+        audioSrc: './assets/audio/theme.mp3',
+        bestScoreKey: 'omd_snikkers_run_best_v1',
+        accent: '#ff2f92',
+        accentHover: '#ff65b5',
+        title: 'Snikkers Run',
+        subtitle: 'Tippen oder Leertaste: springen',
+        startText: 'Tippen oder Leertaste zum Starten',
+        musicDefaultOn: false,
+        musicVolume: 0.25
+      });
+
+      function updateFullscreenUi() {
+        const active = Boolean(document.fullscreenElement) || page.classList.contains('is-fullscreen');
+        fullscreenBtn.textContent = active ? '× Vollbild aus' : '⛶ Vollbild';
+      }
+
+      async function tryLandscape() {
+        try {
+          if (screen.orientation?.lock) await screen.orientation.lock('landscape');
+        } catch (_) {}
+      }
+
+      async function unlockLandscape() {
+        try { screen.orientation?.unlock?.(); } catch (_) {}
+      }
+
+      fullscreenBtn.addEventListener('click', async () => {
+        const active = Boolean(document.fullscreenElement) || page.classList.contains('is-fullscreen');
+        if (active) {
+          page.classList.remove('is-fullscreen');
+          if (document.fullscreenElement && document.exitFullscreen) {
+            try { await document.exitFullscreen(); } catch (_) {}
+          }
+          await unlockLandscape();
+          updateFullscreenUi();
+          return;
+        }
+
+        page.classList.add('is-fullscreen');
+        try {
+          if (page.requestFullscreen) await page.requestFullscreen({ navigationUI: 'hide' });
+          else if (page.webkitRequestFullscreen) page.webkitRequestFullscreen();
+        } catch (_) {}
+        await tryLandscape();
+        updateFullscreenUi();
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) page.classList.remove('is-fullscreen');
+        updateFullscreenUi();
+      });
+
+      updateFullscreenUi();
+    })();
+  </script>
+</body>
+</html>

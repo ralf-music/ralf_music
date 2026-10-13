@@ -1,4 +1,4 @@
-<!-- R.A.L.F. – Music Showcase | index.html v5.0.1 -->
+<!-- R.A.L.F. – Music Showcase | index.html v5.1.0 -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -110,6 +110,7 @@
            class="sm:shrink-0 text-center rounded-full border border-orange-600 bg-orange-600/10 hover:bg-orange-600/20 px-4 py-2 text-sm font-semibold">
           ☕ Unterstützen
         </a>
+        <a href="/minigames/" class="sm:shrink-0 text-center rounded-full border border-orange-600 bg-orange-600/10 hover:bg-orange-600/20 px-4 py-2 text-sm font-semibold">🎮 Minigames</a>
         <a href="/contact.html"
            class="sm:shrink-0 text-center rounded-full border border-orange-600 bg-orange-600/10 hover:bg-orange-600/20 px-4 py-2 text-sm font-semibold">
           ✉️ Kontakt
@@ -146,7 +147,7 @@
   </main>
 
   <!-- Player-Dock (zweizeilig) -->
-  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="5.0.1">
+  <div id="playerDock" class="player-dock-safe bg-neutral-900/95 backdrop-blur border-t border-neutral-800 hidden" data-version="5.0.2">
     <div class="max-w-6xl mx-auto px-3 py-2">
       <div class="flex items-center gap-3">
         <img id="playerCover" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover cursor-pointer" alt="Cover">
@@ -223,13 +224,13 @@
       <div class="flex items-center gap-4">
         <a href="/donate.html" class="underline underline-offset-4 hover:text-neutral-300">☕ Unterstützen</a>
         <a href="/contact.html" class="underline underline-offset-4 hover:text-neutral-300">✉️ Kontakt</a>
-        <span>v5.0.1</span>
+        <span>v5.1.0</span>
       </div>
     </div>
   </footer>
 
   <script>
-    const VERSION='5.0.1';
+    const VERSION='5.0.2';
     const NEW_LIMIT=20;
 
     const state={
@@ -685,10 +686,8 @@
     }
 
     function registerServiceWorker(){
-      if('serviceWorker' in navigator){
-        window.addEventListener('load',()=>{
-          navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(()=>{});
-        });
+      if('serviceWorker'in navigator){
+        window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(()=>{}));
       }
     }
 
