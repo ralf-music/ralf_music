@@ -123,3 +123,9 @@
   width: 100% !important;
   height: auto !important;
 }
+
+/* Compact fullscreen layout, music control lives in the top toolbar. */
+.run-page.is-fullscreen .snikkers-run__panel { padding: 4px 8px; }
+.run-page.is-fullscreen .snikkers-run__head { display: none; }
+.run-page.is-fullscreen .snikkers-run__stage { margin: 0 auto; }
+.run-page.is-fullscreen .snikkers-run__footer { display: none; }

@@ -79,6 +79,14 @@
       .standalone-title { font-size: 1.25rem; }
       .standalone-note { display: none; }
     }
+    /* Fullscreen: kein übergroßer Leerraum, Spielfeld mittig und möglichst groß. */
+    .run-page.is-fullscreen { padding: 4px 8px; min-height: 100dvh; }
+    .run-page.is-fullscreen .run-shell { width: 100%; max-width: none; }
+    .run-page.is-fullscreen .standalone-head { margin: 0 0 5px; }
+    .run-page.is-fullscreen .standalone-title { font-size: clamp(16px, 2.3vw, 24px); }
+    .run-page.is-fullscreen .standalone-btn { min-height: 34px; padding: 5px 12px; }
+    .standalone-actions { align-items: center; flex-wrap: nowrap; }
+    .standalone-actions .snikkers-run__music { width: auto; min-height: 34px; padding: 5px 12px; white-space: nowrap; }
   </style>
 <link rel="stylesheet" href="../ralf-game-theme.css" />
 </head>
@@ -160,6 +168,9 @@
         updateFullscreenUi();
       });
 
+      // Musiksteuerung direkt neben Vollbild, dieselbe bestehende Schaltfläche.
+      const musicButton = document.querySelector('.snikkers-run__music');
+      if (musicButton) document.querySelector('.standalone-actions').prepend(musicButton);
       updateFullscreenUi();
     })();
   </script>
@@ -177,10 +188,10 @@
     const viewportHeight=window.visualViewport ? window.visualViewport.height : window.innerHeight;
     const viewportTop=window.visualViewport ? window.visualViewport.offsetTop : 0;
     const top=stage.getBoundingClientRect().top-viewportTop;
-    const bottomReserve=20;
+    const bottomReserve=8;
     const availableHeight=Math.max(100,viewportHeight-top-bottomReserve);
     const parentWidth=stage.parentElement.getBoundingClientRect().width;
-    const fitWidth=Math.max(160,Math.min(parentWidth,availableHeight*(8/3)));
+    const fitWidth=Math.max(1,Math.min(parentWidth,availableHeight*(8/3)));
     stage.style.width=fitWidth+'px';
   }
   window.addEventListener('resize',fitRunToViewport,{passive:true});
@@ -189,6 +200,7 @@
   new MutationObserver(()=>requestAnimationFrame(fitRunToViewport))
     .observe(page,{attributes:true,attributeFilter:['class']});
   requestAnimationFrame(fitRunToViewport);
+  setTimeout(fitRunToViewport,150);
 })();
 </script>
 </body>
