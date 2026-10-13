@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#16151a" />
+  <title>Snikkers Chase – v0.2.0</title>
+  <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="../ralf-game-theme.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <section id="gameCard" class="game-card" aria-labelledby="gameTitle">
+      <header class="game-head">
+        <div class="title-wrap">
+          <p class="eyebrow">MINIGAME-PROTOTYP</p>
+          <h1 id="gameTitle">Snikkers Chase</h1>
+        </div>
+        <div class="hud" aria-label="Spielinformationen">
+          <div class="hud-box"><span>SNACKS</span><strong id="snacks">0 / 0</strong></div>
+          <div class="hud-box"><span>ZEIT</span><strong id="time">0:00</strong></div>
+          <div class="hud-box"><span>BEST</span><strong id="best">–</strong></div>
+          <div class="hud-box"><span>LEBEN</span><strong id="lives">♥♥♥</strong></div>
+        </div>
+        <div class="tools" aria-label="Spieloptionen">
+          <button id="musicBtn" class="tool-btn" type="button" aria-pressed="true">♫ AN</button>
+          <button id="fullscreenBtn" class="tool-btn icon-btn" type="button" aria-label="Vollbild einschalten" title="Vollbild">⛶</button>
+        </div>
+      </header>
+
+      <div id="stage" class="stage" tabindex="0" aria-label="Snikkers Chase Spielfeld">
+        <canvas id="game" width="912" height="624"></canvas>
+        <div id="overlay" class="overlay">
+          <div class="overlay-card">
+            <strong id="overlayTitle">Snikkers Chase</strong>
+            <span id="overlayText">Wähle ein Level und sammle alle Snacks.</span>
+            <div id="levelPicker" class="level-picker" aria-label="Level wählen">
+              <button class="level-btn is-selected" type="button" data-level="1">
+                <span>LEVEL 1</span><small>2 Fliegen</small>
+              </button>
+              <button class="level-btn" type="button" data-level="2">
+                <span>LEVEL 2</span><small>3 Fliegen</small>
+              </button>
+            </div>
+            <button id="startBtn" type="button">SPIEL STARTEN</button>
+            <small class="overlay-start-hint">Oder ins Spielfeld tippen</small>
+          </div>
+        </div>
+      </div>
+
+      <p class="hint">Handy: in die gewünschte Richtung wischen · PC: Pfeiltasten oder W A S D</p>
+      <audio id="themeAudio" src="assets/audio/snikkers_chase_theme.mp3" preload="auto" loop></audio>
+    </section>
+  </main>
+  <script src="game-viewport.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
