@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#171319" />
+  <title>Snikkers Memory – v0.3.2</title>
+  <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="../ralf-game-theme.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <section id="gameCard" class="game-card" aria-labelledby="gameTitle">
+      <header class="game-head">
+        <div class="title-wrap">
+          <p class="eyebrow">MINIGAME</p>
+          <h1 id="gameTitle">Snikkers Memory</h1>
+          <p id="subtitle" class="subtitle">Wähle deine Spielfeldgröße.</p>
+        </div>
+
+        <div class="top-actions">
+          <button id="newGameBtn" class="icon-btn text-btn" type="button">NEU</button>
+          <button id="musicBtn" class="icon-btn text-btn music-btn" type="button" aria-pressed="true" aria-label="Musik ausschalten" title="Musik">♪ AN</button>
+          <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Vollbild einschalten" title="Vollbild">⛶</button>
+        </div>
+      </header>
+
+      <section id="levelSelect" class="level-select" aria-label="Spielfeldgröße wählen">
+        <p class="level-select-title">SPIELFELD WÄHLEN</p>
+        <div class="level-grid">
+          <button class="level-btn" type="button" data-level="5x4">
+            <span class="level-name">KLASSISCH</span>
+            <strong>5 × 4</strong>
+            <small>10 Paare · 20 Karten</small>
+          </button>
+          <button class="level-btn" type="button" data-level="5x5">
+            <span class="level-name">MITTEL</span>
+            <strong>5 × 5</strong>
+            <small>12 Paare + leere Mitte</small>
+          </button>
+          <button class="level-btn" type="button" data-level="5x6">
+            <span class="level-name">SCHWER</span>
+            <strong>5 × 6</strong>
+            <small>15 Paare · 5×6 / 6×5</small>
+          </button>
+        </div>
+      </section>
+
+      <section id="hud" class="hud hidden" aria-label="Spielstand">
+        <div class="hud-item"><span>PAARE</span><strong id="pairs">0 / 10</strong></div>
+        <div class="hud-item"><span>ZÜGE</span><strong id="moves">0</strong></div>
+        <div class="hud-item"><span>ZEIT</span><strong id="time">0:00</strong></div>
+        <div class="hud-item"><span>BEST</span><strong id="best">–</strong></div>
+      </section>
+
+      <section id="boardWrap" class="board-wrap hidden">
+        <div id="board" class="board" aria-label="Memory-Spielfeld"></div>
+      </section>
+
+      <div id="finishPanel" class="finish-panel hidden" role="status" aria-live="polite">
+        <strong id="finishTitle">GESCHAFFT!</strong>
+        <span id="finishText"></span>
+        <button id="againBtn" type="button">NOCHMAL SPIELEN</button>
+      </div>
+
+      <p id="hint" class="hint hidden"></p>
+    </section>
+  </main>
+  <script src="game-viewport.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
