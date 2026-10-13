@@ -163,5 +163,33 @@
       updateFullscreenUi();
     })();
   </script>
+
+<script>
+(function(){
+  const page=document.querySelector('.run-page');
+  const stage=document.querySelector('.snikkers-run__stage');
+  if(!page || !stage) return;
+  function fitRunToViewport(){
+    if(!page.classList.contains('is-fullscreen') && !document.fullscreenElement){
+      stage.style.removeProperty('width');
+      return;
+    }
+    const viewportHeight=window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const viewportTop=window.visualViewport ? window.visualViewport.offsetTop : 0;
+    const top=stage.getBoundingClientRect().top-viewportTop;
+    const bottomReserve=20;
+    const availableHeight=Math.max(100,viewportHeight-top-bottomReserve);
+    const parentWidth=stage.parentElement.getBoundingClientRect().width;
+    const fitWidth=Math.max(160,Math.min(parentWidth,availableHeight*(8/3)));
+    stage.style.width=fitWidth+'px';
+  }
+  window.addEventListener('resize',fitRunToViewport,{passive:true});
+  if(window.visualViewport) window.visualViewport.addEventListener('resize',fitRunToViewport,{passive:true});
+  document.addEventListener('fullscreenchange',()=>requestAnimationFrame(fitRunToViewport));
+  new MutationObserver(()=>requestAnimationFrame(fitRunToViewport))
+    .observe(page,{attributes:true,attributeFilter:['class']});
+  requestAnimationFrame(fitRunToViewport);
+})();
+</script>
 </body>
 </html>

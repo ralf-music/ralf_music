@@ -113,3 +113,13 @@
 /* R.A.L.F. fullscreen fix: keep the canvas 8:3 and use the entire stage width. */
 .snikkers-run__stage { aspect-ratio: 8 / 3; height: auto; }
 .snikkers-run__canvas { width: 100% !important; height: auto !important; max-width: none !important; max-height: none !important; aspect-ratio: 8 / 3; }
+
+/* v1.0.2: stage width is capped to fit the actual visible viewport height. */
+.run-page.is-fullscreen .snikkers-run__stage {
+  margin-inline: auto;
+  max-width: 100%;
+}
+.run-page.is-fullscreen .snikkers-run__canvas {
+  width: 100% !important;
+  height: auto !important;
+}
