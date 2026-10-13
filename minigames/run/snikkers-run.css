@@ -109,3 +109,7 @@
 
 .snikkers-run__head--compact { justify-content: flex-end; margin-bottom: 10px; }
 @media (max-width: 520px) { .snikkers-run__head--compact { align-items: center; } }
+
+/* R.A.L.F. fullscreen fix: keep the canvas 8:3 and use the entire stage width. */
+.snikkers-run__stage { aspect-ratio: 8 / 3; height: auto; }
+.snikkers-run__canvas { width: 100% !important; height: auto !important; max-width: none !important; max-height: none !important; aspect-ratio: 8 / 3; }

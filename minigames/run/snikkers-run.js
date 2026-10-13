@@ -69,7 +69,8 @@
     const W = canvas.width;
     const H = canvas.height;
     const GROUND = 290;
-    const viewportFitter = global.OMDGameViewport?.createFitter({ stage, content: canvas, logicalWidth: W, logicalHeight: H });
+    // R.A.L.F.: CSS scales the canvas with its native aspect ratio; no height-based fitter.
+    const viewportFitter = null;
 
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
