@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#171319" />
+  <title>Snikkers Catch – v0.4.5</title>
+  <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="../ralf-game-theme.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <section id="gameCard" class="game-card" aria-labelledby="gameTitle">
+      <header class="game-head">
+        <div class="game-title-wrap">
+          <p class="eyebrow">MINIGAME-PROTOTYP</p>
+          <h1 id="gameTitle">Snikkers Catch</h1>
+          <p class="subtitle">Fange Leckerlis und weiche Schokolade sowie Steinen aus.</p>
+        </div>
+
+        <div class="game-toolbar">
+          <div class="hud" aria-label="Spielstand">
+            <div><span>PUNKTE</span><strong id="score">0</strong></div>
+            <div class="time-box"><span>ZEIT</span><strong id="time">1:30</strong></div>
+            <div><span>BEST</span><strong id="best">0</strong></div>
+          </div>
+          <div class="toolbar-actions">
+            <button id="musicBtn" class="tool-btn" type="button" aria-pressed="true">♫ AN</button>
+            <button id="fullscreenBtn" class="tool-btn fullscreen-btn" type="button" aria-label="Vollbild einschalten" title="Vollbild">⛶</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="stage" class="stage" tabindex="0" aria-label="Snikkers Catch Spielfeld">
+        <canvas id="game" width="960" height="540"></canvas>
+        <div id="overlay" class="overlay">
+          <div class="overlay-card">
+            <strong id="overlayTitle">Snikkers Catch</strong>
+            <span id="overlayText">90 Sekunden · Tippen ins Spielfeld oder auf SPIEL STARTEN</span>
+            <button id="startBtn" type="button">SPIEL STARTEN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend" aria-label="Punktesystem">
+        <span>🍪 +10</span>
+        <span>🦴 +20</span>
+        <span>⭐ +30</span>
+        <span>🍫 −20</span>
+        <span>🪨 −30</span>
+      </div>
+      <p class="hint">Handy: Finger horizontal über das Spielfeld bewegen · PC: Maus oder ← → / A D</p>
+
+      <audio id="themeAudio" preload="auto" loop src="assets/audio/theme.mp3"></audio>
+    </section>
+  </main>
+  <script src="game-viewport.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
