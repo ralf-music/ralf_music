@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0f1115">
+<title>Snikkers Slot: Lucky Paws</title>
+<style>
+:root{--bg:#0d0f13;--panel:#171a20;--panel2:#20242c;--line:#343a46;--accent:#ff9f1c;--accent2:#ffd166;--text:#f6f7f9;--muted:#9ea6b3;--good:#7ee081;--bad:#ff6b6b;--shadow:0 18px 60px rgba(0,0,0,.45)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,rgba(255,159,28,.16),transparent 35%),linear-gradient(180deg,#0a0c10,#101319 65%,#0b0d11);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}button{font:inherit;touch-action:manipulation}
+.app{width:min(100%,900px);margin:0 auto;padding:14px 14px 24px}.topbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:10px}.brand{display:flex;align-items:center;gap:10px}.brand-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#ffb347,#ff8b00);box-shadow:0 0 28px rgba(255,159,28,.24);font-size:24px}.title h1{margin:0;font-size:clamp(20px,5vw,34px);line-height:1}.title p{margin:4px 0 0;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase}.controls-top{display:flex;gap:8px}
+.icon-btn,.secondary,.mode-btn,.bet-btn,.spin-btn,.lever-btn{border:1px solid var(--line);color:var(--text);background:linear-gradient(180deg,#222832,#161b23);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.22);cursor:pointer}.icon-btn{width:44px;height:44px;font-size:20px}
+.machine{position:relative;background:linear-gradient(180deg,#262b35,#15191f);border:1px solid #3a414e;border-radius:26px;padding:14px;box-shadow:var(--shadow)}.machine:before{content:"";position:absolute;inset:7px;border-radius:20px;border:1px solid rgba(255,209,102,.16);pointer-events:none}.marquee{text-align:center;margin:3px 0 12px}.marquee strong{font-size:clamp(24px,7vw,44px);letter-spacing:.05em;color:#fff0c0;text-shadow:0 0 10px rgba(255,209,102,.25),0 2px 0 #5d3a00}.marquee span{display:block;color:var(--accent2);font-size:12px;letter-spacing:.28em;text-transform:uppercase;margin-top:2px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.stat{background:#101319;border:1px solid #2a3039;border-radius:13px;padding:9px 8px;text-align:center;min-width:0}.stat .label{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}.stat .value{display:block;margin-top:3px;font-size:clamp(16px,4.5vw,23px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat.win .value{color:var(--accent2)}.stat.coins .value{color:#fff0a8}
+.reel-frame{position:relative;background:#090b0e;border:2px solid #4c535f;border-radius:18px;padding:7px;box-shadow:inset 0 0 30px rgba(0,0,0,.85),0 10px 25px rgba(0,0,0,.28)}.reels{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;position:relative;overflow:hidden;border-radius:12px}.reel{height:clamp(210px,64vw,360px);max-height:360px;background:linear-gradient(#eadbc3,#fff9ec 16%,#fff 48%,#fff9ec 84%,#dfcfb6);border-radius:10px;overflow:hidden;position:relative;border:1px solid #b29f84;perspective:420px;box-shadow:inset 0 14px 22px rgba(84,55,20,.20),inset 0 -14px 22px rgba(84,55,20,.20)}.reel:before,.reel:after{content:"";position:absolute;left:0;right:0;z-index:5;pointer-events:none}.reel:before{top:0;height:33%;background:linear-gradient(180deg,rgba(63,42,18,.38),rgba(255,255,255,0));border-radius:9px 9px 0 0}.reel:after{bottom:0;height:33%;background:linear-gradient(0deg,rgba(63,42,18,.38),rgba(255,255,255,0));border-radius:0 0 9px 9px}.strip{position:absolute;left:0;right:0;top:0;will-change:transform;transform-style:preserve-3d}.symbol{height:calc(clamp(210px,64vw,360px)/3);max-height:120px;display:grid;place-items:center;position:relative;font-size:clamp(32px,9vw,58px);filter:drop-shadow(0 2px 1px rgba(0,0,0,.25));transform-origin:center;will-change:transform,opacity}.symbol .txt{position:absolute;bottom:4px;font-size:8px;font-weight:900;letter-spacing:.04em;color:#5b4935;text-transform:uppercase}.symbol.win{animation:winPulse .7s ease-in-out infinite alternate;z-index:3}.symbol.wild{background:radial-gradient(circle,rgba(255,215,64,.20),transparent 72%)}@keyframes winPulse{from{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,190,0,0))}to{transform:scale(1.12);filter:drop-shadow(0 0 10px rgba(255,181,0,.95))}}.reel.spinning{box-shadow:inset 0 18px 30px rgba(84,55,20,.32),inset 0 -18px 30px rgba(84,55,20,.32),0 0 0 1px rgba(255,216,145,.10)}.reel.spinning .symbol{filter:blur(.65px) saturate(.94) drop-shadow(0 2px 1px rgba(0,0,0,.18))}.snikkers-icon{width:88%;height:78%;display:flex;align-items:center;justify-content:center}.snikkers-icon img{width:100%;height:100%;object-fit:contain}.wild-coin{position:relative;width:min(78%,82px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6a9 0 9%,#ffd63f 26%,#e89a00 58%,#8d4d00 100%);border:4px solid #fff0a2;box-shadow:inset 0 0 0 4px #b96b00,0 0 14px rgba(255,180,0,.65);display:flex;align-items:center;justify-content:center;overflow:visible}.wild-coin img{width:86%;height:72%;object-fit:contain;transform:translateY(7%)}.wild-coin .crown{position:absolute;top:-24%;left:50%;transform:translateX(-50%) rotate(-4deg);font-size:clamp(18px,4vw,30px);filter:drop-shadow(0 2px 1px rgba(89,49,0,.7))}.bowl-icon{position:relative;width:min(74%,78px);height:min(52%,52px)}.bowl-icon .bowl-top{position:absolute;left:8%;right:8%;top:4%;height:32%;border-radius:50%;background:#752014;border:3px solid #35120e;box-shadow:inset 0 3px 0 rgba(255,255,255,.25)}.bowl-icon .bowl-body{position:absolute;left:2%;right:2%;top:23%;bottom:3%;background:linear-gradient(#ef4934,#ba201b);clip-path:polygon(8% 0,92% 0,82% 100%,18% 100%);border-radius:0 0 16px 16px;box-shadow:inset 0 -5px 0 rgba(93,11,8,.22),0 3px 2px rgba(0,0,0,.18)}.bowl-icon .bowl-paw{position:absolute;inset:25% 0 0;display:grid;place-items:center;font-size:clamp(14px,3vw,24px);color:#25110d;z-index:2}.reel-shine{position:absolute;left:7px;right:7px;top:50%;height:1px;background:rgba(255,255,255,.24);box-shadow:0 -1px rgba(85,58,28,.22);pointer-events:none;z-index:6}
+.paylines{position:absolute;inset:7px;pointer-events:none}.payline{position:absolute;height:3px;left:1%;right:1%;background:linear-gradient(90deg,transparent,var(--accent2),transparent);opacity:0;box-shadow:0 0 10px rgba(255,209,102,.7);transform-origin:center}.payline.on{opacity:.95}.payline.l0{top:16.67%}.payline.l1{top:50%}.payline.l2{top:83.33%}.payline.l3{top:50%;transform:rotate(21.5deg)}.payline.l4{top:50%;transform:rotate(-21.5deg)}
+.panel{margin-top:12px;background:#11151b;border:1px solid #2c323c;border-radius:18px;padding:12px}.row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}.mode-btn,.bet-btn,.secondary{padding:10px 13px;font-weight:800}.mode-btn.active,.bet-btn.active{border-color:#ffb13b;background:linear-gradient(180deg,#4a3516,#2a1d0c);color:#ffd789;box-shadow:0 0 18px rgba(255,159,28,.15)}.mode-copy{color:var(--muted);font-size:12px;text-align:center;margin:8px 0 0;min-height:30px}.action-area{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:12px}.spin-btn{min-height:64px;border-color:#ffad32;background:linear-gradient(180deg,#ffad32,#e47800);color:#241400;font-size:clamp(22px,6vw,30px);font-weight:1000;letter-spacing:.06em;text-shadow:0 1px rgba(255,255,255,.35)}.spin-btn:disabled{opacity:.5;filter:grayscale(.3);cursor:not-allowed}.lever-wrap{display:flex;align-items:center;justify-content:center}.lever-btn{width:66px;height:64px;position:relative;overflow:visible;padding:0;background:linear-gradient(#383f4c,#202630)}.lever-btn:before{content:"";position:absolute;width:8px;height:42px;background:#b6bdc7;border-radius:8px;left:29px;top:-28px;box-shadow:inset 0 0 3px #fff;transform-origin:50% 100%;transition:transform .18s}.lever-btn:after{content:"";position:absolute;width:25px;height:25px;background:radial-gradient(circle at 35% 30%,#ff866f,#d31d16 45%,#790b08);border-radius:50%;left:20px;top:-45px;box-shadow:0 4px 10px rgba(0,0,0,.45);transition:transform .18s}.lever-btn.pulled:before{transform:rotate(28deg) translateY(8px)}.lever-btn.pulled:after{transform:translate(15px,12px)}
+.message{margin-top:10px;min-height:46px;border-radius:13px;background:#0c0f13;border:1px solid #252b34;display:flex;align-items:center;justify-content:center;padding:8px 12px;text-align:center;font-weight:750}.message.good{color:#c7ffd0;border-color:#316b3a;background:#0f1b12}.message.bad{color:#ffc6c6;border-color:#6b3030;background:#1c1010}.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.legend .item{background:#101319;border:1px solid #292f38;border-radius:12px;padding:8px 4px;text-align:center}.legend .ico{font-size:25px;height:34px;display:flex;align-items:center;justify-content:center}.legend .ico .snikkers-icon{height:32px;width:58px}.legend .ico .wild-coin{width:31px}.legend .ico .wild-coin .crown{font-size:13px;top:-30%}.legend .ico .bowl-icon{width:40px;height:27px}.legend .ico .bowl-paw{font-size:12px}.legend .name{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:800}.legend .pay{font-size:10px;color:#f2d68b;margin-top:2px}
+.overlay{position:fixed;inset:0;background:rgba(6,8,11,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}.overlay.hidden{display:none}.start-card{width:min(100%,520px);background:linear-gradient(180deg,#222831,#12161c);border:1px solid #454d5b;border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center}.start-card .dog{height:92px;display:flex;align-items:center;justify-content:center}.start-card .dog img{height:92px;max-width:180px;object-fit:contain}.start-card h2{margin:6px 0 4px;font-size:32px}.start-card p{color:var(--muted);line-height:1.45;margin:8px 0 16px}.start-card .start{width:100%;padding:15px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffb237,#e77c00);font-weight:1000;font-size:20px;color:#251500;cursor:pointer}.small{font-size:11px;color:var(--muted)}
+@media(max-width:560px){.app{padding:8px 8px 18px}.machine{padding:9px;border-radius:20px}.hud{gap:5px}.stat{padding:7px 4px}.stat .label{font-size:8px}.reel-frame{padding:5px}.reels{gap:3px}.symbol .txt{display:none}.legend{grid-template-columns:repeat(3,1fr)}}
+@media(orientation:landscape) and (max-height:620px){.app{width:min(100%,1040px);padding:6px 10px}.topbar{margin-bottom:4px}.brand-badge{width:36px;height:36px}.marquee{margin:0 0 4px}.marquee strong{font-size:24px}.hud{margin-bottom:6px}.reel{height:210px}.symbol{height:70px}.panel{margin-top:6px;padding:8px}.legend{display:none}.message{min-height:34px}.action-area{margin-top:6px}.spin-btn,.lever-btn{min-height:52px;height:52px}}
+</style>
+<link rel="stylesheet" href="../ralf-game-theme.css">
+</head>
+<body>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand"><div class="brand-badge">🐾</div><div class="title"><h1>Snikkers Slot</h1><p>Lucky Paws</p></div></div>
+    <div class="controls-top"><button class="icon-btn" id="soundBtn" title="Sound an/aus" aria-label="Sound an/aus">🔊</button><button class="icon-btn" id="fsBtn" title="Vollbild" aria-label="Vollbild">⛶</button></div>
+  </div>
+  <main class="machine">
+    <div class="marquee"><strong>SNIKKERS SLOT</strong><span>Lucky Paws</span></div>
+    <div class="hud">
+      <div class="stat coins"><span class="label" id="bankLabel">Punkte</span><span class="value" id="bankValue">0</span></div>
+      <div class="stat"><span class="label">Einsatz</span><span class="value" id="betValue">–</span></div>
+      <div class="stat win"><span class="label">Gewinn</span><span class="value" id="winValue">0</span></div>
+      <div class="stat"><span class="label">Spins</span><span class="value" id="spinCount">0</span></div>
+    </div>
+    <div class="reel-frame"><div class="reels" id="reels"></div><div class="reel-shine"></div><div class="paylines"><div class="payline l0"></div><div class="payline l1"></div><div class="payline l2"></div><div class="payline l3"></div><div class="payline l4"></div></div></div>
+    <section class="panel">
+      <div class="row"><button class="mode-btn active" data-mode="endless">🐾 Einfach</button><button class="mode-btn" data-mode="pro">👑 Profi</button></div>
+      <div class="mode-copy" id="modeCopy">Endlos spielen. Gewinne zählen als Punkte, kein Guthaben und kein Einsatz nötig.</div>
+      <div class="row" id="betRow" hidden><button class="bet-btn active" data-bet="10">10</button><button class="bet-btn" data-bet="20">20</button><button class="bet-btn" data-bet="50">50</button><button class="bet-btn" data-bet="100">100</button></div>
+      <div class="action-area"><button class="spin-btn" id="spinBtn">SPIN</button><div class="lever-wrap"><button class="lever-btn" id="leverBtn" aria-label="Hebel ziehen"></button></div></div>
+      <div class="message" id="message">Bereit. Einmal drehen und sehen, ob Snikkers heute Glück hat.</div>
+      <div class="legend" id="legend"></div>
+    </section>
+  </main>
+</div>
+<div class="overlay" id="startOverlay"><div class="start-card"><div class="dog"><img src="assets/snikkers.png" alt="Snikkers"></div><h2>Snikkers Slot</h2><p>5 Walzen, 5 Gewinnlinien und eine erstaunlich ernste Verwendung für Hundekekse, Knochen und Kackhaufen.</p><button class="start" id="startBtn">SPIEL STARTEN</button><p class="small">Nur Spiel-Coins. Kein echtes Geld, kein One-More-Day-Guthaben.</p></div></div>
+<script>
+(() => {
+const symbols=[
+{id:"poop",icon:"💩",name:"Kackhaufen",weight:20,mult:[0,0,5,15,50]},
+{id:"shoe",icon:"👟",name:"Schuh",weight:18,mult:[0,0,8,20,60]},
+{id:"ball",icon:"⚽",name:"Fußball",weight:16,mult:[0,0,10,30,80]},
+{id:"cookie",icon:"🍪",name:"Keks",weight:14,mult:[0,0,15,40,100]},
+{id:"bone",icon:"🦴",name:"Knochen",weight:12,mult:[0,0,20,60,150]},
+{id:"paw",icon:"🐾",name:"Pfote",weight:10,mult:[0,0,30,100,250]},
+{id:"bowl",icon:"",name:"Napf",weight:6,mult:[0,0,40,140,350],bowl:true},
+{id:"snikkers",icon:"",name:"Snikkers",weight:3,mult:[0,0,50,200,500],snikkers:true},
+{id:"wild",icon:"",name:"Wild",weight:1,mult:[0,0,75,300,750],wild:true}
+];
+const paylines=[[0,0,0,0,0],[1,1,1,1,1],[2,2,2,2,2],[0,1,2,1,0],[2,1,0,1,2]];
+const reelEl=document.getElementById("reels"),message=document.getElementById("message"),spinBtn=document.getElementById("spinBtn"),leverBtn=document.getElementById("leverBtn"),bankValue=document.getElementById("bankValue"),bankLabel=document.getElementById("bankLabel"),betValue=document.getElementById("betValue"),winValue=document.getElementById("winValue"),spinCountEl=document.getElementById("spinCount"),modeCopy=document.getElementById("modeCopy"),betRow=document.getElementById("betRow"),soundBtn=document.getElementById("soundBtn"),startOverlay=document.getElementById("startOverlay"),startBtn=document.getElementById("startBtn");
+let mode="endless",bank=0,bet=10,spins=0,spinning=false,soundOn=true,started=false,audioCtx;
+function pickSymbol(){const total=symbols.reduce((s,x)=>s+x.weight,0);let r=Math.random()*total;for(const s of symbols){r-=s.weight;if(r<=0)return s}return symbols[0]}
+let current=Array.from({length:5},()=>Array.from({length:3},()=>pickSymbol()));
+function visualHTML(s){
+  if(s.snikkers)return `<div class="snikkers-icon"><img src="assets/snikkers.png" alt=""></div>`;
+  if(s.wild)return `<div class="wild-coin"><img src="assets/snikkers.png" alt=""><span class="crown">👑</span></div>`;
+  if(s.bowl)return `<div class="bowl-icon"><div class="bowl-top"></div><div class="bowl-body"></div><div class="bowl-paw">🐾</div></div>`;
+  return `<span>${s.icon}</span>`;
+}
+function symbolHTML(s){return `<div class="symbol ${s.wild?'wild':''}" data-id="${s.id}">${visualHTML(s)}<span class="txt">${s.name}</span></div>`}
+function renderStatic(){reelEl.innerHTML="";current.forEach((col,ri)=>{const reel=document.createElement("div");reel.className="reel";reel.dataset.reel=ri;const strip=document.createElement("div");strip.className="strip";strip.innerHTML=col.map(symbolHTML).join("");reel.appendChild(strip);reelEl.appendChild(reel)})}
+function renderLegend(){document.getElementById("legend").innerHTML=symbols.map(s=>`<div class="item"><div class="ico">${visualHTML(s)}</div><div class="name">${s.name}</div><div class="pay">5×: ${s.mult[4]}x</div></div>`).join("")}
+function updateHud(){bankLabel.textContent=mode==="pro"?"Guthaben":"Punkte";bankValue.textContent=bank.toLocaleString("de-DE");betValue.textContent=mode==="pro"?bet:"–";spinCountEl.textContent=spins}
+function clearWins(){document.querySelectorAll(".symbol.win").forEach(e=>e.classList.remove("win"));document.querySelectorAll(".payline.on").forEach(e=>e.classList.remove("on"))}
+function calcWins(){const wins=[];paylines.forEach((line,li)=>{const seq=line.map((row,col)=>current[col][row]);let base=seq[0].wild?null:seq[0].id;if(!base){const firstNonWild=seq.find(s=>!s.wild);base=firstNonWild?firstNonWild.id:"wild"}let count=0;for(const s of seq){if(s.wild||s.id===base)count++;else break}if(count>=3){const sym=symbols.find(s=>s.id===base)||symbols.find(s=>s.id==="wild");wins.push({line:li,count,sym,baseWin:sym.mult[count-1]})}});return wins}
+function markWins(wins){wins.forEach(w=>{document.querySelector(`.payline.l${w.line}`).classList.add("on");paylines[w.line].forEach((row,col)=>{if(col<w.count){const reel=document.querySelector(`.reel[data-reel="${col}"]`);const sym=reel.querySelectorAll(".symbol")[row];sym&&sym.classList.add("win")}})})}
+function payout(wins){const factor=mode==="pro"?bet/10:1;return Math.round(wins.reduce((sum,w)=>sum+w.baseWin,0)*factor)}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function makeSpinStrip(finalCol,ri){return Array.from({length:34+ri*4},()=>pickSymbol()).concat(finalCol)}
+function reelEase(p){return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2}
+function applyReelDepth(reel,strip,offset,h){
+  const H=reel.clientHeight,half=H/2;
+  Array.from(strip.children).forEach((el,i)=>{
+    const center=i*h+offset+h/2;
+    let n=(center-half)/half;
+    n=Math.max(-1.15,Math.min(1.15,n));
+    const a=n*48;
+    const edge=Math.min(1,Math.abs(n));
+    const sy=1-edge*.28;
+    const sx=1-edge*.08;
+    el.style.transform=`perspective(360px) rotateX(${a}deg) scale(${sx},${sy})`;
+    el.style.opacity=String(Math.max(.5,1-edge*.36));
+  });
+}
+async function animateReel(ri,finalCol){
+  const reel=document.querySelector(`.reel[data-reel="${ri}"]`),strip=reel.querySelector(".strip"),seq=makeSpinStrip(finalCol,ri);
+  strip.innerHTML=seq.map(symbolHTML).join("");
+  const h=reel.clientHeight/3,target=-(seq.length-3)*h,duration=2400+ri*300;
+  strip.style.transition="none";strip.style.transform="translateY(0px)";reel.classList.add("spinning");
+  await new Promise(resolve=>{
+    const start=performance.now();
+    function frame(now){
+      const p=Math.min(1,(now-start)/duration),e=reelEase(p),offset=target*e;
+      strip.style.transform=`translateY(${offset}px)`;
+      applyReelDepth(reel,strip,offset,h);
+      if(p<1)requestAnimationFrame(frame);else resolve();
+    }
+    requestAnimationFrame(frame);
+  });
+  const bounce=Math.min(10,h*.09);
+  strip.style.transition="transform 105ms cubic-bezier(.2,1.7,.3,1)";strip.style.transform=`translateY(${target+bounce}px)`;
+  await sleep(105);strip.style.transform=`translateY(${target}px)`;await sleep(120);
+  reel.classList.remove("spinning");
+  strip.innerHTML=finalCol.map(symbolHTML).join("");
+  strip.style.transition="none";strip.style.transform="translateY(0)";
+  Array.from(strip.children).forEach(el=>{el.style.transform="";el.style.opacity=""});
+}
+function tone(freq=440,dur=.08,type="sine",vol=.035){if(!soundOn||!started)return;try{audioCtx||=new (window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}
+async function spin(){if(spinning||!started)return;clearWins();if(mode==="pro"){if(bank<bet){message.className="message bad";message.textContent="Zu wenig Coins. Snikkers hat die Keksdose leergeräumt.";tone(140,.18,"sawtooth",.03);return}bank-=bet}spinning=true;spins++;winValue.textContent="0";updateHud();spinBtn.disabled=true;message.className="message";message.textContent="Die Walzen drehen … letzte Walze entscheidet.";leverBtn.classList.add("pulled");setTimeout(()=>leverBtn.classList.remove("pulled"),220);tone(180,.05,"square",.018);const next=Array.from({length:5},()=>Array.from({length:3},()=>pickSymbol()));const promises=next.map((col,ri)=>animateReel(ri,col).then(()=>tone(220+ri*45,.07,"triangle",.022)));await Promise.all(promises);current=next;renderStatic();const wins=calcWins(),won=payout(wins);if(won>0){bank+=won;winValue.textContent=won.toLocaleString("de-DE");markWins(wins);message.className="message good";message.textContent=`Gewinn ${won.toLocaleString("de-DE")}! ${wins.map(w=>`${w.count}× ${w.sym.name}`).join(" · ")}`;tone(523,.12,"sine",.04);setTimeout(()=>tone(659,.13,"sine",.035),120);setTimeout(()=>tone(784,.18,"sine",.035),240)}else{message.className="message";message.textContent=mode==="pro"?"Kein Gewinn. Der Kackhaufen war heute auch keine Hilfe.":"Nichts getroffen. Nochmal drehen."}if(mode==="pro"&&bank<=0){message.className="message bad";message.innerHTML=`Snikkers hat die Keksdose leergeräumt. <button class="secondary" id="resetBankBtn">Neu mit 1.000 Coins</button>`;document.getElementById("resetBankBtn").onclick=()=>{bank=1000;updateHud();message.className="message";message.textContent="Keksdose wieder gefüllt. Weiter geht's."}}updateHud();spinning=false;spinBtn.disabled=false}
+document.querySelectorAll(".mode-btn").forEach(btn=>btn.onclick=()=>{if(spinning)return;document.querySelectorAll(".mode-btn").forEach(x=>x.classList.remove("active"));btn.classList.add("active");mode=btn.dataset.mode;bank=mode==="pro"?1000:0;spins=0;winValue.textContent="0";betRow.hidden=mode!=="pro";modeCopy.textContent=mode==="pro"?"Startguthaben 1.000 Coins. Einsatz wählen und versuchen, die Keksbank nicht komplett zu ruinieren.":"Endlos spielen. Gewinne zählen als Punkte, kein Guthaben und kein Einsatz nötig.";clearWins();updateHud();message.className="message";message.textContent="Modus gewechselt. Bereit zum Drehen."});
+document.querySelectorAll(".bet-btn").forEach(btn=>btn.onclick=()=>{if(spinning)return;document.querySelectorAll(".bet-btn").forEach(x=>x.classList.remove("active"));btn.classList.add("active");bet=Number(btn.dataset.bet);updateHud()});
+spinBtn.onclick=spin;leverBtn.onclick=spin;soundBtn.onclick=()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?"🔊":"🔇"};document.getElementById("fsBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};startBtn.onclick=async()=>{started=true;startOverlay.classList.add("hidden");try{audioCtx||=new (window.AudioContext||window.webkitAudioContext)();await audioCtx.resume()}catch(e){}tone(392,.08,"sine",.025);setTimeout(()=>tone(523,.11,"sine",.025),100)};document.addEventListener("visibilitychange",()=>{if(document.hidden&&audioCtx)audioCtx.suspend();else if(!document.hidden&&audioCtx&&started)audioCtx.resume().catch(()=>{})});
+renderStatic();renderLegend();updateHud();
+})();
+</script>
+</body>
+</html>
